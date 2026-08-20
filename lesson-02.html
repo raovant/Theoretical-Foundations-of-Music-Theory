@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>درس دوم · فواصل (Intervals) – کالبدشکافی دقیق</title>
+<style>
+@font-face{font-family:'Kalameh';font-weight:600;font-display:swap;
+ src:url('fonts/Kalameh-SemiBold.woff2') format('woff2'),url('fonts/Kalameh-SemiBold.woff') format('woff');}
+@font-face{font-family:'Kalameh';font-weight:700;font-display:swap;
+ src:url('fonts/Kalameh-Bold.woff2') format('woff2'),url('fonts/Kalameh-Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:300;font-display:swap;
+ src:url('fonts/IRANSansWeb_Light.woff2') format('woff2'),url('fonts/IRANSansWeb_Light.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:400;font-display:swap;
+ src:url('fonts/IRANSansWeb.woff2') format('woff2'),url('fonts/IRANSansWeb.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:500;font-display:swap;
+ src:url('fonts/IRANSansWeb_Medium.woff2') format('woff2'),url('fonts/IRANSansWeb_Medium.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:700;font-display:swap;
+ src:url('fonts/IRANSansWeb_Bold.woff2') format('woff2'),url('fonts/IRANSansWeb_Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:400;font-display:swap;
+ src:url('fonts/IRANSansWeb_FaNum.woff2') format('woff2'),url('fonts/IRANSansWeb_FaNum.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:700;font-display:swap;
+ src:url('fonts/IRANSansWeb_Bold_FaNum.woff2') format('woff2'),url('fonts/IRANSansWeb_Bold_FaNum.woff') format('woff');}
+</style>
+<style>
+:root{
+ --paper:#f7f4ee; --card:#fdfbf7; --well:#f0ebe0;
+ --ink:#221d17; --ink-2:#544c40; --ink-3:#8b8272;
+ --rule:#e4dccb; --rule-2:#d3c9b2;
+ --accent:#b23a26; --accent-bg:rgba(178,58,38,.055);
+ --f-disp:'Kalameh',sans-serif;
+ --f-body:'IRANSans','Kalameh',sans-serif;
+ --f-fa:'IRANSans FaNum','IRANSans',sans-serif;
+ --measure:42rem;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;color-scheme:light}
+body{font-family:var(--f-body);background:var(--paper);color:var(--ink);font-size:14.5px;line-height:2.05;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent);color:var(--paper)}
+a{color:var(--accent)}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.fanum{font-family:var(--f-fa)}
+.page{max-width:var(--measure);margin:0 auto;padding:56px 28px 40px}
+.rule-double{height:7px;border-top:2.5px solid var(--ink);border-bottom:1px solid var(--ink);margin-bottom:26px}
+.rule-double.bottom{margin:34px 0 22px}
+
+/* ══════════ دکمه بازگشت ══════════ */
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:500;color:var(--ink-3);text-decoration:none;padding:6px 14px;border:1px solid var(--rule);border-radius:99px;background:var(--card);transition:.18s;margin-bottom:18px}
+.back-link:hover{border-color:var(--accent);color:var(--accent)}
+.back-link .arrow{transition:transform .2s}
+.back-link:hover .arrow{transform:translateX(4px)}
+
+.doc-kicker{font-size:.75rem;font-weight:500;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.doc-kicker::after{content:'';flex:1;border-top:1px solid var(--rule)}
+h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.8rem,5vw,2.2rem);line-height:1.55;margin-bottom:16px}
+h1 .h1-dot{color:var(--accent)}
+.doc-lead{font-weight:300;font-size:1.06rem;line-height:2.15;color:var(--ink-2);max-width:36rem;margin-bottom:22px}
+
+.toc{margin:34px 0 0;border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px 26px 8px}
+.toc-title{font-size:.75rem;font-weight:700;color:var(--ink-3);margin-bottom:6px}
+.toc ol{list-style:none}
+.toc li{border-bottom:1px solid var(--rule)}
+.toc li:last-child{border-bottom:none}
+.toc a{display:flex;align-items:baseline;gap:12px;padding:9px 2px;text-decoration:none;color:var(--ink-2);font-size:.9rem;font-weight:400;transition:color .15s}
+.toc a:hover{color:var(--accent)}
+.toc .n{font-family:var(--f-fa);font-size:.72rem;font-weight:700;color:var(--accent);flex:none;width:44px}
+
+.sec{margin-top:72px;scroll-margin-top:32px}
+.sec-label{font-size:.8rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.sec h2{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.3rem,3.2vw,1.55rem);line-height:1.65}
+.sec h2 .h2-sub{font-family:var(--f-body);font-weight:300;font-size:.6em;color:var(--ink-3)}
+.sec-head{border-bottom:1px solid var(--rule-2);padding-bottom:16px;margin-bottom:26px}
+.prose p{margin-bottom:1.15rem;text-align:right}
+.prose p:last-child{margin-bottom:0}
+strong{font-weight:700;color:var(--ink)}
+em{font-style:normal;font-weight:500}
+
+.tk{direction:ltr;unicode-bidi:isolate;display:inline-block;font-weight:500;font-size:.9em;line-height:1.5;color:var(--ink-2);background:var(--well);border:1px solid var(--rule);border-radius:6px;padding:.02em .55em;vertical-align:baseline}
+
+/* ══════════ کارت‌های نوع فاصله ══════════ */
+.interval-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:24px 0}
+.int-type{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px}
+.int-type h3{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.int-type h3 .icon{font-size:1.2rem}
+.int-type p{font-size:.88rem;color:var(--ink-2);line-height:2}
+
+/* ══════════ دو ویژگی ══════════ */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+.feature{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px}
+.feature h3{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:8px;color:var(--accent)}
+.feature p{font-size:.88rem;color:var(--ink-2);line-height:2;margin-bottom:8px}
+.feature .example{background:var(--well);border-radius:8px;padding:10px 14px;font-size:.85rem;line-height:1.9;margin-top:10px}
+
+.note{border-inline-start:3px solid var(--accent);background:var(--accent-bg);border-radius:0 12px 12px 0;padding:14px 20px;margin:24px 0;font-size:.93rem;line-height:2.1;color:var(--ink-2)}
+.note .tag{color:var(--accent);font-weight:700;font-size:.82rem}
+
+/* ══════════ جدول فواصل (بزرگ) ══════════ */
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.88rem}
+caption{caption-side:top;text-align:right;font-size:.78rem;color:var(--ink-3);padding-bottom:8px;font-weight:500}
+th{font-size:.72rem;font-weight:700;color:var(--ink-3);text-align:right;padding:10px 8px;border-bottom:1.5px solid var(--rule-2);vertical-align:top}
+td{padding:10px 8px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2);font-size:.85rem;line-height:1.8}
+tr:last-child td{border-bottom:none}
+td.num{font-weight:700;font-size:1rem;color:var(--accent);width:35px;direction:ltr;text-align:right}
+td.sym{font-weight:700;color:var(--ink);width:60px;direction:ltr;text-align:right}
+td.semi{width:40px;direction:ltr;text-align:right;font-weight:700;font-family:var(--f-fa)}
+td.ex{direction:ltr;text-align:right;width:80px;color:var(--ink);font-weight:500}
+td.emotion{color:var(--ink-2);font-size:.82rem}
+td.use{font-size:.82rem;color:var(--ink-3)}
+
+/* ══════════ فرمول ══════════ */
+.formula{direction:ltr;text-align:center;font-weight:500;font-size:1.04rem;line-height:2;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px 16px;margin:24px 0 8px;color:var(--ink)}
+.formula b{color:var(--accent);font-weight:700}
+.formula-cap{text-align:center;font-size:.8rem;color:var(--ink-3);margin-bottom:24px}
+
+/* ══════════ قطعه‌های تحلیلی ══════════ */
+.piece{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:22px 26px;margin:22px 0}
+.piece h3{font-family:var(--f-disp);font-weight:700;font-size:1.08rem;line-height:1.9}
+.piece h3 .en-name{font-family:var(--f-body);font-weight:700;font-size:.95em;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.piece .artist{font-family:var(--f-body);font-size:.78rem;color:var(--ink-3);font-weight:300}
+.piece .artist .ltr{font-weight:400}
+.piece .int-tag{display:inline-block;font-size:.72rem;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:1px 12px;margin-inline-start:10px;vertical-align:middle}
+.piece .an{font-size:.9rem;color:var(--ink-2);line-height:2.15;margin-top:12px}
+.piece .an b{color:var(--ink)}
+.piece .an-label{color:var(--accent);font-weight:700;font-size:.82rem}
+
+/* ══════════ معکوس فواصل ══════════ */
+.inversion-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:24px 0}
+.inv-card{border:1px solid var(--rule);border-radius:10px;background:var(--card);padding:14px;text-align:center}
+.inv-card .arrow{display:block;font-size:1.2rem;color:var(--accent);margin:6px 0}
+.inv-card .from,.inv-card .to{font-size:.85rem;font-weight:500}
+.inv-card .from{color:var(--ink-2)}
+.inv-card .to{color:var(--accent);font-weight:700}
+
+/* ══════════ نکات کلیدی ══════════ */
+.key-point{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px;margin:20px 0}
+.key-point h3{font-family:var(--f-disp);font-weight:700;font-size:.95rem;margin-bottom:10px;color:var(--accent)}
+.key-point p{font-size:.88rem;color:var(--ink-2);line-height:2}
+
+/* ══════════ تمرین‌ها ══════════ */
+.ex-item{display:flex;gap:16px;margin:26px 0}
+.ex-num{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-fa);font-weight:700;font-size:1.05rem;margin-top:6px}
+.ex-body{flex:1;min-width:0}
+.ex-body h4{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:2px}
+.ex-body>p{font-size:.93rem;color:var(--ink-2)}
+.ex-list{list-style:none;margin-top:10px;padding-inline-start:0}
+.ex-list li{padding:4px 0;font-size:.88rem;color:var(--ink-2);line-height:2}
+.ex-list li::before{content:'•';color:var(--accent);font-weight:700;margin-inline-end:8px}
+
+/* ══════════ جمع‌بندی ══════════ */
+.summary{border:2px solid var(--accent);border-radius:14px;background:var(--accent-bg);padding:24px;margin:32px 0}
+.summary h3{font-family:var(--f-disp);font-weight:700;font-size:1.1rem;margin-bottom:14px;color:var(--accent)}
+.summary ul{list-style:none;padding:0}
+.summary li{padding:6px 0;font-size:.9rem;line-height:2;color:var(--ink-2)}
+.summary li::before{content:'✓';color:var(--accent);font-weight:700;margin-inline-end:10px}
+
+footer{text-align:center}
+footer .fl{font-size:.8rem;color:var(--ink-3);line-height:2.2}
+footer .fl b{color:var(--ink-2)}
+footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bottom:6px}
+
+/* ══════════ موتور ویرایشگر (v8) ══════════ */
+body:not(.editing) .edit-only{display:none!important}
+body.editing [data-edit]{cursor:text;border-radius:4px}
+body.editing [data-edit]:hover{outline:1.5px dashed var(--accent);outline-offset:4px}
+body.editing [data-edit]:focus{outline:1.5px solid var(--accent);outline-offset:4px;background:var(--accent-bg)}
+.selected{outline:2px solid var(--accent)!important;outline-offset:4px;border-radius:4px}
+body.editing #sheet *{cursor:pointer}
+body.editing #sheet [data-edit]{cursor:text}
+.add-phase{display:block;width:100%;margin-top:44px;padding:14px;border-radius:14px;border:1.5px dashed var(--rule-2);background:transparent;color:var(--ink-3);font-size:.9rem;font-weight:700;transition:.2s}
+.add-phase:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+
+.ctx{position:fixed;z-index:70;min-width:250px;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none}
+.ctx.open{display:block}
+.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s}
+.ctx button:hover{background:var(--accent-bg);color:var(--accent)}
+.ctx button .ci{width:20px;text-align:center;flex:none}
+.ctx button .ck{margin-inline-start:auto;font-size:.65rem;color:var(--ink-3)}
+.ctx .csep{height:1px;background:var(--rule);margin:5px 8px}
+.ctx .ctitle{font-size:.62rem;color:var(--ink-3);padding:4px 12px 2px;font-weight:700}
+.ctx .cstatus{font-size:.62rem;color:var(--ink-3);padding:6px 12px 4px;text-align:center;direction:ltr}
+.ctx .cstatus.bad{color:var(--accent)}
+
+.insp{position:fixed;bottom:14px;inset-inline:0;z-index:45;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
+.insp[hidden]{display:none}
+.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px}
+.insp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.insp-head b{font-size:.78rem;color:var(--accent)}
+#inspTag{font-size:.7rem;color:var(--ink-3);direction:ltr}
+.insp-head .sp{flex:1}
+.insp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px 12px;align-items:end}
+.insp-grid label{display:flex;flex-direction:column;gap:3px;font-size:.68rem;color:var(--ink-3);font-weight:500}
+.insp-grid input[type=range]{width:100%;accent-color:var(--accent)}
+.insp-grid select,.insp-grid input[type=color]{width:100%;border:1px solid var(--rule-2);border-radius:8px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:.75rem;padding:4px 6px}
+.insp-grid input[type=color]{padding:2px;height:30px}
+.swatches{display:flex;gap:6px;align-items:center}
+.sw{width:20px;height:20px;border-radius:50%;border:1px solid var(--rule-2)}
+.sw:hover{transform:scale(1.15)}
+.ib{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule-2);background:transparent;color:var(--ink-3);font-size:.8rem;line-height:1;transition:.15s}
+.ib:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+
+.toast{position:fixed;bottom:24px;inset-inline:0;display:flex;justify-content:center;z-index:50;pointer-events:none}
+.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center}
+.toast span.show{opacity:1;transform:none}
+
+@media print{
+ @page{margin:17mm}
+ body{background:#fff;font-size:11.5pt}
+ .page{max-width:100%;padding:0}
+ .sec{margin-top:2.4em;break-inside:auto}
+ .note,.piece,.ex-item,table{break-inside:avoid}
+ a{color:inherit;text-decoration:none}
+ .edit-only,.toast,.insp,.ctx,.back-link{display:none!important}
+}
+@media(max-width:560px){
+ .page{padding:40px 20px}
+ body{font-size:15.5px}
+ .ex-item{gap:12px}
+}
+</style>
+</head>
+<body>
+<div class="page" id="sheet">
+<div class="rule-double"></div>
+<header>
+<a href="index.html" class="back-link"><span class="arrow">←</span> بازگشت به نقشهٔ راه</a>
+<p class="doc-kicker" data-edit>مبانی نظری تئوری موسیقی — درس دوم</p>
+<h1 data-edit>فواصل <span class="ltr">(Intervals)</span> — کالبدشکافی دقیق<span class="h1-dot">.</span></h1>
+<p class="doc-lead" data-edit>از تعریف ریاضی تا احساسات انسانی؛ راهنمای کامل درک فواصل ملودیک و هارمونیک، معکوس، مرکب و کاربرد آن‌ها در موسیقی مدرن.</p>
+</header>
+
+<nav class="toc" aria-label="فهرست">
+<p class="toc-title" data-edit>فهرست بخش‌ها</p>
+<ol>
+<li><a href="#s1" data-edit><span class="n">بخش ۱</span> تعریف فاصله</a></li>
+<li><a href="#s2" data-edit><span class="n">بخش ۲</span> انواع فواصل: ملودیک و هارمونیک</a></li>
+<li><a href="#s3" data-edit><span class="n">بخش ۳</span> دو ویژگی تعیین‌کننده: کمیت و کیفیت</a></li>
+<li><a href="#s4" data-edit><span class="n">بخش ۴</span> روش گام‌به‌گام محاسبهٔ فاصله</a></li>
+<li><a href="#s5" data-edit><span class="n">بخش ۵</span> جدول کامل فواصل پایه</a></li>
+<li><a href="#s6" data-edit><span class="n">بخش ۶</span> مثال‌های تحلیلی در موسیقی معروف</a></li>
+<li><a href="#s7" data-edit><span class="n">بخش ۷</span> فواصل مرکب</a></li>
+<li><a href="#s8" data-edit><span class="n">بخش ۸</span> معکوس فواصل</a></li>
+<li><a href="#s9" data-edit><span class="n">بخش ۹</span> فواصل افزوده و کاسته</a></li>
+<li><a href="#s10" data-edit><span class="n">بخش ۱۰</span> نکات کلیدی برای هنرجویان سمج</a></li>
+<li><a href="#s11" data-edit><span class="n">بخش ۱۱</span> تمرینات عملی</a></li>
+</ol>
+</nav>
+
+<section class="sec" id="s1">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش نخست</p>
+<h2 data-edit>تعریف فاصله</h2>
+</div>
+<div class="prose">
+<p data-edit>فاصله به <strong>اختلاف ارتفاع بین دو تن</strong> گفته می‌شود. این اختلاف می‌تواند بسیار اندک (مانند نیم‌پرده) یا بسیار زیاد (چندین اکتاو) باشد.</p>
+</div>
+<div class="note">
+<span class="tag">نکتهٔ بنیادین — </span>
+فواصل صرفاً «ریاضی» نیستند، بلکه <strong>احساس تولید می‌کنند</strong>. در واقع، کنترل احساس از طریق فواصل، همان چیزی است که به آن «موسیقی» می‌گوییم.
+</div>
+</section>
+
+<section class="sec" id="s2">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش دوم</p>
+<h2 data-edit>انواع فواصل: ملودیک و هارمونیک</h2>
+</div>
+<div class="interval-types">
+<div class="int-type">
+<h3 data-edit><span class="icon">♪</span> فاصلهٔ ملودیک <span class="ltr">(Melodic)</span></h3>
+<p data-edit>فاصله‌ای که در آن دو تن به‌صورت <strong>جدا و پشت سر هم</strong> شنیده می‌شوند. این فاصله در ملودی‌ها استفاده می‌شود.</p>
+</div>
+<div class="int-type">
+<h3 data-edit><span class="icon">♫</span> فاصلهٔ هارمونیک <span class="ltr">(Harmonic)</span></h3>
+<p data-edit>فاصله‌ای که در آن دو تن <strong>همزمان</strong> شنیده می‌شوند. این فاصله در آکوردها و هارمونی استفاده می‌شود.</p>
+</div>
+</div>
+</section>
+
+<section class="sec" id="s3">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش سوم</p>
+<h2 data-edit>دو ویژگی تعیین‌کننده: کمیت و کیفیت</h2>
+</div>
+<div class="features">
+<div class="feature">
+<h3 data-edit>الف) کمیت <span class="ltr">(Quantity)</span></h3>
+<p data-edit>فاصلهٔ بین خط‌ها و فضای خطوط حامل را می‌شماریم. مثلاً اگر از خط اول به خط سوم برویم، فاصلهٔ عددی سه است.</p>
+<div class="example">
+<strong>نکتهٔ حیاتی:</strong> هنگام شمارش، نت مبدأ را <strong>یک</strong> در نظر بگیرید، نه صفر.<br>
+از <span class="tk">C</span> تا <span class="tk">C</span> = ۱ (یونیسون)<br>
+از <span class="tk">C</span> تا <span class="tk">D</span> = ۲ (دوم)<br>
+از <span class="tk">C</span> تا <span class="tk">E</span> = ۳ (سوم)
+</div>
+</div>
+<div class="feature">
+<h3 data-edit>ب) کیفیت <span class="ltr">(Quality)</span></h3>
+<p data-edit>تعداد نیم‌پرده‌های بین دو نت، کیفیت فاصله را مشخص می‌کند.</p>
+<div class="example">
+<strong>کیفیت‌ها:</strong><br>
+بزرگ <span class="ltr">(Major - M)</span><br>
+کوچک <span class="ltr">(Minor - m)</span><br>
+درست <span class="ltr">(Perfect - P)</span><br>
+افزوده <span class="ltr">(Augmented - A)</span><br>
+کاسته <span class="ltr">(Diminished - d)</span>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="s4">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش چهارم</p>
+<h2 data-edit>روش گام‌به‌گام محاسبهٔ فاصله</h2>
+</div>
+<div class="prose">
+<p data-edit>برای محاسبهٔ دقیق هر فاصله، این دو مرحله را دنبال کنید:</p>
+</div>
+<div class="features">
+<div class="feature">
+<h3 data-edit>مرحلهٔ اول (کمیت)</h3>
+<p data-edit>نت‌ها را <strong>بدون در نظر گرفتن</strong> علامت‌های Sharp و Flat بشمارید.</p>
+<div class="example">
+<strong>مثال:</strong> <span class="tk">C</span> تا <span class="tk">E♭</span><br>
+از C تا E می‌شود <strong>۳</strong> (سوم)
+</div>
+</div>
+<div class="feature">
+<h3 data-edit>مرحلهٔ دوم (کیفیت)</h3>
+<p data-edit>تعداد نیم‌پرده‌ها را محاسبه کنید و با جدول تطبیق دهید.</p>
+<div class="example">
+<strong>مثال:</strong> <span class="tk">C</span> تا <span class="tk">E♭</span><br>
+سه نیم‌پرده است → <strong>سوم کوچک (m3)</strong>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="s5">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش پنجم</p>
+<h2 data-edit>جدول کامل فواصل پایه</h2>
+</div>
+<table>
+<caption data-edit>فواصل از یونیسون تا اکتاو — با احساس و کاربرد</caption>
+<thead>
+<tr>
+<th data-edit>کمیت</th>
+<th data-edit>کیفیت</th>
+<th data-edit>نماد</th>
+<th data-edit>نیم‌پرده</th>
+<th data-edit>مثال از C</th>
+<th data-edit>احساس و حال</th>
+<th data-edit>کاربرد</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="num" data-edit>1</td>
+<td data-edit>درست</td>
+<td class="sym" data-edit>P1</td>
+<td class="semi" data-edit>۰</td>
+<td class="ex" data-edit>C → C</td>
+<td class="emotion" data-edit>سکون مطلق</td>
+<td class="use" data-edit>ایست‌های قطعه، لایه‌های ضخیم همون</td>
+</tr>
+<tr>
+<td class="num" data-edit>2</td>
+<td data-edit>کوچک</td>
+<td class="sym" data-edit>m2</td>
+<td class="semi" data-edit>۱</td>
+<td class="ex" data-edit>C → C♯/D♭</td>
+<td class="emotion" data-edit>تنش شدید، ناآرام، مضطرب، تاریک</td>
+<td class="use" data-edit>موسیقی هارر، تریلر، ساسپنس، Black Metal</td>
+</tr>
+<tr>
+<td class="num" data-edit>2</td>
+<td data-edit>بزرگ</td>
+<td class="sym" data-edit>M2</td>
+<td class="semi" data-edit>۲</td>
+<td class="ex" data-edit>C → D</td>
+<td class="emotion" data-edit>حرکت طبیعی، ملایم، نه شاد نه غمگین</td>
+<td class="use" data-edit>ملودی‌های ساده، موسیقی احساسی</td>
+</tr>
+<tr>
+<td class="num" data-edit>3</td>
+<td data-edit>کوچک</td>
+<td class="sym" data-edit>m3</td>
+<td class="semi" data-edit>۳</td>
+<td class="ex" data-edit>C → D♯/E♭</td>
+<td class="emotion" data-edit>غم، افسردگی، احساس عمیق انسانی</td>
+<td class="use" data-edit>گام مینور، سینمایی غمگین، Gothic</td>
+</tr>
+<tr>
+<td class="num" data-edit>3</td>
+<td data-edit>بزرگ</td>
+<td class="sym" data-edit>M3</td>
+<td class="semi" data-edit>۴</td>
+<td class="ex" data-edit>C → E</td>
+<td class="emotion" data-edit>شاد، روشن، مثبت، امید</td>
+<td class="use" data-edit>گام ماژور، پاپ، راک کلاسیک</td>
+</tr>
+<tr>
+<td class="num" data-edit>4</td>
+<td data-edit>درست</td>
+<td class="sym" data-edit>P4</td>
+<td class="semi" data-edit>۵</td>
+<td class="ex" data-edit>C → F</td>
+<td class="emotion" data-edit>قدرت، استحکام، حس «پاسخ» یا «انتظار»</td>
+<td class="use" data-edit>آکوردها، نه کاملاً آرام و نه پرتنش</td>
+</tr>
+<tr>
+<td class="num" data-edit>4/5</td>
+<td data-edit>افزوده/کاسته</td>
+<td class="sym" data-edit>A4/d5</td>
+<td class="semi" data-edit>۶</td>
+<td class="ex" data-edit>C → F♯/G♭</td>
+<td class="emotion" data-edit>شیطانی، ناپایدار، پرتنش</td>
+<td class="use" data-edit>تریتون — فاصلهٔ شیطان</td>
+</tr>
+<tr>
+<td class="num" data-edit>5</td>
+<td data-edit>درست</td>
+<td class="sym" data-edit>P5</td>
+<td class="semi" data-edit>۷</td>
+<td class="ex" data-edit>C → G</td>
+<td class="emotion" data-edit>قدرت، استحکام، پایهٔ آکوردها</td>
+<td class="use" data-edit>Power Chord، ستون موسیقی متال</td>
+</tr>
+<tr>
+<td class="num" data-edit>6</td>
+<td data-edit>کوچک</td>
+<td class="sym" data-edit>m6</td>
+<td class="semi" data-edit>۸</td>
+<td class="ex" data-edit>C → G♯/A♭</td>
+<td class="emotion" data-edit>غم عمیق، جدایی، لحظات تراژیک</td>
+<td class="use" data-edit>فیلم عاشقانهٔ غمگین، Dark Ambient</td>
+</tr>
+<tr>
+<td class="num" data-edit>6</td>
+<td data-edit>بزرگ</td>
+<td class="sym" data-edit>M6</td>
+<td class="semi" data-edit>۹</td>
+<td class="ex" data-edit>C → A</td>
+<td class="emotion" data-edit>لطیف، احساسی، امید در دل غم</td>
+<td class="use" data-edit>آهنگ‌های عاشقانه، حماسی روشن</td>
+</tr>
+<tr>
+<td class="num" data-edit>7</td>
+<td data-edit>کوچک</td>
+<td class="sym" data-edit>m7</td>
+<td class="semi" data-edit>۱۰</td>
+<td class="ex" data-edit>C → A♯/B♭</td>
+<td class="emotion" data-edit>شور، احساس «بلوز»، قدرتمند</td>
+<td class="use" data-edit>Blues، Rock، Jazz</td>
+</tr>
+<tr>
+<td class="num" data-edit>7</td>
+<td data-edit>بزرگ</td>
+<td class="sym" data-edit>M7</td>
+<td class="semi" data-edit>۱۱</td>
+<td class="ex" data-edit>C → B</td>
+<td class="emotion" data-edit>تنش روشن، ناتمام، رویایی</td>
+<td class="use" data-edit>موسیقی فضایی، آکوردهای ماژور ۷</td>
+</tr>
+<tr>
+<td class="num" data-edit>8</td>
+<td data-edit>درست</td>
+<td class="sym" data-edit>P8</td>
+<td class="semi" data-edit>۱۲</td>
+<td class="ex" data-edit>C → C</td>
+<td class="emotion" data-edit>کمال، پایداری، تمام شدن</td>
+<td class="use" data-edit>پایان‌بندی قطعات، ملودی‌های حماسی</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<section class="sec" id="s6">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش ششم</p>
+<h2 data-edit>مثال‌های تحلیلی در موسیقی معروف</h2>
+</div>
+
+<article class="piece">
+<h3 data-edit>مثال ۱: فاصلهٔ دوم کوچک (m2) — حس تنش و وحشت<br><span class="en-name">Jaws Theme</span> <span class="int-tag fanum">دوم کوچک</span><br><span class="artist">از <span class="ltr">John Williams</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>این دو نت با فاصلهٔ نیم‌پرده (<span class="tk">E → F</span>)، حس <b>ترس و خطر قریب‌الوقوع</b> را منتقل می‌کنند. یکی از معروف‌ترین کاربردهای فاصلهٔ m2 در تاریخ سینما.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۲: فاصلهٔ سوم بزرگ (M3) — حس شادی و روشنایی<br><span class="en-name">Ode to Joy</span> <span class="int-tag fanum">سوم بزرگ</span><br><span class="artist">از <span class="ltr">Beethoven</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>شروع ملودی با فاصلهٔ سوم بزرگ (<span class="tk">E → G♯</span> در گام E ماژور). این فاصله <b>پایهٔ گام ماژور</b> است و حس شادی و پیروزی را منتقل می‌کند.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۳: فاصلهٔ چهارم درست (P4) — حس قدرت و انتظار<br><span class="en-name">Smoke on the Water</span> <span class="int-tag fanum">چهارم درست</span><br><span class="artist">از <span class="ltr">Deep Purple</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>ریف اصلی با فاصلهٔ چهارم درست شروع می‌شود (<span class="tk">A → D</span>). این فاصله حس <b>استحکام و قدرت</b> را به ریف می‌دهد.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۴: فاصلهٔ تریتون (A4/d5) — حس شیطانی و ناپایدار<br><span class="en-name">Black Sabbath</span> <span class="int-tag fanum">تریتون</span><br><span class="artist">از <span class="ltr">Black Sabbath</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>ریف اصلی از فاصلهٔ تریتون استفاده می‌کند (<span class="tk">E → B♭</span>). این فاصله در قرون وسطی «فاصلهٔ شیطان» نامیده می‌شد و <b>پایهٔ موسیقی متال</b> است.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۵: فاصلهٔ پنجم درست (P5) — حس قدرت و پایهٔ متال<br><span class="en-name">Enter Sandman</span> <span class="int-tag fanum">پنجم درست</span><br><span class="artist">از <span class="ltr">Metallica</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>ریف اصلی بر پایهٔ فاصلهٔ پنجم درست (Power Chord) ساخته شده (<span class="tk">E → B</span>). فاصلهٔ پنجم درست <b>ستون موسیقی متال و راک</b> است.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۶: فاصلهٔ هفتم بزرگ (M7) — حس رویایی و ناتمام<br><span class="en-name">Take On Me</span> <span class="int-tag fanum">هفتم بزرگ</span><br><span class="artist">از <span class="ltr">A-ha</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>ملودی اصلی از فاصلهٔ هفتم بزرگ استفاده می‌کند. این فاصله حس «ناتمام بودن» و «رویاپردازی» را منتقل می‌کند و در موسیقی پاپ و فیلم مدرن بسیار استفاده می‌شود.</p>
+</article>
+</section>
+
+<section class="sec" id="s7">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش هفتم</p>
+<h2 data-edit>فواصل مرکب <span class="h2-sub">(Compound Intervals)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>هر فاصله‌ای که بزرگ‌تر از اکتاو (بیش از ۸) باشد، فاصلهٔ مرکب نامیده می‌شود.</p>
+</div>
+<div class="formula" data-edit>فاصلهٔ مرکب = فاصلهٔ ساده + <b>7</b></div>
+<p class="formula-cap" data-edit>مثال‌ها: دوم بزرگ (M2) + اکتاو = نهم بزرگ (M9) · سوم کوچک (m3) + اکتاو = دهم کوچک (m10) · پنجم درست (P5) + اکتاو = دوازدهم درست (P12)</p>
+<div class="note">
+<span class="tag">کاربرد در DAW — </span>
+هنگام نوشتن آکوردهای گسترش‌یافته (Extended Chords) مانند آکوردهای ۹، ۱۱ و ۱۳، شما با فواصل مرکب سروکار دارید.
+</div>
+</section>
+
+<section class="sec" id="s8">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش هشتم</p>
+<h2 data-edit>معکوس فواصل <span class="h2-sub">(Inversion of Intervals)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>وقتی یک فاصله را معکوس می‌کنیم (نت پایین را یک اکتاو بالا می‌بریم، یا نت بالا را یک اکتاو پایین می‌آوریم)، فاصلهٔ جدیدی به دست می‌آید.</p>
+</div>
+<div class="features">
+<div class="feature">
+<h3 data-edit>قوانین معکوس</h3>
+<p data-edit>درست ⇋ درست · بزرگ ⇋ کوچک · کوچک ⇋ بزرگ · افزوده ⇋ کاسته · کاسته ⇋ افزوده</p>
+</div>
+<div class="feature">
+<h3 data-edit>فرمول عددی</h3>
+<p data-edit>عدد فاصله + عدد معکوس = <strong>۹</strong></p>
+</div>
+</div>
+<div class="inversion-grid">
+<div class="inv-card" data-edit><div class="from">سوم بزرگ (M3)</div><div class="arrow">⇅</div><div class="to">ششم کوچک (m6)</div></div>
+<div class="inv-card" data-edit><div class="from">چهارم درست (P4)</div><div class="arrow">⇅</div><div class="to">پنجم درست (P5)</div></div>
+<div class="inv-card" data-edit><div class="from">هفتم بزرگ (M7)</div><div class="arrow">⇅</div><div class="to">دوم کوچک (m2)</div></div>
+<div class="inv-card" data-edit><div class="from">تریتون (A4/d5)</div><div class="arrow">⇅</div><div class="to">تریتون (A4/d5)</div></div>
+</div>
+<div class="note">
+<span class="tag">نکته — </span>
+تریتون تنها فاصله‌ای است که معکوسش خودش است.
+</div>
+</section>
+
+<section class="sec" id="s9">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش نهم</p>
+<h2 data-edit>فواصل افزوده و کاسته</h2>
+</div>
+<div class="features">
+<div class="feature">
+<h3 data-edit>الف) افزوده <span class="ltr">(Augmented - A)</span></h3>
+<p data-edit>فاصله‌ای که نیم‌پرده بیشتر از فاصلهٔ بزرگ یا درست باشد.</p>
+<div class="example">
+<span class="tk">C</span> تا <span class="tk">F♯</span> = چهارم افزوده = ۶ نیم‌پرده<br>
+<span class="tk">C</span> تا <span class="tk">G♯</span> = پنجم افزوده = ۸ نیم‌پرده
+</div>
+</div>
+<div class="feature">
+<h3 data-edit>ب) کاسته <span class="ltr">(Diminished - d)</span></h3>
+<p data-edit>فاصله‌ای که نیم‌پرده کمتر از فاصلهٔ کوچک یا درست باشد.</p>
+<div class="example">
+<span class="tk">C</span> تا <span class="tk">G♭</span> = پنجم کاسته = ۶ نیم‌پرده<br>
+<span class="tk">C</span> تا <span class="tk">D♭♭</span> = دوم کاسته = ۰ نیم‌پرده
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="s10">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش دهم</p>
+<h2 data-edit>نکات کلیدی برای هنرجویان سمج</h2>
+</div>
+<div class="key-point">
+<h3 data-edit>نکتهٔ اول: تفاوت مینور دوم و یونیسون افزوده</h3>
+<p data-edit>هر دو فاصلهٔ <span class="tk">C</span> تا <span class="tk">C♯</span> و <span class="tk">C</span> تا <span class="tk">D♭♭</span> از نظر تعداد نیم‌پرده یکسان هستند (۱ نیم‌پرده)، اما: <span class="tk">C</span> تا <span class="tk">C♯</span> = دوم کوچک (m2) · <span class="tk">C</span> تا <span class="tk">D♭♭</span> = دوم کاسته (d2). چرا؟ چون <strong>کمیت فاصله متفاوت است</strong>.</p>
+</div>
+<div class="key-point">
+<h3 data-edit>نکتهٔ دوم: تریتون و معکوس آن</h3>
+<p data-edit>تریتون تنها فاصله‌ای است که معکوسش خودش است: <span class="tk">C</span> تا <span class="tk">F♯</span> = چهارم افزوده (A4) = ۶ نیم‌پرده · <span class="tk">F♯</span> تا <span class="tk">C</span> = پنجم کاسته (d5) = ۶ نیم‌پرده. هر دو تریتون هستند.</p>
+</div>
+<div class="key-point">
+<h3 data-edit>نکتهٔ سوم: فواصل در گیتار vs پیانو</h3>
+<p data-edit>در پیانو، فاصلهٔ <span class="tk">C</span> تا <span class="tk">C♯</span> یک کلید فاصله است. در گیتار، همان فاصله یک فرت است. اما در DAW، هر دو <strong>MIDI Note Number یکسان</strong> دارند.</p>
+</div>
+</section>
+
+<section class="sec" id="s11">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش یازدهم</p>
+<h2 data-edit>تمرینات عملی</h2>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۱</div>
+<div class="ex-body">
+<h4 data-edit>شناسایی فواصل در DAW</h4>
+<p data-edit>در Piano Roll خود، دو نت با فاصله‌های زیر ایجاد کنید و MIDI Note Number آن‌ها را بنویسید:</p>
+<ul class="ex-list">
+<li data-edit>سوم بزرگ (M3) از C4</li>
+<li data-edit>هفتم کوچک (m7) از G3</li>
+<li data-edit>تریتون (A4) از E4</li>
+<li data-edit>ششم بزرگ (M6) از A2</li>
+</ul>
+</div>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۲</div>
+<div class="ex-body">
+<h4 data-edit>معکوس فواصل</h4>
+<p data-edit>معکوس فواصل زیر را بنویسید:</p>
+<ul class="ex-list">
+<li data-edit>سوم کوچک (m3) → ؟</li>
+<li data-edit>هفتم بزرگ (M7) → ؟</li>
+<li data-edit>پنجم درست (P5) → ؟</li>
+<li data-edit>چهارم افزوده (A4) → ؟</li>
+</ul>
+</div>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۳</div>
+<div class="ex-body">
+<h4 data-edit>آنالیز آهنگ</h4>
+<p data-edit>آهنگ «Nothing Else Matters» از Metallica را گوش دهید. ریف اصلی گیتار چه فاصله‌ای دارد؟ (راهنمایی: به اولین دو نت دقت کنید.)</p>
+</div>
+</div>
+</section>
+
+<section class="sec" id="summary">
+<div class="summary">
+<h3 data-edit>جمع‌بندی درس دوم</h3>
+<ul>
+<li data-edit>فاصله = اختلاف ارتفاع بین دو تن</li>
+<li data-edit>دو نوع فاصله: ملودیک (پشت سر هم) و هارمونیک (همزمان)</li>
+<li data-edit>کمیت = شمارش خطوط، کیفیت = تعداد نیم‌پرده‌ها</li>
+<li data-edit>فواصل پایه: m2, M2, m3, M3, P4, A4/d5, P5, m6, M6, m7, M7, P8</li>
+<li data-edit>معکوس فواصل: بزرگ ⇋ کوچک، درست ⇋ درست، افزوده ⇋ کاسته</li>
+<li data-edit>فواصل مرکب = فواصل ساده + اکتاو</li>
+<li data-edit>تریتون = فاصلهٔ شیطان، پایهٔ متال و وحشت</li>
+</ul>
+</div>
+</section>
+
+<button type="button" class="add-phase edit-only" id="addSection">+ افزودن بخش جدید</button>
+
+<div class="rule-double bottom"></div>
+<footer>
+<span class="note-glyph">♪</span>
+<p class="fl" data-edit><b>درس دوم — فواصل</b> · مبانی نظری تئوری موسیقی</p>
+</footer>
+</div>
+
+<div class="ctx" id="ctx"></div>
+
+<div class="insp" id="insp" hidden>
+  <div class="insp-card">
+    <div class="insp-head">
+      <b>استایل المان</b><span id="inspTag"></span><span class="sp"></span>
+      <button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button>
+      <button type="button" class="ib" id="inspClose" title="بستن">×</button>
+    </div>
+    <div class="insp-grid">
+      <label>سایز قلم <span class="ltr" id="vSize"></span><input type="range" id="inSize" min="10" max="56" step="1"></label>
+      <label>فاصلهٔ خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label>
+      <label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label>
+      <label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label>
+      <label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label>
+      <label>رنگ<div class="swatches">
+        <button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button>
+        <button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button>
+        <button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button>
+        <button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button>
+        <input type="color" id="inColor" value="#221d17">
+      </div></label>
+    </div>
+  </div>
+</div>
+
+<div class="toast"><span id="toastMsg"></span></div>
+
+<script>
+'use strict';
+let STATUS='در حال بررسی…';
+function showErr(m){
+  STATUS='✗ '+m;
+  var t=document.getElementById('toastMsg');
+  if(t){t.textContent='⚠️ '+m;t.classList.add('show');}
+  if(window.console)console.error(m);
+}
+window.addEventListener('error',function(e){showErr(e.message||'خطای جاوااسکریپت');});
+
+try{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const KEY='lesson-02-v1';
+const VER='v8';
+let sheet=$('#sheet');
+let selEl=null;
+let PPI=3;
+const insp=$('#insp'), ctx=$('#ctx');
+
+let st;
+function save(quiet){try{localStorage.setItem(KEY,sheet.innerHTML);}catch(e){} if(!quiet)toast('ذخیره شد ✓');}
+function saveSoon(){clearTimeout(st);st=setTimeout(()=>save(true),500);}
+function toast(msg){const el=$('#toastMsg');el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200);}
+try{
+  const saved=localStorage.getItem(KEY);
+  if(saved&&saved.indexOf('<section')>-1&&saved.length>800)sheet.innerHTML=saved;
+}catch(e){}
+sheet=$('#sheet');
+
+function setEditing(on){
+  document.body.classList.toggle('editing',on);
+  $$('#sheet [data-edit]').forEach(el=>{
+    if(on){try{el.contentEditable='plaintext-only';}catch(e){el.contentEditable='true';}}
+    else el.contentEditable='false';
+  });
+  if(!on)deselect();
+}
+setEditing(false);
+
+function sectionHTML(){
+  return '<section class="sec"><div class="sec-head"><p class="sec-label" data-edit>بخش جدید</p><h2 data-edit>عنوان بخش…</h2></div><div class="prose"><p data-edit>متن بخش…</p></div></section>';
+}
+function syncEditable(root){
+  if(!document.body.classList.contains('editing'))return;
+  root.querySelectorAll('[data-edit]').forEach(el=>{try{el.contentEditable='plaintext-only';}catch(e){el.contentEditable='true';}});
+}
+function addSectionFn(){
+  const btn=$('#addSection');
+  btn.insertAdjacentHTML('beforebegin',sectionHTML());
+  syncEditable(btn.previousElementSibling);save(false);
+}
+
+const SEL='#sheet h1,#sheet h2,#sheet h3,#sheet h4,#sheet p,#sheet li,#sheet a,#sheet span,#sheet b,#sheet td,#sheet th,#sheet caption,#sheet .formula,#sheet .int-type,#sheet .feature,#sheet .piece,#sheet .inv-card,#sheet .key-point';
+const BLOCK_SEL='#sheet .sec,#sheet header,#sheet footer,#sheet nav.toc,#sheet .rule-double,#sheet .sec-head,#sheet article.piece,#sheet table,#sheet .interval-types,#sheet .features,#sheet .inversion-grid,#sheet .summary,#sheet .note,#sheet .key-point,#sheet .ex-item';
+const FAMS={body:"'IRANSans','Kalameh',sans-serif",disp:"'Kalameh',sans-serif",fa:"'IRANSans FaNum','IRANSans',sans-serif"};
+function rgbHex(c){const m=c.match(/\d+/g);return m?'#'+m.slice(0,3).map(x=>(+x).toString(16).padStart(2,'0')).join(''):'#221d17';}
+function select(el){
+  if(selEl)selEl.classList.remove('selected');
+  selEl=el;
+  if(!el){insp.hidden=true;return;}
+  el.classList.add('selected');insp.hidden=false;
+  $('#inspTag').textContent='<'+el.tagName.toLowerCase()+'>';
+  const cs=getComputedStyle(el);
+  $('#inSize').value=parseFloat(cs.fontSize);$('#vSize').textContent=Math.round(parseFloat(cs.fontSize))+'px';
+  $('#inLh').value=Math.min(2.8,Math.max(1.4,parseFloat(cs.lineHeight)/parseFloat(cs.fontSize)||2)).toFixed(2);
+  const w=String(Math.round(+cs.fontWeight));
+  $('#inWeight').value=['300','400','500','600','700'].includes(w)?w:'400';
+  $('#inFamily').value=cs.fontFamily.indexOf('Kalameh')>-1?'disp':cs.fontFamily.indexOf('FaNum')>-1?'fa':'body';
+  $('#inAlign').value=cs.textAlign==='center'?'center':cs.textAlign==='left'?'left':'right';
+  $('#inColor').value=rgbHex(cs.color);
+}
+function deselect(){select(null);}
+$('#inspClose').addEventListener('click',deselect);
+$('#inspReset').addEventListener('click',()=>{if(selEl){selEl.removeAttribute('style');select(selEl);saveSoon();}});
+function applyStyle(fn){if(!selEl)return;fn(selEl.style);saveSoon();}
+$('#inSize').addEventListener('input',e=>{$('#vSize').textContent=e.target.value+'px';applyStyle(s=>s.fontSize=e.target.value+'px');});
+$('#inLh').addEventListener('input',e=>applyStyle(s=>s.lineHeight=e.target.value));
+$('#inWeight').addEventListener('change',e=>applyStyle(s=>s.fontWeight=e.target.value));
+$('#inFamily').addEventListener('change',e=>applyStyle(s=>s.fontFamily=FAMS[e.target.value]));
+$('#inAlign').addEventListener('change',e=>applyStyle(s=>s.textAlign=e.target.value));
+$('#inColor').addEventListener('input',e=>applyStyle(s=>s.color=e.target.value));
+$$('.sw').forEach(b=>b.addEventListener('click',()=>{applyStyle(s=>s.color=b.dataset.c);$('#inColor').value=b.dataset.c;}));
+addEventListener('keydown',e=>{if(e.key==='Escape'){deselect();hideCtx();}});
+
+function removeEl(el){
+  const big=el.matches(BLOCK_SEL);
+  if(big&&!confirm('کل بخش <'+el.tagName.toLowerCase()+'> حذف شود؟'))return;
+  if(selEl&&el.contains(selEl))deselect();
+  el.remove();
+  save(false);
+  toast(big?'بخش کامل حذف شد':'المان حذف شد');
+}
+
+function hideCtx(){ctx.classList.remove('open');}
+function addItem(icon,label,fn,extra){
+  const b=document.createElement('button');
+  b.innerHTML='<span class="ci">'+icon+'</span><span>'+label+'</span>'+(extra?'<span class="ck">'+extra+'</span>':'');
+  b.addEventListener('click',()=>{hideCtx();fn();});
+  ctx.appendChild(b);
+}
+function addSep(){const d=document.createElement('div');d.className='csep';ctx.appendChild(d);}
+function addTitle(t){const d=document.createElement('div');d.className='ctitle';d.textContent=t;ctx.appendChild(d);}
+
+document.addEventListener('contextmenu',e=>{
+  if(e.target.closest('.insp'))return;
+  e.preventDefault();
+  const t=e.target, editing=document.body.classList.contains('editing');
+  ctx.innerHTML='';
+
+  if(editing&&t.closest('#sheet')){
+    const small=t.closest(SEL);
+    const block=t.closest(BLOCK_SEL);
+    const edt=t.closest('[data-edit]');
+    if(small||block){
+      addTitle('المان زیر نشانگر');
+      if(edt)addItem('✍️','ویرایش متن این بخش',()=>{setEditing(true);edt.focus();});
+      const sty=small||block;
+      if(sty)addItem('🎨','استایل این المان <'+sty.tagName.toLowerCase()+'>',()=>{select(sty);});
+      if(small)addItem('🗑','حذف این المان <'+small.tagName.toLowerCase()+'>',()=>removeEl(small));
+      if(block&&block!==small)
+        addItem('⛔','حذف کل بخش <'+block.tagName.toLowerCase()+'>',()=>removeEl(block));
+      addSep();
+    }
+  }
+
+  addItem(editing?'✅':'✏️',editing?'خروج از حالت ویرایش':'حالت ویرایش',()=>setEditing(!editing));
+  if(editing)addItem('➕','افزودن بخش جدید',addSectionFn);
+  addSep();
+  addItem('🖼','خروجی PNG',exportPNG,'×'+PPI);
+  addItem('📄','خروجی PDF',exportPDF,'×'+PPI);
+  addItem('⚙️','کیفیت خروجی (PPI)',changePPI,'×'+PPI);
+  addSep();
+  addItem('💾','ذخیرهٔ تغییرات در سورس',saveSource);
+  addItem('⬇','دانلود کپی سورس',dlCopy);
+  addItem('↺','بازنشانی به نسخهٔ اولیه',resetFn);
+  addSep();
+  const stt=document.createElement('div');
+  stt.className='cstatus'+(STATUS.indexOf('✗')===0?' bad':'');
+  stt.textContent=VER+' · '+STATUS;
+  ctx.appendChild(stt);
+
+  ctx.classList.add('open');
+  const w=ctx.offsetWidth,h=ctx.offsetHeight;
+  ctx.style.left=Math.max(8,Math.min(e.clientX,innerWidth-w-10))+'px';
+  ctx.style.top=Math.max(8,Math.min(e.clientY,innerHeight-h-10))+'px';
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.ctx'))hideCtx();},true);
+addEventListener('scroll',hideCtx,{passive:true});
+addEventListener('resize',hideCtx);
+
+function changePPI(){
+  const v=parseFloat(prompt('ضریب کیفیت خروجی (۰٫۵ تا ۶):',PPI));
+  if(!isNaN(v)){PPI=Math.min(6,Math.max(0.5,v));toast('کیفیت خروجی: ×'+PPI);}
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target, editing=document.body.classList.contains('editing');
+  if(editing&&t.closest('#sheet a'))e.preventDefault();
+  if(t.closest('#addSection')&&editing){addSectionFn();return;}
+  if(editing&&!t.closest('button')&&!t.closest('.insp')){
+    const s=t.closest(SEL);
+    if(s)select(s);
+    else if(!t.closest('#sheet'))deselect();
+  }
+});
+document.addEventListener('input',e=>{if(e.target.matches('#sheet [data-edit]'))saveSoon();});
+
+function resetFn(){
+  if(confirm('همهٔ ویرایش‌ها پاک و نسخهٔ اولیه بازگردانده شود؟')){try{localStorage.removeItem(KEY);}catch(e){}location.reload();}
+}
+
+const FONT_FILES=[
+  'fonts/Kalameh-SemiBold.woff2','fonts/Kalameh-Bold.woff2',
+  'fonts/IRANSansWeb_Light.woff2','fonts/IRANSansWeb.woff2',
+  'fonts/IRANSansWeb_Medium.woff2','fonts/IRANSansWeb_Bold.woff2',
+  'fonts/IRANSansWeb_FaNum.woff2','fonts/IRANSansWeb_Bold_FaNum.woff2'
+];
+function b64(buf){let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s);}
+async function collectFonts(){
+  try{await document.fonts.ready;}catch(e){}
+  const out=[];
+  for(const f of FONT_FILES){
+    try{
+      const r=await fetch(f,{cache:'force-cache'});
+      if(!r.ok)continue;
+      const buf=await r.arrayBuffer();
+      out.push({path:f,dataUrl:'data:font/woff2;base64,'+b64(buf)});
+    }catch(e){}
+  }
+  return out;
+}
+async function raster(){
+  setEditing(false);deselect();hideCtx();document.activeElement&&document.activeElement.blur();
+  await new Promise(r=>setTimeout(r,80));
+  let css='';$$('style').forEach(s=>css+=s.textContent+'\n');
+  css+="svg{--paper:#f7f4ee;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;}";
+  const fontMap=await collectFonts();
+  for(const f of fontMap)css=css.split("url('"+f.path+"')").join("url('"+f.dataUrl+"')");
+  css=css.replace(/url\('fonts\/[^']+'\)/g,"url('data:,')");
+  const W=sheet.offsetWidth,H=sheet.offsetHeight;
+  const clone=sheet.cloneNode(true);
+  clone.removeAttribute('id');
+  clone.querySelectorAll('.selected').forEach(el=>el.classList.remove('selected'));
+  clone.querySelectorAll('.edit-only').forEach(el=>el.remove());
+  clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  const x=new XMLSerializer().serializeToString(clone);
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:'+W+'px;box-sizing:border-box;background:#f7f4ee;color:#221d17;font-family:\'IRANSans\',\'Kalameh\',sans-serif;font-size:14.5px;line-height:2.05;direction:rtl"><style><![CDATA['+css+']]></style>'+x+'</div></foreignObject></svg>';
+  const img=new Image();
+  img.src=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+  try{await img.decode();}catch(e){URL.revokeObjectURL(img.src);throw new Error('رندر SVG ناموفق: '+(e.message||e));}
+  URL.revokeObjectURL(img.src);
+  return{img,W,H};
+}
+function dl(url,name){const a=document.createElement('a');a.href=url;a.download=name;a.click();}
+
+function exportPNG(){
+  toast('در حال رندر PNG با ×'+PPI+' …');
+  raster().then(({img,W,H})=>{
+    const c=document.createElement('canvas');
+    c.width=Math.round(W*PPI);c.height=Math.round(H*PPI);
+    const x=c.getContext('2d');
+    x.fillStyle='#f7f4ee';x.fillRect(0,0,c.width,c.height);
+    x.scale(PPI,PPI);x.drawImage(img,0,0,W,H);
+    c.toBlob(bl=>{dl(URL.createObjectURL(bl),'lesson-02-'+PPI+'x.png');toast('PNG دانلود شد 🖼');},'image/png');
+  }).catch(err=>showErr('PNG: '+(err.message||err)));
+}
+
+function buildPdf(pages){
+  const enc=new TextEncoder(),chunks=[];let off=0;const offsets=[];
+  const push=d=>{const b=typeof d==='string'?enc.encode(d):d;chunks.push(b);off+=b.length;};
+  const n=pages.length,pO=i=>3+i*3,cO=i=>4+i*3,iO=i=>5+i*3;
+  push('%PDF-1.4\n');
+  offsets[1]=off;push('1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n');
+  offsets[2]=off;push('2 0 obj<</Type/Pages/Kids['+pages.map((_,i)=>pO(i)+' 0 R').join('')+']/Count '+n+'>>endobj\n');
+  pages.forEach((p,i)=>{
+    const dH=(595.28*p.h/p.w).toFixed(2),dY=(841.89-595.28*p.h/p.w).toFixed(2);
+    offsets[pO(i)]=off;
+    push(pO(i)+' 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 595.28 841.89]/Resources<</XObject<</Im'+i+' '+iO(i)+' 0 R>>/ProcSet[/PDF/ImageC]>>/Contents '+cO(i)+' 0 R>>endobj\n');
+    const cs='q 595.28 0 0 '+dH+' 0 '+dY+' cm /Im'+i+' Do Q';
+    offsets[cO(i)]=off;
+    push(cO(i)+' 0 obj<</Length '+enc.encode(cs).length+'>>stream\n'+cs+'\nendstream endobj\n');
+    offsets[iO(i)]=off;
+    push(iO(i)+' 0 obj<</Subtype/Image/ColorSpace/DeviceRGB/BitsPerComponent 8/Width '+p.w+'/Height '+p.h+'/Filter/DCTDecode/Length '+p.data.length+'>>stream\n');
+    push(p.data);push('\nendstream endobj\n');
+  });
+  const xOff=off,total=3+3*n;
+  push('xref\n0 '+total+'\n0000000000 65535 f \n');
+  for(let i=1;i<total;i++)push(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
+  push('trailer<</Size '+total+'/Root 1 0 R>>\nstartxref\n'+xOff+'\n%%EOF');
+  return new Blob(chunks,{type:'application/pdf'});
+}
+function exportPDF(){
+  toast('در حال رندر PDF با ×'+PPI+' …');
+  raster().then(async({img,W,H})=>{
+    const pageCssH=W*297/210;
+    const top=sheet.getBoundingClientRect().top;
+    const bounds=$$('#sheet .sec-head,#sheet .piece,#sheet tr,#sheet header,#sheet .rule-double,#sheet footer,#sheet .note,#sheet .formula,#sheet .features,#sheet .interval-types,#sheet .inversion-grid,#sheet .key-point,#sheet .ex-item,#sheet .summary')
+      .map(el=>el.getBoundingClientRect().bottom-top).sort((a,b2)=>a-b2);
+    const pages=[];let y=0;
+    while(y<H-2){
+      let target=Math.min(y+pageCssH,H);
+      if(target<H){let best=null;for(const bd of bounds){if(bd>y+pageCssH*.6&&bd<=y+pageCssH)best=bd;}if(best)target=best;}
+      const h=target-y,dw=Math.round(1654*PPI/3),dh=Math.max(2,Math.round(dw*h/W));
+      const c=document.createElement('canvas');c.width=dw;c.height=dh;
+      const x=c.getContext('2d');x.fillStyle='#f7f4ee';x.fillRect(0,0,dw,dh);
+      x.drawImage(img,0,y,W,h,0,0,dw,dh);
+      const jb=await new Promise(res=>c.toBlob(bl=>bl.arrayBuffer().then(ab=>res(new Uint8Array(ab))),'image/jpeg',.92));
+      pages.push({w:dw,h:dh,data:jb});
+      y=target;
+    }
+    dl(URL.createObjectURL(buildPdf(pages)),'lesson-02.pdf');
+    toast('PDF دانلود شد 📄 ('+pages.length+' صفحه)');
+  }).catch(err=>showErr('PDF: '+(err.message||err)));
+}
+
+function buildSource(){
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  clone.querySelectorAll('.selected').forEach(el=>el.classList.remove('selected'));
+  clone.querySelectorAll('body').forEach(bd=>bd.classList.remove('editing'));
+  const i=clone.querySelector('#insp');if(i)i.setAttribute('hidden','');
+  const c=clone.querySelector('#ctx');if(c)c.classList.remove('open');
+  return '<!DOCTYPE html>\n'+clone.outerHTML;
+}
+function saveSource(){
+  setEditing(false);
+  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),'lesson-02.html');
+  toast('سورس با همهٔ تغییرات ذخیره شد 💾 — جایگزین lesson-02.html گیت‌هاب کن');
+}
+function dlCopy(){
+  setEditing(false);
+  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),'lesson-02-copy.html');
+  toast('نسخهٔ کپی دانلود شد ⬇');
+}
+
+STATUS='JS فعال ✓';
+}catch(err){showErr('بارگذاری: '+(err.message||err));}
+</script>
+</body>
+</html>
