@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>درس اول · مفاهیم اکتاو و سیستم‌های نام‌گذاری</title>
+<style>
+@font-face{font-family:'Kalameh';font-weight:600;font-display:swap;
+src:url('fonts/Kalameh-SemiBold.woff2') format('woff2'),
+url('fonts/Kalameh-SemiBold.woff') format('woff');}
+@font-face{font-family:'Kalameh';font-weight:700;font-display:swap;
+src:url('fonts/Kalameh-Bold.woff2') format('woff2'),
+url('fonts/Kalameh-Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:300;font-display:swap;
+src:url('fonts/IRANSansWeb_Light.woff2') format('woff2'),
+url('fonts/IRANSansWeb_Light.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:400;font-display:swap;
+src:url('fonts/IRANSansWeb.woff2') format('woff2'),
+url('fonts/IRANSansWeb.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:500;font-display:swap;
+src:url('fonts/IRANSansWeb_Medium.woff2') format('woff2'),
+url('fonts/IRANSansWeb_Medium.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:700;font-display:swap;
+src:url('fonts/IRANSansWeb_Bold.woff2') format('woff2'),
+url('fonts/IRANSansWeb_Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:400;font-display:swap;
+src:url('fonts/IRANSansWeb_FaNum.woff2') format('woff2'),
+src:url('fonts/IRANSansWeb_FaNum.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:700;font-display:swap;
+src:url('fonts/IRANSansWeb_Bold_FaNum.woff2') format('woff2'),
+url('fonts/IRANSansWeb_Bold_FaNum.woff') format('woff');}
+</style>
+<style>
+:root{
+--paper:#f7f4ee;
+--card:#fdfbf7;
+--well:#f0ebe0;
+--ink:#221d17;
+--ink-2:#544c40;
+--ink-3:#8b8272;
+--rule:#e4dccb;
+--rule-2:#d3c9b2;
+--accent:#b23a26;
+--accent-bg:rgba(178,58,38,.055);
+--f-disp:'Kalameh',sans-serif;
+--f-body:'IRANSans','Kalameh',sans-serif;
+--f-fa:'IRANSans FaNum','IRANSans',sans-serif;
+--measure:42rem;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;color-scheme:light}
+body{
+font-family:var(--f-body);
+background:var(--paper);
+color:var(--ink);
+font-size:14.5px;
+line-height:2.05;
+-webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent);color:var(--paper)}
+a{color:var(--accent)}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.fanum{font-family:var(--f-fa)}
+.page{max-width:var(--measure);margin:0 auto;padding:56px 28px 40px}
+.rule-double{height:7px;border-top:2.5px solid var(--ink);border-bottom:1px solid var(--ink);margin-bottom:26px}
+.rule-double.bottom{margin:34px 0 22px}
+.doc-kicker{
+font-size:.75rem;font-weight:500;color:var(--ink-3);
+display:flex;align-items:center;gap:10px;margin-bottom:18px;
+}
+.doc-kicker::after{content:'';flex:1;border-top:1px solid var(--rule)}
+h1{
+font-family:var(--f-disp);font-weight:700;
+font-size:clamp(1.6rem,5vw,2rem);
+line-height:1.55;margin-bottom:16px;
+}
+h1 .h1-dot{color:var(--accent)}
+.doc-lead{
+font-weight:300;font-size:1.06rem;line-height:2.15;
+color:var(--ink-2);max-width:36rem;margin-bottom:22px;
+}
+.doc-meta{
+display:flex;flex-wrap:wrap;gap:6px 0;
+font-size:.8rem;color:var(--ink-3);
+}
+.doc-meta span:not(:last-child)::after{content:'·';margin:0 10px;color:var(--rule-2)}
+.doc-meta b{font-family:var(--f-fa);font-weight:700;color:var(--ink-2)}
+.toc{margin:34px 0 0;border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px 26px 8px}
+.toc-title{font-size:.75rem;font-weight:700;color:var(--ink-3);margin-bottom:6px}
+.toc ol{list-style:none}
+.toc li{border-bottom:1px solid var(--rule)}
+.toc li:last-child{border-bottom:none}
+.toc a{
+display:flex;align-items:baseline;gap:12px;
+padding:9px 2px;text-decoration:none;color:var(--ink-2);
+font-size:.9rem;font-weight:400;transition:color .15s;
+}
+.toc a:hover{color:var(--accent)}
+.toc .n{font-family:var(--f-fa);font-size:.72rem;font-weight:700;color:var(--accent);flex:none;width:44px}
+.sec{margin-top:72px;scroll-margin-top:32px}
+.sec-label{font-size:.8rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.sec h2{
+font-family:var(--f-disp);font-weight:700;
+font-size:clamp(1.2rem,3.2vw,1.45rem);line-height:1.65;
+}
+.sec h2 .h2-sub{font-family:var(--f-body);font-weight:300;font-size:.6em;color:var(--ink-3)}
+.sec-head{border-bottom:1px solid var(--rule-2);padding-bottom:16px;margin-bottom:26px}
+.sec-head p{font-size:.92rem;color:var(--ink-3);margin-top:4px;font-weight:300}
+.prose p{margin-bottom:1.15rem;text-align:right}
+.prose p:last-child{margin-bottom:0}
+strong{font-weight:700;color:var(--ink)}
+em{font-style:normal;font-weight:500}
+.tk{
+direction:ltr;unicode-bidi:isolate;display:inline-block;
+font-weight:500;font-size:.9em;line-height:1.5;
+color:var(--ink-2);background:var(--well);
+border:1px solid var(--rule);border-radius:6px;
+padding:.02em .55em;vertical-align:baseline;
+}
+.letters{
+display:flex;direction:ltr;justify-content:center;gap:6px;
+margin:30px 0 10px;flex-wrap:wrap;
+}
+.lt{min-width:62px;text-align:center;padding:10px 4px 12px;border-bottom:2px solid var(--rule-2)}
+.lt b{display:block;font-family:var(--f-disp);font-weight:700;font-size:1.55rem;line-height:1.4;color:var(--ink)}
+.lt span{font-size:.7rem;color:var(--ink-3)}
+.letters-cap{text-align:center;font-size:.78rem;color:var(--ink-3);margin-bottom:26px}
+.letters-cap b{color:var(--accent);font-weight:700}
+.letters-cap .ltr{font-weight:500}
+.note{
+border-inline-start:3px solid var(--accent);
+background:var(--accent-bg);
+border-radius:0 12px 12px 0;
+padding:14px 20px;margin:24px 0;
+font-size:.93rem;line-height:2.1;color:var(--ink-2);
+}
+.note .tag{color:var(--accent);font-weight:700;font-size:.82rem}
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.9rem}
+caption{
+caption-side:top;text-align:right;font-size:.78rem;
+color:var(--ink-3);padding-bottom:8px;font-weight:500;
+}
+th{
+font-size:.72rem;font-weight:700;color:var(--ink-3);
+text-align:right;padding:8px 10px;border-bottom:1.5px solid var(--rule-2);
+}
+td{padding:11px 10px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2)}
+tr:last-child td{border-bottom:none}
+td.num{font-weight:700;font-size:1.05rem;color:var(--accent);width:70px;direction:ltr;text-align:right}
+td.name{direction:ltr;text-align:right;color:var(--ink);font-weight:500;width:120px}
+td .en{font-weight:500;font-size:.88em;color:var(--ink-2);direction:ltr;unicode-bidi:isolate;display:inline-block}
+.formula{
+direction:ltr;text-align:center;
+font-weight:500;font-size:1.04rem;line-height:2;
+background:var(--card);border:1px solid var(--rule);border-radius:12px;
+padding:20px 16px;margin:24px 0 8px;color:var(--ink);
+}
+.formula b{color:var(--accent);font-weight:700}
+.formula-cap{text-align:center;font-size:.8rem;color:var(--ink-3);margin-bottom:24px}
+.freq{display:flex;border:1px solid var(--rule);border-radius:12px;background:var(--card);margin:26px 0;overflow:hidden}
+.freq>div{flex:1;text-align:center;padding:16px 8px}
+.freq>div+div{border-inline-start:1px solid var(--rule)}
+.freq b{display:block;font-weight:700;font-size:1.3rem;direction:ltr;line-height:1.7}
+.freq span{display:block;font-weight:500;font-size:.82rem;color:var(--ink-2);direction:ltr}
+.freq i{display:block;font-style:normal;font-size:.72rem;color:var(--ink-3);margin-top:4px}
+.freq .ref b{color:var(--accent)}
+.freq .ref i{color:var(--accent);font-weight:700}
+@media(max-width:560px){.freq{flex-direction:column}.freq>div+div{border-inline-start:none;border-top:1px solid var(--rule)}}
+.piece{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:22px 26px;margin:22px 0}
+.piece h3{font-family:var(--f-disp);font-weight:700;font-size:1.08rem;line-height:1.9}
+.piece h3 .en-name{font-family:var(--f-body);font-weight:700;font-size:.95em;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.piece .artist{font-family:var(--f-body);font-size:.78rem;color:var(--ink-3);font-weight:300}
+.piece .artist .ltr{font-weight:400}
+.piece .oct-tag{
+display:inline-block;font-size:.72rem;font-weight:700;color:var(--accent);
+border:1px solid var(--accent);border-radius:99px;padding:1px 12px;
+margin-inline-start:10px;vertical-align:middle;
+}
+.seq{
+direction:ltr;text-align:center;
+font-weight:500;font-size:.95rem;letter-spacing:.05em;line-height:2;
+background:var(--well);border:1px solid var(--rule);border-radius:9px;
+padding:9px 14px;margin:14px 0;color:var(--ink-2);
+}
+.piece .an{font-size:.9rem;color:var(--ink-2);line-height:2.15}
+.piece .an b{color:var(--ink)}
+.piece .an-label{color:var(--accent);font-weight:700;font-size:.82rem}
+.qa{margin:26px 0}
+.qa .q,.qa .a{margin-bottom:10px}
+.qa-mark{
+display:inline-block;font-size:.7rem;font-weight:700;
+border-radius:99px;padding:2px 13px;margin-inline-end:10px;vertical-align:2px;
+}
+.q .qa-mark{color:var(--accent);border:1px solid var(--accent);background:transparent}
+.a .qa-mark{color:var(--ink-3);border:1px solid var(--rule-2);background:var(--card)}
+.qa .q{font-weight:700;line-height:2.1}
+.qa .a{color:var(--ink-2);font-size:.93rem;line-height:2.15;padding-inline-start:4px}
+.ex-item{display:flex;gap:16px;margin:26px 0}
+.ex-num{
+flex:none;width:40px;height:40px;border-radius:50%;
+border:1.5px solid var(--accent);color:var(--accent);
+display:grid;place-items:center;
+font-family:var(--f-fa);font-weight:700;font-size:1.05rem;
+margin-top:6px;
+}
+.ex-body{flex:1;min-width:0}
+.ex-body h4{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:2px}
+.ex-body>p{font-size:.93rem;color:var(--ink-2)}
+.ex-ans{
+margin-top:12px;border-top:1px dashed var(--rule-2);padding-top:10px;
+font-size:.88rem;color:var(--ink-2);line-height:2.1;
+}
+.ex-ans b.ans-label{color:var(--accent);font-weight:700;font-size:.8rem}
+footer{text-align:center}
+footer .fl{font-size:.8rem;color:var(--ink-3);line-height:2.2}
+footer .fl b{color:var(--ink-2)}
+footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bottom:6px}
+@media print{
+@page{margin:17mm}
+body{background:#fff;font-size:11.5pt}
+.page{max-width:100%;padding:0}
+.sec{margin-top:2.4em;break-inside:auto}
+.note,.piece,.ex-item,.freq,table{break-inside:avoid}
+a{color:inherit;text-decoration:none}
+}
+@media(max-width:560px){
+.page{padding:40px 20px}
+body{font-size:15.5px}
+.ex-item{gap:12px}
+}
+</style>
+<style>
+/* ═══════════ موتور ویرایشگر (v8) ═══════════ */
+body:not(.editing) .edit-only{display:none!important}
+body.editing [data-edit]{cursor:text;border-radius:4px}
+body.editing [data-edit]:hover{outline:1.5px dashed var(--accent);outline-offset:4px}
+body.editing [data-edit]:focus{outline:1.5px solid var(--accent);outline-offset:4px;background:var(--accent-bg)}
+.selected{outline:2px solid var(--accent)!important;outline-offset:4px;border-radius:4px}
+body.editing #sheet *{cursor:pointer}
+body.editing #sheet [data-edit]{cursor:text}
+.add-phase{display:block;width:100%;margin-top:44px;padding:14px;border-radius:14px;border:1.5px dashed var(--rule-2);background:transparent;color:var(--ink-3);font-size:.9rem;font-weight:700;transition:.2s}
+.add-phase:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+/* منوی کلیک‌راست */
+.ctx{position:fixed;z-index:70;min-width:250px;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none}
+.ctx.open{display:block}
+.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s}
+.ctx button:hover{background:var(--accent-bg);color:var(--accent)}
+.ctx button .ci{width:20px;text-align:center;flex:none}
+.ctx button .ck{margin-inline-start:auto;font-size:.65rem;color:var(--ink-3)}
+.ctx .csep{height:1px;background:var(--rule);margin:5px 8px}
+.ctx .ctitle{font-size:.62rem;color:var(--ink-3);padding:4px 12px 2px;font-weight:700}
+.ctx .cstatus{font-size:.62rem;color:var(--ink-3);padding:6px 12px 4px;text-align:center;direction:ltr}
+.ctx .cstatus.bad{color:var(--accent)}
+/* پنل استایل */
+.insp{position:fixed;bottom:14px;inset-inline:0;z-index:45;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
+.insp[hidden]{display:none}
+.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px}
+.insp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.insp-head b{font-size:.78rem;color:var(--accent)}
+#inspTag{font-size:.7rem;color:var(--ink-3);direction:ltr}
+.insp-head .sp{flex:1}
+.insp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px 12px;align-items:end}
+.insp-grid label{display:flex;flex-direction:column;gap:3px;font-size:.68rem;color:var(--ink-3);font-weight:500}
+.insp-grid input[type=range]{width:100%;accent-color:var(--accent)}
+.insp-grid select,.insp-grid input[type=color]{width:100%;border:1px solid var(--rule-2);border-radius:8px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:.75rem;padding:4px 6px}
+.insp-grid input[type=color]{padding:2px;height:30px}
+.swatches{display:flex;gap:6px;align-items:center}
+.sw{width:20px;height:20px;border-radius:50%;border:1px solid var(--rule-2)}
+.sw:hover{transform:scale(1.15)}
+.ib{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule-2);background:transparent;color:var(--ink-3);font-size:.8rem;line-height:1;transition:.15s}
+.ib:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+/* توست */
+.toast{position:fixed;bottom:24px;inset-inline:0;display:flex;justify-content:center;z-index:50;pointer-events:none}
+.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center}
+.toast span.show{opacity:1;transform:none}
+@media print{.edit-only,.toast,.insp,.ctx{display:none!important}}
+</style>
+</head>
+<body>
+<div class="page" id="sheet">
+<div class="rule-double"></div>
+<header>
+<p class="doc-kicker" data-edit>مبانی نظری تئوری موسیقی — درس اول</p>
+<h1 data-edit>نت‌ها، اکتاو، و سیستم نام‌گذاری علمی<span class="h1-dot">.</span></h1>
+</header>
+
+<nav class="toc" aria-label="فهرست">
+<p class="toc-title" data-edit>فهرست بخش‌ها</p>
+<ol>
+<li><a href="#s1" data-edit><span class="n">بخش ۱</span> الفبای موسیقی و ساختار کروماتیک</a></li>
+<li><a href="#s2" data-edit><span class="n">بخش ۲</span> مفهوم اکتاو — از دید فیزیک صوت</a></li>
+<li><a href="#s3" data-edit><span class="n">بخش ۳</span> سیستم نام‌گذاری علمی (SPN)</a></li>
+<li><a href="#s4" data-edit><span class="n">بخش ۴</span> پروتکل MIDI و کاربرد آن در DAW</a></li>
+<li><a href="#s5" data-edit><span class="n">بخش ۵</span> پدیده آنهارمونیک</a></li>
+<li><a href="#s6" data-edit><span class="n">بخش ۶</span> مثال‌های تحلیلی در بافت موسیقی</a></li>
+<li><a href="#s7" data-edit><span class="n">بخش ۷</span> پرسش و پاسخ — رفع ابهامات رایج</a></li>
+</ol>
+</nav>
+
+<section class="sec" id="s1">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش نخست</p>
+<h2 data-edit>الفبای موسیقی و ساختار کروماتیک</h2>
+</div>
+<div class="prose">
+<p data-edit>در موسیقی غربی، هفت تنِ اصلی با حروف الفبای انگلیسی نام‌گذاری می‌شوند؛ اما در عمل، با <strong>دوازده صدا</strong> سروکار داریم:</p>
+</div>
+<div class="letters" aria-label="هفت تن اصلی">
+<div class="lt" data-edit><b>C</b><span>دو</span></div>
+<div class="lt" data-edit><b>D</b><span>ر</span></div>
+<div class="lt" data-edit><b>E</b><span>می</span></div>
+<div class="lt" data-edit><b>F</b><span>فا</span></div>
+<div class="lt" data-edit><b>G</b><span>سل</span></div>
+<div class="lt" data-edit><b>A</b><span>لا</span></div>
+<div class="lt" data-edit><b>B</b><span>سی</span></div>
+</div>
+<p class="letters-cap" data-edit>فاصله <b>نیم‌پرده</b> فقط در دو جا: <span class="ltr">E–F</span> و <span class="ltr">B–C</span></p>
+<div class="prose">
+<p data-edit>فاصله میان این تن‌ها بر اساس ساختار <strong>گام دیاتونیک</strong> است و همیشه یکسان نیست:</p>
+<p data-edit>— فاصله میان <span class="tk">E–F</span> و همچنین <span class="tk">B–C</span> دقیقاً <strong>نیم‌پرده</strong> <span class="ltr">(Half Step)</span> است.</p>
+<p data-edit>— فاصله میان سایر تن‌های اصلی، <strong>یک پرده</strong> <span class="ltr">(Whole Step)</span> است؛ یعنی یک تنِ میانی بین آن‌ها وجود دارد که همان کلیدهای سیاهِ روی پیانو آن را پر می‌کند.</p>
+<p data-edit>تن‌های میانی با این علامت‌ها نام‌گذاری می‌شوند: <strong>دیز</strong> <span class="tk">♯</span> به معنای «نیم‌پرده بالاتر» و <strong>بمل</strong> <span class="tk">♭</span> به معنای «نیم‌پرده پایین‌تر». در نتیجه در مجموع <strong>۱۲ تن</strong> داریم که به هر دورِ کاملِ آن، <strong>گام کروماتیک</strong> می‌گویند.</p>
+</div>
+</section>
+
+<section class="sec" id="s2">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش دوم</p>
+<h2 data-edit>مفهوم اکتاو <span class="h2-sub">(Octave — از دید فیزیک صوت)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>چرا تن‌ها پس از رسیدن به <span class="tk">B</span> دوباره از <span class="tk">C</span> شروع می‌شوند؟ به فاصله‌ای که در آن فرکانسِ یک تن دقیقاً <strong>دو یا نصف</strong> شود، <strong>اکتاو</strong> می‌گویند.</p>
+<p data-edit>از نظر فیزیکی و ریاضی، وقتی از تن C به C بعدی حرکت می‌کنیم، تعداد ارتعاشات صدا در ثانیه <span class="ltr">(Hz)</span> دقیقاً <strong>دو برابر</strong> می‌شود. این پدیده باعث می‌شود مغز انسان آن دو صدا را <em>متفاوت در ارتفاع، اما یکسان در کیفیت</em> درک کند.</p>
+</div>
+<div class="freq" role="table" aria-label="مثال فیزیکی اکتاو">
+<div data-edit><b>A3</b><span>220 Hz</span><i>یک اکتاو پایین‌تر</i></div>
+<div class="ref" data-edit><b>A4</b><span>440 Hz</span><i>استاندارد کوک جهانی</i></div>
+<div data-edit><b>A5</b><span>880 Hz</span><i>یک اکتاو بالاتر</i></div>
+</div>
+</section>
+
+<section class="sec" id="s3">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش سوم</p>
+<h2 data-edit>سیستم نام‌گذاری علمی <span class="h2-sub">(Scientific Pitch Notation — SPN)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>برای جلوگیری از سردرگمی در مورد این‌که «کدام C؟»، از سیستم استاندارد جهانی <strong>SPN</strong> استفاده می‌شود. در این سیستم هر تن با <strong>یک حرف و یک عدد</strong> مشخص می‌گردد؛ هر اکتاو با <span class="tk">C</span> آغاز و با <span class="tk">B</span> تمام می‌شود.</p>
+</div>
+<table>
+<caption data-edit>محدوده‌های اکتاو و کاربرد هرکدام</caption>
+<thead><tr><th data-edit>اکتاو</th><th data-edit>محدوده</th><th data-edit>کاربرد</th></tr></thead>
+<tbody>
+<tr><td class="num" data-edit>0–2</td><td class="name" data-edit>Sub-Bass / Bass</td><td data-edit>مناسب بیسِ سینتی‌سایزرها، زیرهای بیس و کیبوردِ بیس</td></tr>
+<tr><td class="num" data-edit>3</td><td class="name" data-edit>Tenor / Alto</td><td data-edit>مناسب گیتار الکتریک در پوزیسیون‌های پایینِ دسته، و دستِ چپ پیانو</td></tr>
+<tr><td class="num" data-edit>4</td><td class="name" data-edit>Middle</td><td data-edit>شامل <strong>Middle C</strong> (دوی میانی) — در مرکز کیبورد پیانو؛ نقطه مرجعِ استاندارد در موسیقی</td></tr>
+<tr><td class="num" data-edit>5–8</td><td class="name" data-edit>Treble / Soprano</td><td data-edit>مناسب ملودی‌های اصلی، لیدِ سینت‌ها و ویولن</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="sec" id="s4">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش چهارم</p>
+<h2 data-edit>پروتکل MIDI و کاربرد آن در محیط DAW</h2>
+</div>
+<div class="prose">
+<p data-edit>در محیط‌های دیجیتال، کامپیوترها حروف و اعداد SPN را به‌صورت مستقیم پردازش نمی‌کنند؛ بلکه از یک سیستم عددیِ پیوسته از <strong>۰ تا ۲۷</strong> استفاده می‌شود.</p>
+</div>
+<table>
+<caption data-edit>نقاط عطف MIDI</caption>
+<thead><tr><th data-edit>عدد</th><th data-edit>تن</th><th data-edit>توضیح</th></tr></thead>
+<tbody>
+<tr><td class="num" data-edit>0</td><td class="name" data-edit>C-1</td><td data-edit>پایین‌ترین تنِ قابل ثبت در پروتکل</td></tr>
+<tr><td class="num" data-edit>60</td><td class="name" data-edit>C4</td><td data-edit>همان Middle C — <strong>مهم‌ترین عدد</strong>، نقطه مرجع</td></tr>
+<tr><td class="num" data-edit>69</td><td class="name" data-edit>A4</td><td data-edit>فرکانس ۴۴۰ هرتز — مرجع کوک جهانی</td></tr>
+<tr><td class="num" data-edit>127</td><td class="name" data-edit>G8</td><td data-edit>بالاترین تنِ قابل ثبت در پروتکل</td></tr>
+</tbody>
+</table>
+<p class="prose" style="font-size:.93rem;color:var(--ink-2)" data-edit>فرمول ریاضی تبدیل نام تن به عدد MIDI:</p>
+<div class="formula" data-edit>MIDI Number = (<b>Octave Number</b> + 1) × 12 + <b>Semitone Offset</b></div>
+<p class="formula-cap" data-edit>در این فرمول، Semitone Offset برای C برابر ۰، برای <span class="ltr">C♯</span> برابر ۱، برای D برابر ۲ و الی آخر است.</p>
+</section>
+
+<section class="sec" id="s5">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش پنجم</p>
+<h2 data-edit>پدیده آنهارمونیک <span class="h2-sub">(Enharmonic Equivalence)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>چرا یک تن گاهی دو نام دارد؟ (مثلاً <span class="tk">C♯</span> و <span class="tk">D♭</span>)</p>
+<p data-edit>این پدیده <strong>آنهارمونیک</strong> نامیده می‌شود. این دو تن از نظر فرکانس، جایگاه روی کیبورد و عدد MIDI <strong>کاملاً یکسان</strong> هستند؛ اما در تئوری موسیقی، انتخاب نامِ صحیح بر اساس <strong>بافت هارمونیک</strong> و نقش آن تن در گامِ قطعه تعیین می‌شود.</p>
+</div>
+<div class="note" data-edit>
+<span class="tag">نکته مهم در محیط DAW — </span>
+هنگام نت‌نویسی MIDI معمولاً به‌صورت پیش‌فرض از نام‌های Sharp (♯) استفاده می‌شود، مگر این‌که گام خاصی (Scale) را در تنظیمات Piano Roll نرم‌افزار خود قفل کرده باشید.
+</div>
+</section>
+
+<section class="sec" id="s6">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش ششم</p>
+<h2 data-edit>مثال‌های تحلیلی در بافت موسیقی</h2>
+<p data-edit>برای درک بهتر جایگاه تن‌ها در فضای فرکانسی، دو قطعه معروف را در اکتاوهای متفاوت بررسی می‌کنیم:</p>
+</div>
+<article class="piece">
+<h3 data-edit>ریف اصلی قطعه <span class="en-name">Seven Nation Army</span> <span class="oct-tag fanum">اکتاو ۲</span><br><span class="artist">از <span class="ltr">The White Stripes</span></span></h3>
+<p style="font-size:.88rem;color:var(--ink-2);margin-top:6px" data-edit>این ریف به‌طور کامل در <strong>اکتاو ۲</strong> نوشته شده — محدوده بیس و باریتونِ گیتار.</p>
+<div class="seq" data-edit>E2 · G2 · E2 · E2 · B2 · A2 · G2</div>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>استفاده از اکتاوِ پایین (۲)، فضای خالیِ خاصی در اکتاوهای بالاتر (مثل ۳ و ۴) باقی می‌گذارد و به ریف <b>وزن و سنگینی</b> قابل‌دست‌یابی می‌دهد. این یک مثال عالی برای درک اهمیتِ انتخاب اکتاو صحیح در تنظیم موسیقی است.</p>
+</article>
+<article class="piece">
+<h3 data-edit>ریف اصلی قطعه <span class="en-name">Smoke on the Water</span> <span class="oct-tag fanum">اکتاو ۳ و </span><br><span class="artist">از <span class="ltr">Deep Purple</span></span></h3>
+<p style="font-size:.88rem;color:var(--ink-2);margin-top:6px" data-edit>این قطعه در محدوده <strong>اکتاوهای ۳ و </strong> قرار دارد.</p>
+<div class="seq" data-edit>A3 · C4 · D4 · A3 · C4 · E♭4 · C4</div>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>از <span class="tk">A3</span> شروع و تا <span class="tk">E♭4</span> اوج می‌گیرد — یعنی فضای فرکانسی میانی <span class="ltr">(Mid-Range)</span>. این محدوده برای یک ریف گیتار الکتریکِ کلاسیک بسیار ایده‌آل است؛ چرا که نه آن‌قدر بم است که در میکس گم شود، و نه آن‌قدر زیر که گوش را آزار دهد.</p>
+</article>
+</section>
+
+<section class="sec" id="s7">
+<div class="sec-head">
+<p class="sec-label" data-edit>بخش هفتم</p>
+<h2 data-edit>پرسش و پاسخ <span class="h2-sub">(رفع ابهامات رایج)</span></h2>
+</div>
+<div class="qa">
+<p class="q" data-edit><span class="qa-mark">پرسش</span> چرا بین E و F کلید سیاه وجود ندارد؟</p>
+<p class="a" data-edit><span class="qa-mark">پاسخ</span> بر اساس الگوی فواصل گام ماژور — <strong>تمام، تمام، نیم، تمام، تمام، تمام، نیم</strong> — که یک قرارداد تاریخی و ریاضی در موسیقی غربی است و ریشه در گام دیاتونیک دارد. بنابراین فاصله بین تن سوم و چهارم (E و F) و همچنین هفتم و هشتم (B و C) ذاتاً نیم‌پرده است و به تنِ میانی نیاز ندارد.</p>
+</div>
+<div class="qa">
+<p class="q" data-edit><span class="qa-mark">پرسش</span> آیا استاندارد اکتاو در تمام نرم‌افزارهای DAW یکسان است؟</p>
+<p class="a" data-edit><span class="qa-mark">پاسخ</span> خیر. در حالی که استاندارد علمی (SPN) تن <span class="tk">C4</span> را به‌عنوان Middle C با عدد <span class="tk">MIDI 60</span> می‌شناسد، برخی شرکت‌ها مانند Yamaha در سینتی‌سایزرهای خود و گاهی نرم‌افزار FL Studio، همان تن را با عنوان <span class="tk">C3</span> نمایش می‌دهند. عدد MIDI همواره ۶۰ است، اما نام بصری آن در Piano Roll ممکن است متفاوت باشد؛ پس همواره <strong>عدد MIDI را ملاکِ عمل قرار دهید</strong>.</p>
+</div>
+<div class="qa">
+<p class="q" data-edit><span class="qa-mark">پرسش</span> چرا در MIDI تن C-1 وجود دارد؟ آیا صدای آن قابل شنیدن است؟</p>
+<p class="a" data-edit><span class="qa-mark">پاسخ</span> چون اعداد MIDI از صفر شروع می‌شوند و هر اکتاو ۱۲ تن دارد، اکتاو صفر (C0 تا B0) اعداد 12 تا 23 را اشغال می‌کند؛ در نتیجه اعداد 0 تا 11 به اکتاو منفی (C-1 تا B-1) تعلق می‌گیرند. فرکانس C-1 حدود ۸ هرتز است — پایین‌تر از محدوده شنوایی انسان (از ۲۰ هرتز) — و بیشتر به‌صورت ارتعاش فیزیکی Sub-bass حس می‌شود تا یک تن موسیقی.</p>
+</div>
+</section>
+
+<section class="sec" id="s8">
+<div class="sec-head">
+<p class="sec-label" data-edit>پیوست</p>
+<h2 data-edit>تمرینات</h2>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۱</div>
+<div class="ex-body">
+<h4 data-edit>تحلیل MIDI</h4>
+<p data-edit>در Piano Roll نرم‌افزار خود یک تن ایجاد کنید و عدد MIDI آن را به <strong>۴۸</strong> تغییر دهید. نام این تن چیست و در کدام اکتاو قرار دارد؟</p>
+</div>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۲</div>
+<div class="ex-body">
+<h4 data-edit>آنالیز فرکانسی</h4>
+<p data-edit>یک آنالایزر طیفی <span class="ltr">(Spectrum Analyzer</span> را روی کانال مستر قرار دهید و تنی در محدوده <span class="tk">A3</span> پخش کنید. آیا یک پیک فرکانسی در حدود <strong>220 هرتز</strong> مشاهده می‌کنید؟</p>
+</div>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۳</div>
+<div class="ex-body">
+<h4 data-edit>پیدا کردن محدوده ریف گیتار</h4>
+<p data-edit>آهنگ <span class="tk">Smells Like Teen Spirit</span> از <span class="ltr">Nirvana</span> را بررسی کنید؛ ریف گیتار عمدتاً در کدام اکتاوها نوشته شده است؟</p>
+</div>
+</div>
+</section>
+
+<button type="button" class="add-phase edit-only" id="addSection">+ افزودن بخش جدید</button>
+
+<div class="rule-double bottom"></div>
+<footer>
+<span class="note-glyph">♪</span>
+</footer>
+</div>
+
+<div class="ctx" id="ctx"></div>
+
+<div class="insp" id="insp" hidden>
+  <div class="insp-card">
+    <div class="insp-head">
+      <b>استایل المان</b><span id="inspTag"></span><span class="sp"></span>
+      <button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button>
+      <button type="button" class="ib" id="inspClose" title="بستن">×</button>
+    </div>
+    <div class="insp-grid">
+      <label>سایز قلم <span class="ltr" id="vSize"></span><input type="range" id="inSize" min="10" max="56" step="1"></label>
+      <label>فاصلهٔ خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label>
+      <label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label>
+      <label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label>
+      <label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label>
+      <label>رنگ<div class="swatches">
+        <button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button>
+        <button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button>
+        <button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button>
+        <button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button>
+        <input type="color" id="inColor" value="#221d17">
+      </div></label>
+    </div>
+  </div>
+</div>
+
+<div class="toast"><span id="toastMsg"></span></div>
+
+<script>
+'use strict';
+let STATUS='در حال بررسی…';
+function showErr(m){
+  STATUS='✗ '+m;
+  var t=document.getElementById('toastMsg');
+  if(t){t.textContent='⚠️ '+m;t.classList.add('show');}
+  if(window.console)console.error(m);
+}
+window.addEventListener('error',function(e){showErr(e.message||'خطای جاوااسکریپت');});
+
+try{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const KEY='lesson-01-v1';
+const VER='v8';
+let sheet=$('#sheet');
+let selEl=null;
+let PPI=3;
+const insp=$('#insp'), ctx=$('#ctx');
+
+/* ══════════ ذخیره / بازیابی ══════════ */
+let st;
+function save(quiet){try{localStorage.setItem(KEY,sheet.innerHTML);}catch(e){} if(!quiet)toast('ذخیره شد ✓');}
+function saveSoon(){clearTimeout(st);st=setTimeout(()=>save(true),500);}
+function toast(msg){const el=$('#toastMsg');el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200);}
+try{
+  const saved=localStorage.getItem(KEY);
+  if(saved&&saved.indexOf('<section')>-1&&saved.length>800)sheet.innerHTML=saved;
+}catch(e){}
+sheet=$('#sheet');
+
+/* ══════════ حالت ویرایش ══════════ */
+function setEditing(on){
+  document.body.classList.toggle('editing',on);
+  $$('#sheet [data-edit]').forEach(el=>{
+    if(on){try{el.contentEditable='plaintext-only';}catch(e){el.contentEditable='true';}}
+    else el.contentEditable='false';
+  });
+  if(!on)deselect();
+}
+setEditing(false);
+
+/* ══════════ قالب بخش جدید ══════════ */
+function sectionHTML(){
+  return '<section class="sec"><div class="sec-head"><p class="sec-label" data-edit>بخش جدید</p><h2 data-edit>عنوان بخش…</h2></div><div class="prose"><p data-edit>متن بخش…</p></div></section>';
+}
+function syncEditable(root){
+  if(!document.body.classList.contains('editing'))return;
+  root.querySelectorAll('[data-edit]').forEach(el=>{try{el.contentEditable='plaintext-only';}catch(e){el.contentEditable='true';}});
+}
+function addSectionFn(){
+  const btn=$('#addSection');
+  btn.insertAdjacentHTML('beforebegin',sectionHTML());
+  syncEditable(btn.previousElementSibling);save(false);
+}
+
+/* ══════════ پنل استایل ══════════ */
+const SEL='#sheet h1,#sheet h2,#sheet h3,#sheet h4,#sheet p,#sheet li,#sheet a,#sheet span,#sheet b,#sheet td,#sheet th,#sheet caption,#sheet .formula,#sheet .freq>div,#sheet .lt';
+const BLOCK_SEL='#sheet .sec,#sheet header,#sheet footer,#sheet nav.toc,#sheet .rule-double,#sheet .sec-head,#sheet article.piece,#sheet .qa,#sheet .ex-item,#sheet table,#sheet .freq,#sheet .letters,#sheet .note,#sheet .formula';
+const FAMS={body:"'IRANSans','Kalameh',sans-serif",disp:"'Kalameh',sans-serif",fa:"'IRANSans FaNum','IRANSans',sans-serif"};
+function rgbHex(c){const m=c.match(/\d+/g);return m?'#'+m.slice(0,3).map(x=>(+x).toString(16).padStart(2,'0')).join(''):'#221d17';}
+function select(el){
+  if(selEl)selEl.classList.remove('selected');
+  selEl=el;
+  if(!el){insp.hidden=true;return;}
+  el.classList.add('selected');insp.hidden=false;
+  $('#inspTag').textContent='<'+el.tagName.toLowerCase()+'>';
+  const cs=getComputedStyle(el);
+  $('#inSize').value=parseFloat(cs.fontSize);$('#vSize').textContent=Math.round(parseFloat(cs.fontSize))+'px';
+  $('#inLh').value=Math.min(2.8,Math.max(1.4,parseFloat(cs.lineHeight)/parseFloat(cs.fontSize)||2)).toFixed(2);
+  const w=String(Math.round(+cs.fontWeight));
+  $('#inWeight').value=['300','400','500','600','700'].includes(w)?w:'400';
+  $('#inFamily').value=cs.fontFamily.indexOf('Kalameh')>-1?'disp':cs.fontFamily.indexOf('FaNum')>-1?'fa':'body';
+  $('#inAlign').value=cs.textAlign==='center'?'center':cs.textAlign==='left'?'left':'right';
+  $('#inColor').value=rgbHex(cs.color);
+}
+function deselect(){select(null);}
+$('#inspClose').addEventListener('click',deselect);
+$('#inspReset').addEventListener('click',()=>{if(selEl){selEl.removeAttribute('style');select(selEl);saveSoon();}});
+function applyStyle(fn){if(!selEl)return;fn(selEl.style);saveSoon();}
+$('#inSize').addEventListener('input',e=>{$('#vSize').textContent=e.target.value+'px';applyStyle(s=>s.fontSize=e.target.value+'px');});
+$('#inLh').addEventListener('input',e=>applyStyle(s=>s.lineHeight=e.target.value));
+$('#inWeight').addEventListener('change',e=>applyStyle(s=>s.fontWeight=e.target.value));
+$('#inFamily').addEventListener('change',e=>applyStyle(s=>s.fontFamily=FAMS[e.target.value]));
+$('#inAlign').addEventListener('change',e=>applyStyle(s=>s.textAlign=e.target.value));
+$('#inColor').addEventListener('input',e=>applyStyle(s=>s.color=e.target.value));
+$$('.sw').forEach(b=>b.addEventListener('click',()=>{applyStyle(s=>s.color=b.dataset.c);$('#inColor').value=b.dataset.c;}));
+addEventListener('keydown',e=>{if(e.key==='Escape'){deselect();hideCtx();}});
+
+/* ══════════ حذف المان ══════════ */
+function removeEl(el){
+  const big=el.matches(BLOCK_SEL);
+  if(big&&!confirm('کل بخش <'+el.tagName.toLowerCase()+'> حذف شود؟'))return;
+  if(selEl&&el.contains(selEl))deselect();
+  el.remove();
+  save(false);
+  toast(big?'بخش کامل حذف شد':'المان حذف شد');
+}
+
+/* ══════════ منوی کلیک‌راست ══════════ */
+function hideCtx(){ctx.classList.remove('open');}
+function addItem(icon,label,fn,extra){
+  const b=document.createElement('button');
+  b.innerHTML='<span class="ci">'+icon+'</span><span>'+label+'</span>'+(extra?'<span class="ck">'+extra+'</span>':'');
+  b.addEventListener('click',()=>{hideCtx();fn();});
+  ctx.appendChild(b);
+}
+function addSep(){const d=document.createElement('div');d.className='csep';ctx.appendChild(d);}
+function addTitle(t){const d=document.createElement('div');d.className='ctitle';d.textContent=t;ctx.appendChild(d);}
+
+document.addEventListener('contextmenu',e=>{
+  if(e.target.closest('.insp'))return;
+  e.preventDefault();
+  const t=e.target, editing=document.body.classList.contains('editing');
+  ctx.innerHTML='';
+
+  if(editing&&t.closest('#sheet')){
+    const small=t.closest(SEL);
+    const block=t.closest(BLOCK_SEL);
+    const edt=t.closest('[data-edit]');
+    if(small||block){
+      addTitle('المان زیر نشانگر');
+      if(edt)addItem('✍️','ویرایش متن این بخش',()=>{setEditing(true);edt.focus();});
+      const sty=small||block;
+      if(sty)addItem('🎨','استایل این المان <'+sty.tagName.toLowerCase()+'>',()=>{select(sty);});
+      if(small)addItem('🗑','حذف این المان <'+small.tagName.toLowerCase()+'>',()=>removeEl(small));
+      if(block&&block!==small)
+        addItem('⛔','حذف کل بخش <'+block.tagName.toLowerCase()+'>',()=>removeEl(block));
+      addSep();
+    }
+  }
+
+  addItem(editing?'✅':'✏️',editing?'خروج از حالت ویرایش':'حالت ویرایش',()=>setEditing(!editing));
+  if(editing)addItem('➕','افزودن بخش جدید',addSectionFn);
+  addSep();
+  addItem('🖼','خروجی PNG',exportPNG,'×'+PPI);
+  addItem('📄','خروجی PDF',exportPDF,'×'+PPI);
+  addItem('⚙️','کیفیت خروجی (PPI)',changePPI,'×'+PPI);
+  addSep();
+  addItem('💾','ذخیرهٔ تغییرات در سورس',saveSource);
+  addItem('⬇','دانلود کپی سورس',dlCopy);
+  addItem('↺','بازنشانی به نسخهٔ اولیه',resetFn);
+  addSep();
+  const stt=document.createElement('div');
+  stt.className='cstatus'+(STATUS.indexOf('✗')===0?' bad':'');
+  stt.textContent=VER+' · '+STATUS;
+  ctx.appendChild(stt);
+
+  ctx.classList.add('open');
+  const w=ctx.offsetWidth,h=ctx.offsetHeight;
+  ctx.style.left=Math.max(8,Math.min(e.clientX,innerWidth-w-10))+'px';
+  ctx.style.top=Math.max(8,Math.min(e.clientY,innerHeight-h-10))+'px';
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.ctx'))hideCtx();},true);
+addEventListener('scroll',hideCtx,{passive:true});
+addEventListener('resize',hideCtx);
+
+function changePPI(){
+  const v=parseFloat(prompt('ضریب کیفیت خروجی (۰٫۵ تا ۶):',PPI));
+  if(!isNaN(v)){PPI=Math.min(6,Math.max(0.5,v));toast('کیفیت خروجی: ×'+PPI);}
+}
+
+/* ══════════ رویدادها ══════════ */
+document.addEventListener('click',e=>{
+  const t=e.target, editing=document.body.classList.contains('editing');
+  if(editing&&t.closest('#sheet a'))e.preventDefault();
+  if(t.closest('#addSection')&&editing){addSectionFn();return;}
+  if(editing&&!t.closest('button')&&!t.closest('.insp')){
+    const s=t.closest(SEL);
+    if(s)select(s);
+    else if(!t.closest('#sheet'))deselect();
+  }
+});
+document.addEventListener('input',e=>{if(e.target.matches('#sheet [data-edit]'))saveSoon();});
+
+function resetFn(){
+  if(confirm('همهٔ ویرایش‌ها پاک و نسخهٔ اولیه بازگردانده شود؟')){try{localStorage.removeItem(KEY);}catch(e){}location.reload();}
+}
+
+/* ══════════ موتور اکسپورت ══════════ */
+const FONT_FILES=[
+  'fonts/Kalameh-SemiBold.woff2','fonts/Kalameh-Bold.woff2',
+  'fonts/IRANSansWeb_Light.woff2','fonts/IRANSansWeb.woff2',
+  'fonts/IRANSansWeb_Medium.woff2','fonts/IRANSansWeb_Bold.woff2',
+  'fonts/IRANSansWeb_FaNum.woff2','fonts/IRANSansWeb_Bold_FaNum.woff2'
+];
+function b64(buf){let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s);}
+async function collectFonts(){
+  try{await document.fonts.ready;}catch(e){}
+  const out=[];
+  for(const f of FONT_FILES){
+    try{
+      const r=await fetch(f,{cache:'force-cache'});
+      if(!r.ok)continue;
+      const buf=await r.arrayBuffer();
+      out.push({path:f,dataUrl:'data:font/woff2;base64,'+b64(buf)});
+    }catch(e){}
+  }
+  return out;
+}
+async function raster(){
+  setEditing(false);deselect();hideCtx();document.activeElement&&document.activeElement.blur();
+  await new Promise(r=>setTimeout(r,80));
+  let css='';$$('style').forEach(s=>css+=s.textContent+'\n');
+  css+="svg{--paper:#f7f4ee;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;}";
+  const fontMap=await collectFonts();
+  if(fontMap.length===0)throw new Error('دسترسی به فونت‌ها ممکن نیست — از لینک گیت‌هاب Pages باز کنید (نه file://)');
+  for(const f of fontMap)css=css.split("url('"+f.path+"')").join("url('"+f.dataUrl+"')");
+  const W=sheet.offsetWidth,H=sheet.offsetHeight;
+  const clone=sheet.cloneNode(true);
+  clone.removeAttribute('id');
+  clone.querySelectorAll('.selected').forEach(el=>el.classList.remove('selected'));
+  clone.querySelectorAll('.edit-only').forEach(el=>el.remove());
+  clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  const x=new XMLSerializer().serializeToString(clone);
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:'+W+'px;box-sizing:border-box;background:#f7f4ee;color:#221d17;font-family:\'IRANSans\',\'Kalameh\',sans-serif;font-size:14.5px;line-height:2.05;direction:rtl"><style><![CDATA['+css+']]></style>'+x+'</div></foreignObject></svg>';
+  const img=new Image();
+  img.src=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+  try{await img.decode();}catch(e){URL.revokeObjectURL(img.src);throw new Error('رندر SVG ناموفق: '+(e.message||e));}
+  URL.revokeObjectURL(img.src);
+  return{img,W,H};
+}
+function dl(url,name){const a=document.createElement('a');a.href=url;a.download=name;a.click();}
+
+function exportPNG(){
+  toast('در حال رندر PNG با ×'+PPI+' …');
+  raster().then(({img,W,H})=>{
+    const c=document.createElement('canvas');
+    c.width=Math.round(W*PPI);c.height=Math.round(H*PPI);
+    const x=c.getContext('2d');
+    x.fillStyle='#f7f4ee';x.fillRect(0,0,c.width,c.height);
+    x.scale(PPI,PPI);x.drawImage(img,0,0,W,H);
+    c.toBlob(bl=>{dl(URL.createObjectURL(bl),'lesson-01-'+PPI+'x.png');toast('PNG دانلود شد 🖼');},'image/png');
+  }).catch(err=>showErr('PNG: '+(err.message||err)));
+}
+
+function buildPdf(pages){
+  const enc=new TextEncoder(),chunks=[];let off=0;const offsets=[];
+  const push=d=>{const b=typeof d==='string'?enc.encode(d):d;chunks.push(b);off+=b.length;};
+  const n=pages.length,pO=i=>3+i*3,cO=i=>4+i*3,iO=i=>5+i*3;
+  push('%PDF-1.4\n');
+  offsets[1]=off;push('1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n');
+  offsets[2]=off;push('2 0 obj<</Type/Pages/Kids['+pages.map((_,i)=>pO(i)+' 0 R').join('')+']/Count '+n+'>>endobj\n');
+  pages.forEach((p,i)=>{
+    const dH=(595.28*p.h/p.w).toFixed(2),dY=(841.89-595.28*p.h/p.w).toFixed(2);
+    offsets[pO(i)]=off;
+    push(pO(i)+' 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 595.28 841.89]/Resources<</XObject<</Im'+i+' '+iO(i)+' 0 R>>/ProcSet[/PDF/ImageC]>>/Contents '+cO(i)+' 0 R>>endobj\n');
+    const cs='q 595.28 0 0 '+dH+' 0 '+dY+' cm /Im'+i+' Do Q';
+    offsets[cO(i)]=off;
+    push(cO(i)+' 0 obj<</Length '+enc.encode(cs).length+'>>stream\n'+cs+'\nendstream endobj\n');
+    offsets[iO(i)]=off;
+    push(iO(i)+' 0 obj<</Subtype/Image/ColorSpace/DeviceRGB/BitsPerComponent 8/Width '+p.w+'/Height '+p.h+'/Filter/DCTDecode/Length '+p.data.length+'>>stream\n');
+    push(p.data);push('\nendstream endobj\n');
+  });
+  const xOff=off,total=3+3*n;
+  push('xref\n0 '+total+'\n0000000000 65535 f \n');
+  for(let i=1;i<total;i++)push(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
+  push('trailer<</Size '+total+'/Root 1 0 R>>\nstartxref\n'+xOff+'\n%%EOF');
+  return new Blob(chunks,{type:'application/pdf'});
+}
+function exportPDF(){
+  toast('در حال رندر PDF با ×'+PPI+' …');
+  raster().then(async({img,W,H})=>{
+    const pageCssH=W*297/210;
+    const top=sheet.getBoundingClientRect().top;
+    const bounds=$$('#sheet .sec-head,#sheet .qa,#sheet .ex-item,#sheet .piece,#sheet tr,#sheet header,#sheet .rule-double,#sheet footer,#sheet .freq,#sheet .note,#sheet .formula,#sheet .letters')
+      .map(el=>el.getBoundingClientRect().bottom-top).sort((a,b2)=>a-b2);
+    const pages=[];let y=0;
+    while(y<H-2){
+      let target=Math.min(y+pageCssH,H);
+      if(target<H){let best=null;for(const bd of bounds){if(bd>y+pageCssH*.6&&bd<=y+pageCssH)best=bd;}if(best)target=best;}
+      const h=target-y,dw=Math.round(1654*PPI/3),dh=Math.max(2,Math.round(dw*h/W));
+      const c=document.createElement('canvas');c.width=dw;c.height=dh;
+      const x=c.getContext('2d');x.fillStyle='#f7f4ee';x.fillRect(0,0,dw,dh);
+      x.drawImage(img,0,y,W,h,0,0,dw,dh);
+      const jb=await new Promise(res=>c.toBlob(bl=>bl.arrayBuffer().then(ab=>res(new Uint8Array(ab))),'image/jpeg',.92));
+      pages.push({w:dw,h:dh,data:jb});
+      y=target;
+    }
+    dl(URL.createObjectURL(buildPdf(pages)),'lesson-01.pdf');
+    toast('PDF دانلود شد 📄 ('+pages.length+' صفحه)');
+  }).catch(err=>showErr('PDF: '+(err.message||err)));
+}
+
+/* ══════════ سورس ══════════ */
+function buildSource(){
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  clone.querySelectorAll('.selected').forEach(el=>el.classList.remove('selected'));
+  clone.querySelectorAll('body').forEach(bd=>bd.classList.remove('editing'));
+  const i=clone.querySelector('#insp');if(i)i.setAttribute('hidden','');
+  const c=clone.querySelector('#ctx');if(c)c.classList.remove('open');
+  return '<!DOCTYPE html>\n'+clone.outerHTML;
+}
+function saveSource(){
+  setEditing(false);
+  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),'lesson-01.html');
+  toast('سورس با همهٔ تغییرات ذخیره شد 💾 — جایگزین lesson-01.html گیت‌هاب کن');
+}
+function dlCopy(){
+  setEditing(false);
+  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),'lesson-01-copy.html');
+  toast('نسخهٔ کپی دانلود شد ⬇');
+}
+
+STATUS='JS فعال ✓';
+}catch(err){showErr('بارگذاری: '+(err.message||err));}
+</script>
+</body>
+</html>
