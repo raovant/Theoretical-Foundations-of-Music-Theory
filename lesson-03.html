@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>درس سوم · گام‌ها (Scales) – ساختار ماژور، مینور و انواع آن</title>
+<style>
+@font-face{font-family:'Kalameh';font-weight:600;font-display:swap;
+ src:url('fonts/Kalameh-SemiBold.woff2') format('woff2'),url('fonts/Kalameh-SemiBold.woff') format('woff');}
+@font-face{font-family:'Kalameh';font-weight:700;font-display:swap;
+ src:url('fonts/Kalameh-Bold.woff2') format('woff2'),url('fonts/Kalameh-Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:300;font-display:swap;
+ src:url('fonts/IRANSansWeb_Light.woff2') format('woff2'),url('fonts/IRANSansWeb_Light.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:400;font-display:swap;
+ src:url('fonts/IRANSansWeb.woff2') format('woff2'),url('fonts/IRANSansWeb.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:500;font-display:swap;
+ src:url('fonts/IRANSansWeb_Medium.woff2') format('woff2'),url('fonts/IRANSansWeb_Medium.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:700;font-display:swap;
+ src:url('fonts/IRANSansWeb_Bold.woff2') format('woff2'),url('fonts/IRANSansWeb_Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:400;font-display:swap;
+ src:url('fonts/IRANSansWeb_FaNum.woff2') format('woff2'),url('fonts/IRANSansWeb_FaNum.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:700;font-display:swap;
+ src:url('fonts/IRANSansWeb_Bold_FaNum.woff2') format('woff2'),url('fonts/IRANSansWeb_Bold_FaNum.woff') format('woff');}
+</style>
+<style>
+:root{
+ --paper:#f7f4ee; --card:#fdfbf7; --well:#f0ebe0;
+ --ink:#221d17; --ink-2:#544c40; --ink-3:#8b8272;
+ --rule:#e4dccb; --rule-2:#d3c9b2;
+ --accent:#b23a26; --accent-bg:rgba(178,58,38,.055);
+ --f-disp:'Kalameh',sans-serif;
+ --f-body:'IRANSans','Kalameh',sans-serif;
+ --f-fa:'IRANSans FaNum','IRANSans',sans-serif;
+ --measure:42rem;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;color-scheme:light}
+body{font-family:var(--f-body);background:var(--paper);color:var(--ink);font-size:14.5px;line-height:2.05;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent);color:var(--paper)}
+a{color:var(--accent)}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.fanum{font-family:var(--f-fa)}
+.page{max-width:var(--measure);margin:0 auto;padding:56px 28px 40px}
+.rule-double{height:7px;border-top:2.5px solid var(--ink);border-bottom:1px solid var(--ink);margin-bottom:26px}
+.rule-double.bottom{margin:34px 0 22px}
+
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:500;color:var(--ink-3);text-decoration:none;padding:6px 14px;border:1px solid var(--rule);border-radius:99px;background:var(--card);transition:.18s;margin-bottom:18px}
+.back-link:hover{border-color:var(--accent);color:var(--accent)}
+.back-link .arrow{transition:transform .2s}
+.back-link:hover .arrow{transform:translateX(4px)}
+
+.doc-kicker{font-size:.75rem;font-weight:500;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.doc-kicker::after{content:'';flex:1;border-top:1px solid var(--rule)}
+h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.8rem,5vw,2.2rem);line-height:1.55;margin-bottom:16px}
+h1 .h1-dot{color:var(--accent)}
+.doc-lead{font-weight:300;font-size:1.06rem;line-height:2.15;color:var(--ink-2);max-width:36rem;margin-bottom:22px}
+
+.toc{margin:34px 0 0;border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px 26px 8px}
+.toc-title{font-size:.75rem;font-weight:700;color:var(--ink-3);margin-bottom:6px}
+.toc ol{list-style:none}
+.toc li{border-bottom:1px solid var(--rule)}
+.toc li:last-child{border-bottom:none}
+.toc a{display:flex;align-items:baseline;gap:12px;padding:9px 2px;text-decoration:none;color:var(--ink-2);font-size:.9rem;font-weight:400;transition:color .15s}
+.toc a:hover{color:var(--accent)}
+.toc .n{font-family:var(--f-fa);font-size:.72rem;font-weight:700;color:var(--accent);flex:none;width:44px}
+
+.sec{margin-top:72px;scroll-margin-top:32px}
+.sec-label{font-size:.8rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.sec h2{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.3rem,3.2vw,1.55rem);line-height:1.65}
+.sec h2 .h2-sub{font-family:var(--f-body);font-weight:300;font-size:.6em;color:var(--ink-3)}
+.sec-head{border-bottom:1px solid var(--rule-2);padding-bottom:16px;margin-bottom:26px}
+.prose p{margin-bottom:1.15rem;text-align:right}
+.prose p:last-child{margin-bottom:0}
+strong{font-weight:700;color:var(--ink)}
+em{font-style:normal;font-weight:500}
+
+.tk{direction:ltr;unicode-bidi:isolate;display:inline-block;font-weight:500;font-size:.9em;line-height:1.5;color:var(--ink-2);background:var(--well);border:1px solid var(--rule);border-radius:6px;padding:.02em .55em;vertical-align:baseline}
+
+.seq{direction:ltr;text-align:center;font-weight:500;font-size:.95rem;letter-spacing:.05em;line-height:2;background:var(--well);border:1px solid var(--rule);border-radius:9px;padding:9px 14px;margin:14px 0;color:var(--ink-2)}
+
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+.feature{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px}
+.feature h3{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:8px;color:var(--accent)}
+.feature p{font-size:.88rem;color:var(--ink-2);line-height:2;margin-bottom:8px}
+.feature .example{background:var(--well);border-radius:8px;padding:10px 14px;font-size:.85rem;line-height:1.9;margin-top:10px}
+
+.note{border-inline-start:3px solid var(--accent);background:var(--accent-bg);border-radius:0 12px 12px 0;padding:14px 20px;margin:24px 0;font-size:.93rem;line-height:2.1;color:var(--ink-2)}
+.note .tag{color:var(--accent);font-weight:700;font-size:.82rem}
+
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.88rem}
+caption{caption-side:top;text-align:right;font-size:.78rem;color:var(--ink-3);padding-bottom:8px;font-weight:500}
+th{font-size:.72rem;font-weight:700;color:var(--ink-3);text-align:right;padding:10px 8px;border-bottom:1.5px solid var(--rule-2);vertical-align:top}
+td{padding:10px 8px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2);font-size:.85rem;line-height:1.8}
+tr:last-child td{border-bottom:none}
+td.num{font-weight:700;font-size:1rem;color:var(--accent);width:35px;direction:ltr;text-align:right}
+td.sym{font-weight:700;color:var(--ink);width:60px;direction:ltr;text-align:right}
+td.ex{direction:ltr;text-align:right;color:var(--ink);font-weight:500}
+.feature table{margin:10px 0}
+
+.formula{direction:ltr;text-align:center;font-weight:500;font-size:1.04rem;line-height:2;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px 16px;margin:24px 0 8px;color:var(--ink)}
+.formula b{color:var(--accent);font-weight:700}
+.formula-cap{text-align:center;font-size:.8rem;color:var(--ink-3);margin-bottom:24px}
+
+.piece{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:22px 26px;margin:22px 0}
+.piece h3{font-family:var(--f-disp);font-weight:700;font-size:1.08rem;line-height:1.9}
+.piece h3 .en-name{font-family:var(--f-body);font-weight:700;font-size:.95em;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.piece .artist{font-family:var(--f-body);font-size:.78rem;color:var(--ink-3);font-weight:300}
+.piece .artist .ltr{font-weight:400}
+.piece .int-tag{display:inline-block;font-size:.72rem;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:1px 12px;margin-inline-start:10px;vertical-align:middle}
+.piece .an{font-size:.9rem;color:var(--ink-2);line-height:2.15;margin-top:12px}
+.piece .an b{color:var(--ink)}
+.piece .an-label{color:var(--accent);font-weight:700;font-size:.82rem}
+
+.key-point{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px;margin:20px 0}
+.key-point h3{font-family:var(--f-disp);font-weight:700;font-size:.95rem;margin-bottom:10px;color:var(--accent)}
+.key-point p{font-size:.88rem;color:var(--ink-2);line-height:2}
+
+.qa{margin:26px 0}
+.qa .q,.qa .a{margin-bottom:10px}
+.qa-mark{display:inline-block;font-size:.7rem;font-weight:700;border-radius:99px;padding:2px 13px;margin-inline-end:10px;vertical-align:2px}
+.q .qa-mark{color:var(--accent);border:1px solid var(--accent);background:transparent}
+.a .qa-mark{color:var(--ink-3);border:1px solid var(--rule-2);background:var(--card)}
+.qa .q{font-weight:700;line-height:2.1}
+.qa .a{color:var(--ink-2);font-size:.93rem;line-height:2.15;padding-inline-start:4px}
+
+.ex-item{display:flex;gap:16px;margin:26px 0}
+.ex-num{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-fa);font-weight:700;font-size:1.05rem;margin-top:6px}
+.ex-body{flex:1;min-width:0}
+.ex-body h4{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:2px}
+.ex-body>p{font-size:.93rem;color:var(--ink-2)}
+.ex-list{list-style:none;margin-top:10px;padding-inline-start:0}
+.ex-list li{padding:4px 0;font-size:.88rem;color:var(--ink-2);line-height:2}
+.ex-list li::before{content:'•';color:var(--accent);font-weight:700;margin-inline-end:8px}
+
+.summary{border:2px solid var(--accent);border-radius:14px;background:var(--accent-bg);padding:24px;margin:32px 0}
+.summary h3{font-family:var(--f-disp);font-weight:700;font-size:1.1rem;margin-bottom:14px;color:var(--accent)}
+.summary ul{list-style:none;padding:0}
+.summary li{padding:6px 0;font-size:.9rem;line-height:2;color:var(--ink-2)}
+.summary li::before{content:'✓';color:var(--accent);font-weight:700;margin-inline-end:10px}
+
+footer{text-align:center}
+footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bottom:6px}
+
+/* ══════════ موتور ویرایشگر (v8) ══════════ */
+body:not(.editing) .edit-only{display:none!important}
+body.editing [data-edit]{cursor:text;border-radius:4px}
+body.editing [data-edit]:hover{outline:1.5px dashed var(--accent);outline-offset:4px}
+body.editing [data-edit]:focus{outline:1.5px solid var(--accent);outline-offset:4px;background:var(--accent-bg)}
+.selected{outline:2px solid var(--accent)!important;outline-offset:4px;border-radius:4px}
+body.editing #sheet *{cursor:pointer}
+body.editing #sheet [data-edit]{cursor:text}
+.add-phase{display:block;width:100%;margin-top:44px;padding:14px;border-radius:14px;border:1.5px dashed var(--rule-2);background:transparent;color:var(--ink-3);font-size:.9rem;font-weight:700;transition:.2s}
+.add-phase:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+
+.ctx{position:fixed;z-index:70;min-width:250px;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none}
+.ctx.open{display:block}
+.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s}
+.ctx button:hover{background:var(--accent-bg);color:var(--accent)}
+.ctx button .ci{width:20px;text-align:center;flex:none}
+.ctx button .ck{margin-inline-start:auto;font-size:.65rem;color:var(--ink-3)}
+.ctx .csep{height:1px;background:var(--rule);margin:5px 8px}
+.ctx .ctitle{font-size:.62rem;color:var(--ink-3);padding:4px 12px 2px;font-weight:700}
+.ctx .cstatus{font-size:.62rem;color:var(--ink-3);padding:6px 12px 4px;text-align:center;direction:ltr}
+.ctx .cstatus.bad{color:var(--accent)}
+
+.insp{position:fixed;bottom:14px;inset-inline:0;z-index:45;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
+.insp[hidden]{display:none}
+.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px}
+.insp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.insp-head b{font-size:.78rem;color:var(--accent)}
+#inspTag{font-size:.7rem;color:var(--ink-3);direction:ltr}
+.insp-head .sp{flex:1}
+.insp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px 12px;align-items:end}
+.insp-grid label{display:flex;flex-direction:column;gap:3px;font-size:.68rem;color:var(--ink-3);font-weight:500}
+.insp-grid input[type=range]{width:100%;accent-color:var(--accent)}
+.insp-grid select,.insp-grid input[type=color]{width:100%;border:1px solid var(--rule-2);border-radius:8px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:.75rem;padding:4px 6px}
+.insp-grid input[type=color]{padding:2px;height:30px}
+.swatches{display:flex;gap:6px;align-items:center}
+.sw{width:20px;height:20px;border-radius:50%;border:1px solid var(--rule-2)}
+.sw:hover{transform:scale(1.15)}
+.ib{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule-2);background:transparent;color:var(--ink-3);font-size:.8rem;line-height:1;transition:.15s}
+.ib:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+
+.toast{position:fixed;bottom:24px;inset-inline:0;display:flex;justify-content:center;z-index:50;pointer-events:none}
+.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center}
+.toast span.show{opacity:1;transform:none}
+
+@media print{
+ @page{margin:17mm}
+ body{background:#fff;font-size:11.5pt}
+ .page{max-width:100%;padding:0}
+ .sec{margin-top:2.4em;break-inside:auto}
+ .note,.piece,.ex-item,table,.features{break-inside:avoid}
+ a{color:inherit;text-decoration:none}
+ .edit-only,.toast,.insp,.ctx,.back-link{display:none!important}
+}
+@media(max-width:560px){
+ .page{padding:40px 20px}
+ body{font-size:15.5px}
+ .ex-item{gap:12px}
+}
+</style>
+</head>
+<body>
+<div class="page" id="sheet">
+<div class="rule-double"></div>
+<header>
+<a href="index.html" class="back-link"><span class="arrow">←</span> بازگشت به نقشهٔ راه</a>
+<p class="doc-kicker" data-edit>مبانی نظری تئوری موسیقی — درس سوم</p>
+<h1 data-edit style="font-size: 30px; text-align: center;">گام‌ها <span class="ltr">(Scales)</span> — ساختار ماژور، مینور و انواع آن <span class="h1-dot">.</span></h1>
+<p class="doc-lead" data-edit>در درس دوم با مفهوم فواصل آشنا شدیم. اکنون با ترکیب فواصل در یک الگوی منظم، به مفهوم <strong>گام</strong> می‌رسیم — ستون فقرات هر قطعه موسیقی.</p>
+</header>
+
+<nav class="toc" aria-label="فهرست">
+<p class="toc-title" data-edit>فهرست بخش‌ها</p>
+<ol>
+<li><a href="#s1" data-edit><span class="n">بخش ۱</span> تعریف گام</a></li>
+<li><a href="#s2" data-edit><span class="n">بخش ۲</span> دسته‌بندی کلی گام‌ها</a></li>
+<li><a href="#s3" data-edit><span class="n">بخش ۳</span> گام کروماتیک</a></li>
+<li><a href="#s4" data-edit><span class="n">بخش ۴</span> گام دیاتونیک و فرمول ساخت</a></li>
+<li><a href="#s5" data-edit><span class="n">بخش ۵</span> درجات گام</a></li>
+<li><a href="#s6" data-edit><span class="n">بخش ۶</span> گام مینور (سه نوع)</a></li>
+<li><a href="#s7" data-edit><span class="n">بخش ۷</span> مقایسه احساسی گام‌ها</a></li>
+<li><a href="#s8" data-edit><span class="n">بخش ۸</span> گام‌های نسبی</a></li>
+<li><a href="#s9" data-edit><span class="n">بخش ۹</span> گام‌های موازی</a></li>
+<li><a href="#s10" data-edit><span class="n">بخش ۱۰</span> مثال‌های تحلیلی در موسیقی معروف</a></li>
+<li><a href="#s11" data-edit><span class="n">بخش ۱۱</span> کاربرد عملی در DAW</a></li>
+<li><a href="#s12" data-edit><span class="n">بخش ۱۲</span> رفع ابهامات رایج</a></li>
+<li><a href="#s13" data-edit><span class="n">بخش ۱۳</span> تمرینات عملی</a></li>
+</ol>
+</nav>
+
+<section class="sec" id="s1">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش اول</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">تعریف گام</h2>
+</div>
+<div class="prose">
+<p data-edit>گام به مجموعه‌ای از نت‌ها گفته می‌شود که <strong>به ترتیب ارتفاع (از پایین به بالا یا بالعکس)</strong> مرتب شده‌اند و بر اساس یک <strong>الگوی فاصله‌ای مشخص</strong> از یک نت پایه (Tonik یا Root) ساخته می‌شوند.</p>
+</div>
+<div class="note">
+<span class="tag">نکته بنیادین — </span>
+گام یک <strong>قالب ذهنی</strong> است که آهنگساز انتخاب می‌کند. یک قطعه معمولاً در <strong>یک گام خاص</strong> نوشته می‌شود و نت‌های آن، نت‌های «مجاز» یا «در منزل» (In-key) نامیده می‌شوند. نت‌های خارج از گام، «نامجاز» یا «خارج از منزل» (Out-of-key) هستند و تنها با هدف‌های خاص هارمونیک (نت‌های گذر، کروماتیک یا مدولاسیون) استفاده می‌شوند.
+</div>
+</section>
+
+<section class="sec" id="s2">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش دوم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">دسته‌بندی کلی گام‌ها</h2>
+</div>
+<div class="prose">
+<p data-edit>گام‌ها بر اساس <strong>تعداد نت‌های تشکیل‌دهنده</strong> به دسته‌های زیر تقسیم می‌شوند:</p>
+</div>
+<table>
+<thead>
+<tr><th data-edit>نام گام</th><th data-edit>تعداد نت</th><th data-edit>توضیح</th></tr>
+</thead>
+<tbody>
+<tr><td data-edit><strong>کروماتیک (Chromatic)</strong></td><td data-edit>۱۲ نت</td><td data-edit>شامل تمام نت‌های موجود در اکتاو</td></tr>
+<tr><td data-edit><strong>دیاتونیک (Diatonic)</strong></td><td data-edit>۷ نت</td><td data-edit>گام‌های ماژور و مینور (پایه موسیقی غربی)</td></tr>
+<tr><td data-edit><strong>پنتاتونیک (Pentatonic)</strong></td><td data-edit>۵ نت</td><td data-edit>گام‌های پنج‌نتی (بسیار رایج در بلوز، راک، فولک)</td></tr>
+<tr><td data-edit><strong>هگزاتونیک (Hexatonic)</strong></td><td data-edit>۶ نت</td><td data-edit>مانند گام تمام‌پرده (Whole Tone)</td></tr>
+<tr><td data-edit><strong>اکتاتونیک (Octatonic)</strong></td><td data-edit>۸ نت</td><td data-edit>گام‌های هشت‌نتی (رایج در موسیقی مدرن و جاز)</td></tr>
+</tbody>
+</table>
+<div class="prose">
+<p data-edit>در این درس، تمرکز ما بر <strong>گام‌های دیاتونیک</strong> (ماژور و مینور) است، زیرا پایه و اساس تمام مفاهیم بعدی را تشکیل می‌دهند.</p>
+</div>
+</section>
+
+<section class="sec" id="s3">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش سوم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">گام کروماتیک <span class="h2-sub">(Chromatic Scale)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>گام کروماتیک شامل <strong>تمام ۱۲ نت</strong> در یک اکتاو است که با فاصلهٔ <strong>نیم‌پرده (Half Step)</strong> از هم جدا شده‌اند.</p>
+</div>
+<div class="seq" data-edit>H · H · H · H · H · H · H · H · H · H · H · H</div>
+<div class="note">
+<span class="tag">کاربرد در DAW — </span>
+گام کروماتیک بیشتر برای پاساژهای سریع (Runs)، افکت‌های صوتی، یا ایجاد تنش کروماتیک استفاده می‌شود. قطعاتی که کاملاً کروماتیک باشند، بسیار نادر هستند.
+</div>
+</section>
+
+<section class="sec" id="s4">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش چهارم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">گام دیاتونیک و فرمول ساخت گام</h2>
+</div>
+<div class="prose">
+<p data-edit>گام‌های دیاتونیک از <strong>۷ نت</strong> تشکیل شده‌اند و از ترکیب فواصل <strong>تمام‌پرده (W = Whole Step = 2 نیم‌پرده)</strong> و <strong>نیم‌پرده (H = Half Step = 1 نیم‌پرده)</strong> ساخته می‌شوند.</p>
+</div>
+
+<div class="key-point">
+<h3 data-edit>الف) گام ماژور (Major Scale)</h3>
+<p data-edit>گام ماژور مهم‌ترین گام در موسیقی غربی است. فرمول ساخت آن:</p>
+<div class="formula" data-edit>W - W - H - W - W - W - H</div>
+<p class="formula-cap" data-edit>(تمام - تمام - نیم - تمام - تمام - تمام - نیم)</p>
+</div>
+
+<table>
+<caption data-edit>ساخت گام C ماژور — ساده‌ترین گام، بدون هیچ Sharp یا Flat</caption>
+<thead>
+<tr><th data-edit>درجه</th><th data-edit>نت</th><th data-edit>فاصله از نت قبل</th></tr>
+</thead>
+<tbody>
+<tr><td class="num" data-edit>1 (Tonik)</td><td class="sym" data-edit>C</td><td data-edit>—</td></tr>
+<tr><td class="num" data-edit>2</td><td class="sym" data-edit>D</td><td data-edit>W (تمام)</td></tr>
+<tr><td class="num" data-edit>3</td><td class="sym" data-edit>E</td><td data-edit>W (تمام)</td></tr>
+<tr><td class="num" data-edit>4</td><td class="sym" data-edit>F</td><td data-edit>H (نیم)</td></tr>
+<tr><td class="num" data-edit>5</td><td class="sym" data-edit>G</td><td data-edit>W (تمام)</td></tr>
+<tr><td class="num" data-edit>6</td><td class="sym" data-edit>A</td><td data-edit>W (تمام)</td></tr>
+<tr><td class="num" data-edit>7</td><td class="sym" data-edit>B</td><td data-edit>W (تمام)</td></tr>
+<tr><td class="num" data-edit>8 (اکتاو)</td><td class="sym" data-edit>C</td><td data-edit>H (نیم)</td></tr>
+</tbody>
+</table>
+<div class="seq" data-edit>C - D - E - F - G - A - B - C</div>
+
+<div class="features">
+<div class="feature">
+<h3 data-edit>مثال: گام G ماژور</h3>
+<p data-edit>با همان فرمول (W-W-H-W-W-W-H) از نت G — این گام دارای <strong>یک Sharp</strong> است.</p>
+<div class="example" data-edit>
+G - A - B - C - D - E - <strong>F♯</strong> - G<br>
+توجه: F خالی با E یک نیم‌پرده فاصله دارد، پس درجهٔ ۷ باید <strong>F♯</strong> باشد.
+</div>
+</div>
+<div class="feature">
+<h3 data-edit>مثال: گام F ماژور</h3>
+<p data-edit>از نت F — این گام دارای <strong>یک Flat</strong> است.</p>
+<div class="example" data-edit>
+F - G - A - <strong>B♭</strong> - C - D - E - F<br>
+توجه: B خالی با A یک تمام‌پرده فاصله دارد، پس درجهٔ ۴ باید <strong>B♭</strong> باشد.
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="s5">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش پنجم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">درجات گام <span class="h2-sub">(Scale Degrees)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>هر نت در گام، دارای یک <strong>درجه (Degree)</strong> و یک <strong>نام تخصصی</strong> است. این نام‌ها در هارمونی و آنالیز موسیقی بسیار حیاتی هستند.</p>
+</div>
+<table>
+<thead>
+<tr><th data-edit>درجه</th><th data-edit>نام تخصصی</th><th data-edit>نقش در گام</th></tr>
+</thead>
+<tbody>
+<tr><td class="num" data-edit>1</td><td data-edit><strong>Tonik (تونیک)</strong></td><td data-edit>نت پایه، نقطه آرامش و خانه</td></tr>
+<tr><td class="num" data-edit>2</td><td data-edit><strong>Supertonik (سوپرتونیک)</strong></td><td data-edit>یک پرده بالاتر از تونیک</td></tr>
+<tr><td class="num" data-edit>3</td><td data-edit><strong>Mediant (مدیانت)</strong></td><td data-edit>وسط تونیک و دومینانت، تعیین‌کننده ماژور یا مینور بودن گام</td></tr>
+<tr><td class="num" data-edit>4</td><td data-edit><strong>Subdominant (زیرنمایان)</strong></td><td data-edit>قرینه دومینانت نسبت به تونیک</td></tr>
+<tr><td class="num" data-edit>5</td><td data-edit><strong>Dominant (نمایان / دومینانت)</strong></td><td data-edit>مهم‌ترین نت بعد از تونیک، بیشترین کشش به سمت تونیک</td></tr>
+<tr><td class="num" data-edit>6</td><td data-edit><strong>Submediant (زیرمیانی)</strong></td><td data-edit>—</td></tr>
+<tr><td class="num" data-edit>7</td><td data-edit><strong>Leading Tone (نت پیشرو)</strong></td><td data-edit>نیم‌پرده زیر تونیک، کشش شدید به سمت تونیک</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="sec" id="s6">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش ششم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">گام مینور <span class="h2-sub">(Minor Scale — سه نوع)</span></h2>
+</div>
+
+<div class="features">
+<div class="feature">
+<h3 data-edit>الف) مینور طبیعی <span class="ltr">(Natural / Aeolian)</span></h3>
+<p data-edit>حالت پایه و غمگین گام مینور. فرمول ساخت:</p>
+<div class="formula" data-edit style="font-size: .95rem;">W - H - W - W - H - W - W</div>
+<div class="example" data-edit>
+<strong>A مینور طبیعی:</strong><br>
+A - B - C - D - E - F - G - A<br>
+توجه: A مینور طبیعی دقیقاً همان نت‌های C ماژور را دارد (رابطهٔ نسبی — بخش ۸).
+</div>
+</div>
+<div class="feature">
+<h3 data-edit>ب) مینور هارمونیک <span class="ltr">(Harmonic Minor)</span></h3>
+<p data-edit>برای ایجاد کشش به سمت تونیک (مانند Leading Tone در ماژور)، درجهٔ ۷ را <strong>نیم‌پرده بالا می‌بریم</strong>. فرمول:</p>
+<div class="formula" data-edit style="font-size: .95rem;">W - H - W - W - H - (W+H) - H</div>
+<div class="example" data-edit>
+<strong>A مینور هارمونیک:</strong><br>
+A - B - C - D - E - F - <strong>G♯</strong> - A<br>
+فاصلهٔ بین درجهٔ ۶ و ۷ یک <strong>سوم افزوده (3 نیم‌پرده)</strong> می‌شود که صدای خاص شرقی/عربی به گام می‌دهد.
+</div>
+</div>
+<div class="feature">
+<h3 data-edit>ج) مینور ملودیک <span class="ltr">(Melodic Minor)</span></h3>
+<p data-edit>برای حل مشکل سوم افزوده در ملودی‌نویسی، <strong>هم درجهٔ ۶ و هم درجهٔ ۷ بالا می‌روند</strong> (فقط در مسیر صعودی).</p>
+<div class="example" data-edit>
+<strong>A مینور ملودیک:</strong><br>
+صعودی: A - B - C - D - E - <strong>F♯ - G♯</strong> - A<br>
+نزولی: A - G - F - E - D - C - B - A
+</div>
+</div>
+</div>
+<div class="note">
+<span class="tag">نکته کاربردی — </span>
+در موسیقی جاز، مینور ملودیک هم در صعود و هم در نزول یکسان است (F♯ و G♯ در هر دو جهت). این نوع را <strong>Jazz Melodic Minor</strong> می‌نامند.
+</div>
+</section>
+
+<section class="sec" id="s7">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش هفتم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">مقایسه احساسی گام‌ها</h2>
+</div>
+<table>
+<thead>
+<tr><th data-edit>گام</th><th data-edit>احساس غالب</th><th data-edit>کاربرد متداول</th></tr>
+</thead>
+<tbody>
+<tr><td data-edit><strong>ماژور</strong></td><td data-edit>شاد، روشن، پیروزمندانه، امیدوار</td><td data-edit>پاپ، راک کلاسیک، موسیقی حماسی روشن</td></tr>
+<tr><td data-edit><strong>مینور طبیعی</strong></td><td data-edit>غمگین، متفکرانه، جدی</td><td data-edit>بالادها، موسیقی غمگین سینمایی، فولک</td></tr>
+<tr><td data-edit><strong>مینور هارمونیک</strong></td><td data-edit>دراماتیک، شرقی، پرتنش</td><td data-edit>متال نئوکلاسیک، گوتیک، موسیقی عربی/فلامنکو</td></tr>
+<tr><td data-edit><strong>مینور ملودیک</strong></td><td data-edit>پیچیده، جاز-محور، خاص</td><td data-edit>جاز، پراگرسیو متال، موسیقی مدرن</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="sec" id="s8">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش هشتم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">گام‌های نسبی <span class="h2-sub">(Relative Keys)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>دو گام نسبی، <strong>دقیقاً نت‌های یکسانی</strong> دارند اما <strong>تونیک (نت پایه) متفاوتی</strong> دارند.</p>
+</div>
+<div class="key-point">
+<h3 data-edit>قانون یافتن مینور نسبی</h3>
+<p data-edit>از تونیک گام ماژور، <strong>سه نیم‌پرده (یک سوم کوچک) به پایین</strong> بروید.</p>
+</div>
+<ul class="ex-list">
+<li data-edit><strong>C ماژور</strong> → مینور نسبی: <strong>A مینور</strong> (نت‌ها: C D E F G A B = A B C D E F G)</li>
+<li data-edit><strong>G ماژور</strong> (یک شارپ: F♯) → مینور نسبی: <strong>E مینور</strong></li>
+<li data-edit><strong>F ماژور</strong> (یک فلت: B♭) → مینور نسبی: <strong>D مینور</strong></li>
+</ul>
+<div class="key-point">
+<h3 data-edit>قانون یافتن ماژور نسبی</h3>
+<p data-edit>از تونیک گام مینور، <strong>سه نیم‌پرده به بالا</strong> بروید.</p>
+</div>
+</section>
+
+<section class="sec" id="s9">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش نهم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">گام‌های موازی <span class="h2-sub">(Parallel Keys)</span></h2>
+</div>
+<div class="prose">
+<p data-edit>گام‌های موازی، <strong>تونیک یکسانی</strong> دارند اما <strong>ماژور یا مینور بودن آن‌ها متفاوت</strong> است.</p>
+</div>
+<div class="features">
+<div class="feature">
+<h3 data-edit>C ماژور</h3>
+<div class="example" data-edit>C - D - E - F - G - A - B</div>
+</div>
+<div class="feature">
+<h3 data-edit>C مینور</h3>
+<div class="example" data-edit>C - D - E♭ - F - G - A♭ - B♭</div>
+</div>
+</div>
+<div class="note">
+<span class="tag">کاربرد — </span>
+تغییر بین گام‌های موازی یکی از قدرتمندترین تکنیک‌ها برای تغییر ناگهانی حس یک قطعه است (مثلاً از شادی به غم در یک لحظه).
+</div>
+</section>
+
+<section class="sec" id="s10">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش دهم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">مثال‌های تحلیلی در موسیقی معروف</h2>
+</div>
+
+<article class="piece">
+<h3 data-edit>مثال ۱: گام ماژور — <span class="en-name">Let It Be</span> <span class="int-tag fanum">C ماژور</span><br><span class="artist">از <span class="ltr">The Beatles</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>نت‌های اصلی: <span class="tk">C D E F G A B</span> · آکوردهای اصلی: <span class="tk">C, G, Am, F</span> — که همگی دیاتونیکِ گام C ماژور هستند.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۲: گام مینور طبیعی — <span class="en-name">Losing My Religion</span> <span class="int-tag fanum">A مینور طبیعی</span><br><span class="artist">از <span class="ltr">R.E.M.</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>نت‌های اصلی: <span class="tk">A B C D E F G</span> · ریف ماندولین اصلی تماماً بر اساس نت‌های گام A مینور است.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۳: گام مینور هارمونیک — سولوی <span class="en-name">Sweet Child O' Mine</span> <span class="int-tag fanum">D مینور هارمونیک</span><br><span class="artist">از <span class="ltr">Guns N' Roses</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>بخش میانی سولوی گیتار Slash در گام D مینور هارمونیک نواخته می‌شود. نت‌های کلیدی: <span class="tk">D E F G A B♭ C♯</span> — استفاده از <strong>C♯</strong> (درجهٔ ۷ بالا برده شده) به سولو حس دراماتیک و تنش خاصی می‌دهد.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۴: مینور هارمونیک نئوکلاسیک — <span class="en-name">Black Star</span> <span class="int-tag fanum">F♯ مینور هارمونیک</span><br><span class="artist">از <span class="ltr">Yngwie Malmsteen</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>استفادهٔ گسترده از فاصلهٔ <strong>سوم افزوده (Augmented Second)</strong> بین درجهٔ ۶ و ۷، حس کلاسیک/باروک را به متال می‌آورد.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit>مثال ۵: گام مینور ملودیک — <span class="en-name">Yesterday</span> <span class="int-tag fanum">F مینور ملودیک</span><br><span class="artist">از <span class="ltr">The Beatles</span></span></h3>
+<p class="an" data-edit><span class="an-label">تحلیل: </span>ملودی اصلی و تغییرات هارمونیک این قطعه، به طور گسترده از <strong>F مینور ملودیک</strong> استفاده می‌کند.</p>
+</article>
+</section>
+
+<section class="sec" id="s11">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش یازدهم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">کاربرد عملی گام‌ها در محیط DAW</h2>
+</div>
+
+<div class="key-point">
+<h3 data-edit>تکنیک Scale Locking (قفل کردن گام در Piano Roll)</h3>
+<p data-edit>تقریباً تمام DAWهای مدرن (FL Studio, Ableton Live, Logic Pro, Cubase, Bitwig) قابلیتی به نام <strong>Scale Highlighting</strong> یا <strong>Scale Locking</strong> دارند.</p>
+</div>
+<ul class="ex-list">
+<li data-edit>در Piano Roll، گزینهٔ Scale را پیدا کنید.</li>
+<li data-edit>گام مورد نظر خود را انتخاب کنید (مثلاً A Minor Natural).</li>
+<li data-edit>DAW شما نت‌های مجاز را <strong>هایلایت</strong> می‌کند.</li>
+<li data-edit>در حالت Lock، نت‌های خارج از گام <strong>غیرفعال</strong> می‌شوند و شما نمی‌توانید اشتباه کنید.</li>
+</ul>
+<div class="features">
+<div class="feature">
+<h3 data-edit>مزایا برای آهنگساز</h3>
+<p data-edit>جلوگیری از نت‌های فالش و خارج از گام · افزایش سرعت نوشتن ملودی و کنترملودی · امکان تمرکز بر روی ریتم و احساس به جای تئوری.</p>
+</div>
+<div class="feature">
+<h3 data-edit>تکنیک Chord Scale Sync</h3>
+<p data-edit>اکثر DAWها (مخصوصاً Ableton و FL Studio) اجازه می‌دهند که وقتی یک آکورد قرار می‌دهید، Piano Roll به صورت خودکار <strong>گام آن آکورد</strong> را تشخیص داده و نت‌های مجاز را نمایش دهد.</p>
+</div>
+</div>
+</section>
+
+<section class="sec" id="s12">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش دوازدهم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">رفع ابهامات رایج (FAQ)</h2>
+</div>
+
+<div class="qa">
+<p class="q" data-edit><span class="qa-mark">پرسش</span> چرا سه نوع مینور داریم؟ آیا نمی‌توان فقط از مینور طبیعی استفاده کرد؟</p>
+<p class="a" data-edit><span class="qa-mark">پاسخ</span> خیر. هر کدام کارکرد متفاوتی دارند: <strong>مینور طبیعی</strong> برای حس غم خالص و بدون تنش · <strong>مینور هارمونیک</strong> برای ایجاد کشش هارمونیک قوی (V-i) و حس دراماتیک · <strong>مینور ملودیک</strong> برای ملودی‌های روان (به خصوص در خوانندگی) و هارمونی پیچیدهٔ جاز.</p>
+</div>
+<div class="qa">
+<p class="q" data-edit><span class="qa-mark">پرسش</span> آیا باید تمام ۱۲ گام ماژور و ۱۲ گام مینور را حفظ کنم؟</p>
+<p class="a" data-edit><span class="qa-mark">پاسخ</span> نیازی به حفظ کردن طوطی‌وار نیست. با یادگیری <strong>دایره پنجم‌ها (Circle of Fifths)</strong> که در درس بعدی پوشش داده می‌شود، منطق پشت تمام گام‌ها را درک خواهید کرد. اما برای شروع، تسلط بر گام‌های C ماژور، G ماژور، F ماژور و مینورهای نسبی آن‌ها کافی است.</p>
+</div>
+<div class="qa">
+<p class="q" data-edit><span class="qa-mark">پرسش</span> چرا در مینور ملودیک جاز، گام در نزول تغییر نمی‌کند؟</p>
+<p class="a" data-edit><span class="qa-mark">پاسخ</span> در سنت جاز، آهنگسازان به دنبال صدایی پیچیده‌تر و «بیرون از چارچوب کلاسیک» بودند. حفظ کردن F♯ و G♯ در مسیر نزولی، به گام رنگ خاص و مدرنی می‌دهد که پایهٔ بسیاری از آکوردهای جاز (مانند mMaj7) است.</p>
+</div>
+<div class="qa">
+<p class="q" data-edit><span class="qa-mark">پرسش</span> آیا یک قطعه می‌تواند در دو گام همزمان باشد؟</p>
+<p class="a" data-edit><span class="qa-mark">پاسخ</span> بله. این پدیده <strong>Bitonality</strong> یا <strong>Polytonality</strong> نامیده می‌شود و در موسیقی مدرن، پراگرسیو و تجربی رایج است. اما در موسیقی پاپ، راک و سینمایی استاندارد، معمولاً یک گام غالب است.</p>
+</div>
+</section>
+
+<section class="sec" id="s13">
+<div class="sec-head">
+<p class="sec-label" data-edit style="text-align: center;">بخش سیزدهم</p>
+<h2 data-edit style="font-size: 20px; font-weight: 500; text-align: center;">تمرینات عملی برای هنرجو</h2>
+</div>
+
+<div class="ex-item">
+<div class="ex-num fanum">۱</div>
+<div class="ex-body">
+<h4 data-edit>ساخت گام‌ها</h4>
+<p data-edit>گام‌های زیر را با استفاده از فرمول‌های ارائه شده بسازید و نت‌های آن‌ها را بنویسید:</p>
+<ul class="ex-list">
+<li data-edit>D ماژور</li>
+<li data-edit>B♭ ماژور</li>
+<li data-edit>E مینور طبیعی</li>
+<li data-edit>D مینور هارمونیک</li>
+<li data-edit>G مینور ملودیک (صعودی)</li>
+</ul>
+</div>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۲</div>
+<div class="ex-body">
+<h4 data-edit>یافتن گام‌های نسبی</h4>
+<p data-edit>برای هر یک از گام‌های زیر، گام نسبی (ماژور یا مینور) را پیدا کنید:</p>
+<ul class="ex-list">
+<li data-edit>E ماژور → مینور نسبی؟</li>
+<li data-edit>G مینور → ماژور نسبی؟</li>
+<li data-edit>A♭ ماژور → مینور نسبی؟</li>
+</ul>
+</div>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۳</div>
+<div class="ex-body">
+<h4 data-edit>آنالیز قطعه</h4>
+<p data-edit>آهنگ «Hotel California» از Eagles را گوش دهید. گام اصلی قطعه چیست؟ آیا در سولوی پایانی از گام مینور هارمونیک استفاده شده است؟</p>
+</div>
+</div>
+<div class="ex-item">
+<div class="ex-num fanum">۴</div>
+<div class="ex-body">
+<h4 data-edit>Scale Locking در DAW</h4>
+<p data-edit>در DAW خود، یک توالی آکورد ساده بسازید: <span class="tk">Am - F - C - G</span> — Scale را روی <strong>A Minor Natural</strong> قفل کنید و یک ملودی ۸ میزانی بنویسید که فقط از نت‌های هایلایت شده استفاده کند.</p>
+</div>
+</div>
+</section>
+
+<section class="sec" id="summary">
+<div class="summary">
+<h3 data-edit>جمع‌بندی درس سوم</h3>
+<ul>
+<li data-edit>گام = مجموعه‌ای از نت‌ها بر اساس یک الگوی فاصله‌ای مشخص</li>
+<li data-edit>فرمول گام ماژور: W-W-H-W-W-W-H</li>
+<li data-edit>فرمول گام مینور طبیعی: W-H-W-W-H-W-W</li>
+<li data-edit>گام مینور هارمونیک: درجهٔ ۷ نیم‌پرده بالا می‌رود (برای ایجاد Leading Tone)</li>
+<li data-edit>گام مینور ملودیک: درجهٔ ۶ و ۷ بالا می‌روند (برای ملودی روان)</li>
+<li data-edit>گام‌های نسبی: نت‌های یکسان، تونیک متفاوت</li>
+<li data-edit>گام‌های موازی: تونیک یکسان، ماژور/مینور متفاوت</li>
+<li data-edit>درجات گام (تونیک، دومینانت، ...) نقش کلیدی در هارمونی دارند</li>
+<li data-edit>Scale Locking در DAW = ابزاری حیاتی برای آهنگسازان مدرن</li>
+</ul>
+</div>
+</section>
+
+<button type="button" class="add-phase edit-only" id="addSection">+ افزودن بخش جدید</button>
+
+<div class="rule-double bottom"></div>
+<footer>
+<span class="note-glyph">♪</span>
+</footer>
+</div>
+
+<div class="ctx" id="ctx"></div>
+
+<div class="insp" id="insp" hidden>
+  <div class="insp-card">
+    <div class="insp-head">
+      <b>استایل المان</b><span id="inspTag"></span><span class="sp"></span>
+      <button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button>
+      <button type="button" class="ib" id="inspClose" title="بستن">×</button>
+    </div>
+    <div class="insp-grid">
+      <label>سایز قلم <span class="ltr" id="vSize"></span><input type="range" id="inSize" min="10" max="56" step="1"></label>
+      <label>فاصله خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label>
+      <label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label>
+      <label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label>
+      <label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label>
+      <label>رنگ<div class="swatches">
+        <button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button>
+        <button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button>
+        <button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button>
+        <button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button>
+        <input type="color" id="inColor" value="#221d17">
+      </div></label>
+    </div>
+  </div>
+</div>
+
+<div class="toast"><span id="toastMsg"></span></div>
+
+<script>
+'use strict';
+let STATUS='در حال بررسی…';
+function showErr(m){
+  STATUS='✗ '+m;
+  var t=document.getElementById('toastMsg');
+  if(t){t.textContent='⚠️ '+m;t.classList.add('show');}
+  if(window.console)console.error(m);
+}
+window.addEventListener('error',function(e){showErr(e.message||'خطای جاوااسکریپت');});
+
+try{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const KEY='lesson-03-v1';
+const VER='v8';
+let sheet=$('#sheet');
+let selEl=null;
+let PPI=3;
+const insp=$('#insp'), ctx=$('#ctx');
+
+let st;
+function save(quiet){try{localStorage.setItem(KEY,sheet.innerHTML);}catch(e){} if(!quiet)toast('ذخیره شد ✓');}
+function saveSoon(){clearTimeout(st);st=setTimeout(()=>save(true),500);}
+function toast(msg){const el=$('#toastMsg');el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200);}
+sheet=$('#sheet');
+
+function setEditing(on){
+  document.body.classList.toggle('editing',on);
+  $$('#sheet [data-edit]').forEach(el=>{
+    if(on){try{el.contentEditable='plaintext-only';}catch(e){el.contentEditable='true';}}
+    else el.contentEditable='false';
+  });
+  if(!on)deselect();
+}
+setEditing(false);
+
+function sectionHTML(){
+  return '<section class="sec"><div class="sec-head"><p class="sec-label" data-edit>بخش جدید</p><h2 data-edit>عنوان بخش…</h2></div><div class="prose"><p data-edit>متن بخش…</p></div></section>';
+}
+function syncEditable(root){
+  if(!document.body.classList.contains('editing'))return;
+  root.querySelectorAll('[data-edit]').forEach(el=>{try{el.contentEditable='plaintext-only';}catch(e){el.contentEditable='true';}});
+}
+function addSectionFn(){
+  const btn=$('#addSection');
+  btn.insertAdjacentHTML('beforebegin',sectionHTML());
+  syncEditable(btn.previousElementSibling);save(false);
+}
+
+const SEL='#sheet h1,#sheet h2,#sheet h3,#sheet h4,#sheet p,#sheet li,#sheet a,#sheet span,#sheet b,#sheet td,#sheet th,#sheet caption,#sheet .formula,#sheet .feature,#sheet .piece,#sheet .key-point,#sheet .seq';
+const BLOCK_SEL='#sheet .sec,#sheet header,#sheet footer,#sheet nav.toc,#sheet .rule-double,#sheet .sec-head,#sheet article.piece,#sheet table,#sheet .features,#sheet .summary,#sheet .note,#sheet .key-point,#sheet .ex-item,#sheet .qa';
+const FAMS={body:"'IRANSans','Kalameh',sans-serif",disp:"'Kalameh',sans-serif",fa:"'IRANSans FaNum','IRANSans',sans-serif"};
+function rgbHex(c){const m=c.match(/\d+/g);return m?'#'+m.slice(0,3).map(x=>(+x).toString(16).padStart(2,'0')).join(''):'#221d17';}
+function select(el){
+  if(selEl)selEl.classList.remove('selected');
+  selEl=el;
+  if(!el){insp.hidden=true;return;}
+  el.classList.add('selected');insp.hidden=false;
+  $('#inspTag').textContent='<'+el.tagName.toLowerCase()+'>';
+  const cs=getComputedStyle(el);
+  $('#inSize').value=parseFloat(cs.fontSize);$('#vSize').textContent=Math.round(parseFloat(cs.fontSize))+'px';
+  $('#inLh').value=Math.min(2.8,Math.max(1.4,parseFloat(cs.lineHeight)/parseFloat(cs.fontSize)||2)).toFixed(2);
+  const w=String(Math.round(+cs.fontWeight));
+  $('#inWeight').value=['300','400','500','600','700'].includes(w)?w:'400';
+  $('#inFamily').value=cs.fontFamily.indexOf('Kalameh')>-1?'disp':cs.fontFamily.indexOf('FaNum')>-1?'fa':'body';
+  $('#inAlign').value=cs.textAlign==='center'?'center':cs.textAlign==='left'?'left':'right';
+  $('#inColor').value=rgbHex(cs.color);
+}
+function deselect(){select(null);}
+$('#inspClose').addEventListener('click',deselect);
+$('#inspReset').addEventListener('click',()=>{if(selEl){selEl.removeAttribute('style');select(selEl);saveSoon();}});
+function applyStyle(fn){if(!selEl)return;fn(selEl.style);saveSoon();}
+$('#inSize').addEventListener('input',e=>{$('#vSize').textContent=e.target.value+'px';applyStyle(s=>s.fontSize=e.target.value+'px');});
+$('#inLh').addEventListener('input',e=>applyStyle(s=>s.lineHeight=e.target.value));
+$('#inWeight').addEventListener('change',e=>applyStyle(s=>s.fontWeight=e.target.value));
+$('#inFamily').addEventListener('change',e=>applyStyle(s=>s.fontFamily=FAMS[e.target.value]));
+$('#inAlign').addEventListener('change',e=>applyStyle(s=>s.textAlign=e.target.value));
+$('#inColor').addEventListener('input',e=>applyStyle(s=>s.color=e.target.value));
+$$('.sw').forEach(b=>b.addEventListener('click',()=>{applyStyle(s=>s.color=b.dataset.c);$('#inColor').value=b.dataset.c;}));
+addEventListener('keydown',e=>{if(e.key==='Escape'){deselect();hideCtx();}});
+
+function removeEl(el){
+  const big=el.matches(BLOCK_SEL);
+  if(big&&!confirm('کل بخش <'+el.tagName.toLowerCase()+'> حذف شود؟'))return;
+  if(selEl&&el.contains(selEl))deselect();
+  el.remove();
+  save(false);
+  toast(big?'بخش کامل حذف شد':'المان حذف شد');
+}
+
+function hideCtx(){ctx.classList.remove('open');}
+function addItem(icon,label,fn,extra){
+  const b=document.createElement('button');
+  b.innerHTML='<span class="ci">'+icon+'</span><span>'+label+'</span>'+(extra?'<span class="ck">'+extra+'</span>':'');
+  b.addEventListener('click',()=>{hideCtx();fn();});
+  ctx.appendChild(b);
+}
+function addSep(){const d=document.createElement('div');d.className='csep';ctx.appendChild(d);}
+function addTitle(t){const d=document.createElement('div');d.className='ctitle';d.textContent=t;ctx.appendChild(d);}
+
+document.addEventListener('contextmenu',e=>{
+  if(e.target.closest('.insp'))return;
+  e.preventDefault();
+  const t=e.target, editing=document.body.classList.contains('editing');
+  ctx.innerHTML='';
+
+  if(editing&&t.closest('#sheet')){
+    const small=t.closest(SEL);
+    const block=t.closest(BLOCK_SEL);
+    const edt=t.closest('[data-edit]');
+    if(small||block){
+      addTitle('المان زیر نشانگر');
+      if(edt)addItem('✍️','ویرایش متن این بخش',()=>{setEditing(true);edt.focus();});
+      const sty=small||block;
+      if(sty)addItem('🎨','استایل این المان <'+sty.tagName.toLowerCase()+'>',()=>{select(sty);});
+      if(small)addItem('🗑','حذف این المان <'+small.tagName.toLowerCase()+'>',()=>removeEl(small));
+      if(block&&block!==small)
+        addItem('⛔','حذف کل بخش <'+block.tagName.toLowerCase()+'>',()=>removeEl(block));
+      addSep();
+    }
+  }
+
+  addItem(editing?'✅':'✏️',editing?'خروج از حالت ویرایش':'حالت ویرایش',()=>setEditing(!editing));
+  if(editing)addItem('➕','افزودن بخش جدید',addSectionFn);
+  addSep();
+  addItem('🖼','خروجی PNG',exportPNG,'×'+PPI);
+  addItem('📄','خروجی PDF',exportPDF,'×'+PPI);
+  addItem('⚙️','کیفیت خروجی (PPI)',changePPI,'×'+PPI);
+  addSep();
+  addItem('💾','ذخیره تغییرات در سورس',saveSource);
+  addItem('⬇','دانلود کپی سورس',dlCopy);
+  addItem('↺','بازنشانی به نسخه اولیه',resetFn);
+  addSep();
+  const stt=document.createElement('div');
+  stt.className='cstatus'+(STATUS.indexOf('✗')===0?' bad':'');
+  stt.textContent=VER+' · '+STATUS;
+  ctx.appendChild(stt);
+
+  ctx.classList.add('open');
+  const w=ctx.offsetWidth,h=ctx.offsetHeight;
+  ctx.style.left=Math.max(8,Math.min(e.clientX,innerWidth-w-10))+'px';
+  ctx.style.top=Math.max(8,Math.min(e.clientY,innerHeight-h-10))+'px';
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.ctx'))hideCtx();},true);
+addEventListener('scroll',hideCtx,{passive:true});
+addEventListener('resize',hideCtx);
+
+function changePPI(){
+  const v=parseFloat(prompt('ضریب کیفیت خروجی (۰٫۵ تا ۶):',PPI));
+  if(!isNaN(v)){PPI=Math.min(6,Math.max(0.5,v));toast('کیفیت خروجی: ×'+PPI);}
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target, editing=document.body.classList.contains('editing');
+  if(editing&&t.closest('#sheet a'))e.preventDefault();
+  if(t.closest('#addSection')&&editing){addSectionFn();return;}
+  if(editing&&!t.closest('button')&&!t.closest('.insp')){
+    const s=t.closest(SEL);
+    if(s)select(s);
+    else if(!t.closest('#sheet'))deselect();
+  }
+});
+document.addEventListener('input',e=>{if(e.target.matches('#sheet [data-edit]'))saveSoon();});
+
+function resetFn(){
+  if(confirm('همه ویرایش‌ها پاک و نسخه اولیه بازگردانده شود؟')){try{localStorage.removeItem(KEY);}catch(e){}location.reload();}
+}
+
+const FONT_FILES=[
+  'fonts/Kalameh-SemiBold.woff2','fonts/Kalameh-Bold.woff2',
+  'fonts/IRANSansWeb_Light.woff2','fonts/IRANSansWeb.woff2',
+  'fonts/IRANSansWeb_Medium.woff2','fonts/IRANSansWeb_Bold.woff2',
+  'fonts/IRANSansWeb_FaNum.woff2','fonts/IRANSansWeb_Bold_FaNum.woff2'
+];
+function b64(buf){let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s);}
+async function collectFonts(){
+  try{await document.fonts.ready;}catch(e){}
+  const out=[];
+  for(const f of FONT_FILES){
+    try{
+      const r=await fetch(f,{cache:'force-cache'});
+      if(!r.ok)continue;
+      const buf=await r.arrayBuffer();
+      out.push({path:f,dataUrl:'data:font/woff2;base64,'+b64(buf)});
+    }catch(e){}
+  }
+  return out;
+}
+async function raster(){
+  setEditing(false);deselect();hideCtx();document.activeElement&&document.activeElement.blur();
+  await new Promise(r=>setTimeout(r,80));
+  let css='';$$('style').forEach(s=>css+=s.textContent+'\n');
+  css+="svg{--paper:#f7f4ee;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;}";
+  const fontMap=await collectFonts();
+  for(const f of fontMap)css=css.split("url('"+f.path+"')").join("url('"+f.dataUrl+"')");
+  css=css.replace(/url\('fonts\/[^']+'\)/g,"url('data:,')");
+  const W=sheet.offsetWidth,H=sheet.offsetHeight;
+  const clone=sheet.cloneNode(true);
+  clone.removeAttribute('id');
+  clone.querySelectorAll('.selected').forEach(el=>el.classList.remove('selected'));
+  clone.querySelectorAll('.edit-only').forEach(el=>el.remove());
+  clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  const x=new XMLSerializer().serializeToString(clone);
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:'+W+'px;box-sizing:border-box;background:#f7f4ee;color:#221d17;font-family:\'IRANSans\',\'Kalameh\',sans-serif;font-size:14.5px;line-height:2.05;direction:rtl"><style><![CDATA['+css+']]></style>'+x+'</div></foreignObject></svg>';
+  const img=new Image();
+  img.src=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+  try{await img.decode();}catch(e){URL.revokeObjectURL(img.src);throw new Error('رندر SVG ناموفق: '+(e.message||e));}
+  URL.revokeObjectURL(img.src);
+  return{img,W,H};
+}
+function dl(url,name){const a=document.createElement('a');a.href=url;a.download=name;a.click();}
+
+function exportPNG(){
+  toast('در حال رندر PNG با ×'+PPI+' …');
+  raster().then(({img,W,H})=>{
+    const c=document.createElement('canvas');
+    c.width=Math.round(W*PPI);c.height=Math.round(H*PPI);
+    const x=c.getContext('2d');
+    x.fillStyle='#f7f4ee';x.fillRect(0,0,c.width,c.height);
+    x.scale(PPI,PPI);x.drawImage(img,0,0,W,H);
+    c.toBlob(bl=>{dl(URL.createObjectURL(bl),'lesson-03-'+PPI+'x.png');toast('PNG دانلود شد 🖼');},'image/png');
+  }).catch(err=>showErr('PNG: '+(err.message||err)));
+}
+
+function buildPdf(pages){
+  const enc=new TextEncoder(),chunks=[];let off=0;const offsets=[];
+  const push=d=>{const b=typeof d==='string'?enc.encode(d):d;chunks.push(b);off+=b.length;};
+  const n=pages.length,pO=i=>3+i*3,cO=i=>4+i*3,iO=i=>5+i*3;
+  push('%PDF-1.4\n');
+  offsets[1]=off;push('1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n');
+  offsets[2]=off;push('2 0 obj<</Type/Pages/Kids['+pages.map((_,i)=>pO(i)+' 0 R').join('')+']/Count '+n+'>>endobj\n');
+  pages.forEach((p,i)=>{
+    const dH=(595.28*p.h/p.w).toFixed(2),dY=(841.89-595.28*p.h/p.w).toFixed(2);
+    offsets[pO(i)]=off;
+    push(pO(i)+' 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 595.28 841.89]/Resources<</XObject<</Im'+i+' '+iO(i)+' 0 R>>/ProcSet[/PDF/ImageC]>>/Contents '+cO(i)+' 0 R>>endobj\n');
+    const cs='q 595.28 0 0 '+dH+' 0 '+dY+' cm /Im'+i+' Do Q';
+    offsets[cO(i)]=off;
+    push(cO(i)+' 0 obj<</Length '+enc.encode(cs).length+'>>stream\n'+cs+'\nendstream endobj\n');
+    offsets[iO(i)]=off;
+    push(iO(i)+' 0 obj<</Subtype/Image/ColorSpace/DeviceRGB/BitsPerComponent 8/Width '+p.w+'/Height '+p.h+'/Filter/DCTDecode/Length '+p.data.length+'>>stream\n');
+    push(p.data);push('\nendstream endobj\n');
+  });
+  const xOff=off,total=3+3*n;
+  push('xref\n0 '+total+'\n0000000000 65535 f \n');
+  for(let i=1;i<total;i++)push(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
+  push('trailer<</Size '+total+'/Root 1 0 R>>\nstartxref\n'+xOff+'\n%%EOF');
+  return new Blob(chunks,{type:'application/pdf'});
+}
+function exportPDF(){
+  toast('در حال رندر PDF با ×'+PPI+' …');
+  raster().then(async({img,W,H})=>{
+    const pageCssH=W*297/210;
+    const top=sheet.getBoundingClientRect().top;
+    const bounds=$$('#sheet .sec-head,#sheet .piece,#sheet tr,#sheet header,#sheet .rule-double,#sheet footer,#sheet .note,#sheet .formula,#sheet .features,#sheet .key-point,#sheet .ex-item,#sheet .summary,#sheet .qa,#sheet .seq')
+      .map(el=>el.getBoundingClientRect().bottom-top).sort((a,b2)=>a-b2);
+    const pages=[];let y=0;
+    while(y<H-2){
+      let target=Math.min(y+pageCssH,H);
+      if(target<H){let best=null;for(const bd of bounds){if(bd>y+pageCssH*.6&&bd<=y+pageCssH)best=bd;}if(best)target=best;}
+      const h=target-y,dw=Math.round(1654*PPI/3),dh=Math.max(2,Math.round(dw*h/W));
+      const c=document.createElement('canvas');c.width=dw;c.height=dh;
+      const x=c.getContext('2d');x.fillStyle='#f7f4ee';x.fillRect(0,0,dw,dh);
+      x.drawImage(img,0,y,W,h,0,0,dw,dh);
+      const jb=await new Promise(res=>c.toBlob(bl=>bl.arrayBuffer().then(ab=>res(new Uint8Array(ab))),'image/jpeg',.92));
+      pages.push({w:dw,h:dh,data:jb});
+      y=target;
+    }
+    dl(URL.createObjectURL(buildPdf(pages)),'lesson-03.pdf');
+    toast('PDF دانلود شد 📄 ('+pages.length+' صفحه)');
+  }).catch(err=>showErr('PDF: '+(err.message||err)));
+}
+
+function buildSource(){
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  clone.querySelectorAll('.selected').forEach(el=>el.classList.remove('selected'));
+  clone.querySelectorAll('body').forEach(bd=>bd.classList.remove('editing'));
+  const i=clone.querySelector('#insp');if(i)i.setAttribute('hidden','');
+  const c=clone.querySelector('#ctx');if(c)c.classList.remove('open');
+  return '<!DOCTYPE html>\n'+clone.outerHTML;
+}
+function saveSource(){
+  setEditing(false);
+  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),'lesson-03.html');
+  toast('سورس با همه تغییرات ذخیره شد 💾 — جایگزین lesson-03.html گیت‌هاب کن');
+}
+function dlCopy(){
+  setEditing(false);
+  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),'lesson-03-copy.html');
+  toast('نسخه کپی دانلود شد ⬇');
+}
+
+STATUS='JS فعال ✓';
+}catch(err){showErr('بارگذاری: '+(err.message||err));}
+</script>
+</body>
+</html>
