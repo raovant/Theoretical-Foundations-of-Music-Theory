@@ -1,3 +1,6 @@
+/* ═══════════════════════════════════════════════════════════
+   editor.js — موتور ویرایشگر درسنامه‌ها · نسخه v10
+   ═══════════════════════════════════════════════════════════ */
 (function(){
 'use strict';
 
@@ -640,4 +643,60 @@ function buildPdf(pages){
     offsets[cO(i)]=off;
     push(cO(i)+' 0 obj<</Length '+enc.encode(cs).length+'>>stream\n'+cs+'\nendstream endobj\n');
     offsets[iO(i)]=off;
-    push(iO(i)+' 0 obj<</Subtype/Image/ColorSpace/DeviceRGB/BitsPerComponent 8/Width '+p.w
+    push(iO(i)+' 0 obj<</Subtype/Image/ColorSpace/DeviceRGB/BitsPerComponent 8/Width '+p.w+'/Height '+p.h+'/Filter/DCTDecode/Length '+p.data.length+'>>stream\n');
+    push(p.data);push('\nendstream endobj\n');
+  });
+  var xOff=off,total=3+3*n;
+  push('xref\n0 '+total+'\n0000000000 65535 f \n');
+  for(var i=1;i<total;i++)push(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
+  push('trailer<</Size '+total+'/Root 1 0 R>>\nstartxref\n'+xOff+'\n%%EOF');
+  return new Blob(chunks,{type:'application/pdf'});
+}
+function exportPDF(){
+  toast('در حال رندر PDF با ×'+PPI+' …');
+  raster().then(function(o){
+    var pageCssH=o.W*297/210;
+    var top=sheet.getBoundingClientRect().top;
+    var bounds=$$('#sheet .sec-head,#sheet .piece,#sheet tr,#sheet header,#sheet .rule-double,#sheet .divider,#sheet footer,#sheet .note,#sheet .formula,#sheet .features,#sheet .key-point,#sheet .ex-item,#sheet .summary,#sheet .qa,#sheet .seq,#sheet figure,#sheet .topic')
+      .map(function(el){return el.getBoundingClientRect().bottom-top;}).sort(function(a,b){return a-b;});
+    var pages=[],y=0;
+    function step(){
+      if(y>=o.H-2){dl(URL.createObjectURL(buildPdf(pages)),BASE+'.pdf');toast('PDF دانلود شد 📄 ('+pages.length+' صفحه)');return Promise.resolve();}
+      var target=Math.min(y+pageCssH,o.H);
+      if(target<o.H){var best=null;bounds.forEach(function(bd){if(bd>y+pageCssH*.6&&bd<=y+pageCssH)best=bd;});if(best)target=best;}
+      var h=target-y,dw=Math.round(1654*PPI/3),dh=Math.max(2,Math.round(dw*h/o.W));
+      var c=document.createElement('canvas');c.width=dw;c.height=dh;
+      var x=c.getContext('2d');x.fillStyle='#f7f4ee';x.fillRect(0,0,dw,dh);
+      x.drawImage(o.img,0,y,o.W,h,0,0,dw,dh);
+      return new Promise(function(res){c.toBlob(function(bl){bl.arrayBuffer().then(function(ab){res(new Uint8Array(ab));});},'image/jpeg',.92);}).then(function(jb){
+        pages.push({w:dw,h:dh,data:jb});y=target;return step();
+      });
+    }
+    return step();
+  }).catch(function(err){showErr('PDF: '+(err.message||err));});
+}
+
+function buildSource(){
+  var clone=document.documentElement.cloneNode(true);
+  clone.querySelectorAll('[contenteditable]').forEach(function(el){el.removeAttribute('contenteditable');});
+  clone.querySelectorAll('.selected').forEach(function(el){el.classList.remove('selected');});
+  clone.querySelectorAll('body').forEach(function(bd){bd.classList.remove('editing');});
+  var i=clone.querySelector('#insp');if(i)i.setAttribute('hidden','');
+  var c=clone.querySelector('#ctx');if(c)c.classList.remove('open');
+  var f=clone.querySelector('#imgFileInput');if(f)f.parentNode.removeChild(f);
+  return '<!DOCTYPE html>\n'+clone.outerHTML;
+}
+function saveSource(){
+  setEditing(false);
+  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),(location.pathname.split('/').pop()||'index.html'));
+  toast('سورس با همه تغییرات ذخیره شد 💾 — جایگزین فایل گیت‌هاب کن');
+}
+function dlCopy(){
+  setEditing(false);
+  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),BASE+'-copy.html');
+  toast('نسخه کپی دانلود شد ⬇');
+}
+
+STATUS='JS فعال ✓';
+}catch(err){showErr('بارگذاری: '+(err.message||err));}
+})();
