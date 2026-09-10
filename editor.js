@@ -1,12 +1,6 @@
-/* ═══════════════════════════════════════════════════════════
-   editor.js — موتور ویرایشگر درسنامه‌ها · نسخه v9
-   شامل: فونت‌ها + تمام استایل‌ها + ویرایشگر + منوی افزودن بلوک
-   + شرتکات‌ها + خروجی PNG/PDF + ذخیرهٔ سورس
-   ═══════════════════════════════════════════════════════════ */
 (function(){
 'use strict';
 
-/* ══════════ ۱) تزریق فونت‌ها و استایل‌ها ══════════ */
 var FONT_CSS=`
 @font-face{font-family:'Kalameh';font-weight:600;font-display:swap;src:url('fonts/Kalameh-SemiBold.woff2') format('woff2'),url('fonts/Kalameh-SemiBold.woff') format('woff');}
 @font-face{font-family:'Kalameh';font-weight:700;font-display:swap;src:url('fonts/Kalameh-Bold.woff2') format('woff2'),url('fonts/Kalameh-Bold.woff') format('woff');}
@@ -151,6 +145,24 @@ footer{text-align:center}
 footer .fl{font-size:.8rem;color:var(--ink-3);line-height:2.2}
 footer .fl b{color:var(--ink-2)}
 footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bottom:6px}
+/* ── اجزای نقشهٔ راه (فاز/مبحث) ── */
+.topics{list-style:none}
+.topic{display:flex;align-items:center;gap:10px;padding:4px 2px;border-bottom:1px solid var(--rule)}
+.t-link{flex:1;display:flex;align-items:center;gap:10px;padding:7px 2px;text-decoration:none;color:var(--ink-2);transition:.15s;min-width:0}
+.t-link:hover{color:var(--accent)}
+.t-text{flex:1;font-size:.95rem;line-height:2;min-width:0}
+.go{flex:none;color:var(--rule-2);font-size:.95rem;transition:.2s}
+.t-link:hover .go{color:var(--accent);transform:translateX(-5px)}
+.t-link.unset{opacity:.75}
+.phase-head{display:flex;align-items:flex-start;gap:12px}
+.ph-t{flex:1;min-width:0}
+.col-btn{width:31px;height:31px;border-radius:50%;border:1px solid var(--rule-2);background:var(--card);color:var(--ink-3);font-size:.8rem;transition:transform .3s,border-color .2s}
+.col-btn:hover{border-color:var(--accent);color:var(--accent)}
+.phase.closed .col-btn{transform:rotate(90deg)}
+.phase-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .45s ease}
+.phase.closed .phase-body{grid-template-rows:0fr}
+.phase-inner{overflow:hidden}
+/* ── موتور ── */
 body:not(.editing) .edit-only{display:none!important}
 body.editing [data-edit]{cursor:text;border-radius:4px}
 body.editing [data-edit]:hover{outline:1.5px dashed var(--accent);outline-offset:4px}
@@ -160,9 +172,9 @@ body.editing #sheet *{cursor:pointer}
 body.editing #sheet [data-edit]{cursor:text}
 .add-phase{display:block;width:100%;margin-top:44px;padding:14px;border-radius:14px;border:1.5px dashed var(--rule-2);background:transparent;color:var(--ink-3);font-size:.9rem;font-weight:700;transition:.2s}
 .add-phase:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
-.ctx{position:fixed;z-index:70;min-width:250px;max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none}
+.ctx{position:fixed;z-index:70;min-width:250px;max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none;font-family:var(--f-body)}
 .ctx.open{display:block}
-.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s}
+.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s;font-family:var(--f-body)}
 .ctx button:hover{background:var(--accent-bg);color:var(--accent)}
 .ctx button .ci{width:20px;text-align:center;flex:none}
 .ctx button .ck{margin-inline-start:auto;font-size:.65rem;color:var(--ink-3)}
@@ -172,7 +184,7 @@ body.editing #sheet [data-edit]{cursor:text}
 .ctx .cstatus.bad{color:var(--accent)}
 .insp{position:fixed;bottom:14px;inset-inline:0;z-index:45;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
 .insp[hidden]{display:none}
-.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px}
+.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px;font-family:var(--f-body)}
 .insp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .insp-head b{font-size:.78rem;color:var(--accent)}
 #inspTag{font-size:.7rem;color:var(--ink-3);direction:ltr}
@@ -188,8 +200,7 @@ body.editing #sheet [data-edit]{cursor:text}
 .ib{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule-2);background:transparent;color:var(--ink-3);font-size:.8rem;line-height:1;transition:.15s}
 .ib:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 .toast{position:fixed;bottom:24px;inset-inline:0;display:flex;justify-content:center;z-index:50;pointer-events:none}
-.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center}
-.toast span.show{opacity:1;transform:none}
+.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center;font-family:var(--f-body)}
 @media print{@page{margin:17mm}body{background:#fff;font-size:11.5pt}.page{max-width:100%;padding:0}.sec{margin-top:2.4em;break-inside:auto}.note,.piece,.ex-item,table,.features{break-inside:avoid}a{color:inherit;text-decoration:none}.edit-only,.toast,.insp,.ctx,.back-link{display:none!important}}
 @media(max-width:560px){.page{padding:40px 20px}body{font-size:15.5px}.ex-item{gap:12px}.freq{flex-direction:column}.freq>div+div{border-inline-start:none;border-top:1px solid var(--rule)}}
 `;
@@ -197,8 +208,7 @@ function injectStyle(id,css){var el=document.getElementById(id);if(!el){el=docum
 injectStyle('inj-fonts',FONT_CSS);
 injectStyle('inj-css',COMP_CSS);
 
-/* ══════════ ۲) ساخت اجزای رابط اگر وجود نداشتن ══════════ */
-var INSP_HTML='<div class="insp" id="insp" hidden><div class="insp-card"><div class="insp-head"><b>استایل المان</b><span id="inspTag"></span><span class="sp"></span><button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button><button type="button" class="ib" id="inspClose" title="بستن">×</button></div><div class="insp-grid"><label>سایز قلم <span class="ltr" id="vSize"></span><input type="range" id="inSize" min="10" max="56" step="1"></label><label>فاصله خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label><label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label><label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label><label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label><label>رنگ<div class="swatches"><button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button><button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button><button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button><button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button><input type="color" id="inColor" value="#221d17"></div></label></div></div></div>';
+var INSP_HTML='<div class="insp" id="insp" hidden><div class="insp-card"><div class="insp-head"><b>استایل المان / انتخاب</b><span id="inspTag"></span><span class="sp"></span><button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button><button type="button" class="ib" id="inspClose" title="بستن">×</button></div><div class="insp-grid"><label>سایز قلم <span class="ltr" id="vSize"></span><input type="range" id="inSize" min="10" max="56" step="1"></label><label>فاصله خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label><label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label><label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label><label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label><label>رنگ<div class="swatches"><button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button><button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button><button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button><button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button><input type="color" id="inColor" value="#221d17"></div></label></div></div></div>';
 function ensureChrome(){
   if(!document.getElementById('ctx')){var c=document.createElement('div');c.id='ctx';c.className='ctx';document.body.appendChild(c);}
   if(!document.getElementById('insp')){document.body.insertAdjacentHTML('beforeend',INSP_HTML);}
@@ -208,7 +218,6 @@ function ensureChrome(){
 }
 ensureChrome();
 
-/* ══════════ ۳) موتور ══════════ */
 var STATUS='در حال بررسی…';
 function showErr(m){STATUS='✗ '+m;var t=document.getElementById('toastMsg');if(t){t.textContent='⚠️ '+m;t.classList.add('show');}if(window.console)console.error(m);}
 window.addEventListener('error',function(e){showErr(e.message||'خطای جاوااسکریپت');});
@@ -217,19 +226,26 @@ try{
 var $=function(s){return document.querySelector(s);}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
 var BASE=(location.pathname.split('/').pop()||'index.html').replace(/\.html$/,'')||'index';
 var KEY='edit-'+BASE;
-var VER='v9';
+var VER='v10';
 var sheet=$('#sheet');
 var selEl=null, PPI=3, anchorEl=null, lastX=0, lastY=0;
 var insp=$('#insp'), ctx=$('#ctx');
 
+/* ── تاریخچه Undo/Redo ── */
+var hist=[],histIdx=-1;
+function persist(){try{localStorage.setItem(KEY,sheet.innerHTML);}catch(e){}}
+function pushHist(){var snap=sheet.innerHTML;if(hist[histIdx]===snap)return;hist=hist.slice(0,histIdx+1);hist.push(snap);if(hist.length>60)hist.shift();histIdx=hist.length-1;}
+function afterRestore(){makeEditableSafe(sheet);if(document.body.classList.contains('editing'))setEditing(true);deselect();}
+function undo(){if(histIdx>0){histIdx--;sheet.innerHTML=hist[histIdx];persist();afterRestore();toast('واگرد ↩');}}
+function redo(){if(histIdx<hist.length-1){histIdx++;sheet.innerHTML=hist[histIdx];persist();afterRestore();toast('ازنو ↪');}}
+
 var st;
-function save(quiet){try{localStorage.setItem(KEY,sheet.innerHTML);}catch(e){} if(!quiet)toast('ذخیره شد ✓');}
+function save(quiet){persist();pushHist();if(!quiet)toast('ذخیره شد ✓');}
 function saveSoon(){clearTimeout(st);st=setTimeout(function(){save(true);},500);}
 function toast(msg){var el=$('#toastMsg');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show');},2200);}
 try{var saved=localStorage.getItem(KEY);if(saved&&saved.indexOf('<section')>-1&&saved.length>800)sheet.innerHTML=saved;}catch(e){}
 sheet=$('#sheet');
 
-/* ── رفع مشکل ادیت‌نبودن باکس‌ها: پیچیدن خودکار متن‌های لخت در data-edit ── */
 var WRAP_BOXES='.note,.example,.key-point,.int-type,.feature,.piece,.ex-body,.inv-card,.lt,.freq>div,.summary,.qa,.fig';
 function makeEditableSafe(root){
   (root||sheet).querySelectorAll(WRAP_BOXES).forEach(function(box){
@@ -244,6 +260,7 @@ function makeEditableSafe(root){
   });
 }
 makeEditableSafe(sheet);
+pushHist();
 
 function setEditing(on){
   document.body.classList.toggle('editing',on);
@@ -255,7 +272,6 @@ function setEditing(on){
 }
 setEditing(false);
 
-/* ── قالب‌های بلوک‌ها برای منوی افزودن ── */
 var TPL={
   note:'<div class="note"><span class="tag" data-edit>نکته — </span><span data-edit>متن نکته یا کاربرد…</span></div>',
   keypoint:'<div class="key-point"><h3 data-edit>عنوان کانتینر</h3><p data-edit>متن توضیح…</p></div>',
@@ -284,8 +300,6 @@ function syncEditable(root){
   root.querySelectorAll('[data-edit]').forEach(function(el){try{el.contentEditable='plaintext-only';}catch(e){el.contentEditable='true';}});
 }
 function addSectionFn(){insertHTML(TPL.section);}
-
-/* ── تصویر ── */
 function pickImageFile(){
   var inp=$('#imgFileInput');
   inp.onchange=function(){
@@ -301,11 +315,28 @@ function insertImageURL(){
   if(u&&u.trim())insertHTML('<figure class="fig"><img src="'+u.trim()+'" alt=""><figcaption data-edit>توضیح تصویر…</figcaption></figure>');
 }
 
-/* ── پنل استایل ── */
+/* ── پنل استایل + استایل سطح کلمه ── */
 var SEL='#sheet h1,#sheet h2,#sheet h3,#sheet h4,#sheet p,#sheet li,#sheet a,#sheet span,#sheet b,#sheet td,#sheet th,#sheet caption,#sheet .formula,#sheet .seq,#sheet .int-type,#sheet .feature,#sheet .piece,#sheet .inv-card,#sheet .key-point,#sheet figure';
-var BLOCK_SEL='#sheet .sec,#sheet header,#sheet footer,#sheet nav.toc,#sheet .rule-double,#sheet .divider,#sheet .sec-head,#sheet article.piece,#sheet table,#sheet .interval-types,#sheet .features,#sheet .inversion-grid,#sheet .summary,#sheet .note,#sheet .key-point,#sheet .ex-item,#sheet .qa,#sheet .letters,#sheet .freq,#sheet figure';
+var BLOCK_SEL='#sheet .sec,#sheet header,#sheet footer,#sheet nav.toc,#sheet .rule-double,#sheet .divider,#sheet .sec-head,#sheet article.piece,#sheet table,#sheet .interval-types,#sheet .features,#sheet .inversion-grid,#sheet .summary,#sheet .note,#sheet .key-point,#sheet .ex-item,#sheet .qa,#sheet .letters,#sheet .freq,#sheet figure,#sheet .phase';
 var FAMS={body:"'IRANSans','Kalameh',sans-serif",disp:"'Kalameh',sans-serif",fa:"'IRANSans FaNum','IRANSans',sans-serif"};
 function rgbHex(c){var m=c.match(/\d+/g);return m?'#'+m.slice(0,3).map(function(x){return (+x).toString(16).padStart(2,'0');}).join(''):'#221d17';}
+function currentSelectionRange(){
+  var sel=getSelection();
+  if(!sel||!sel.rangeCount)return null;
+  var r=sel.getRangeAt(0);
+  if(r.collapsed)return null;
+  var host=r.commonAncestorContainer;host=host.nodeType===1?host:host.parentElement;
+  if(!host||!host.closest('[data-edit]'))return null;
+  return r;
+}
+function styleSelection(prop,val){
+  var r=currentSelectionRange();if(!r)return false;
+  var sp=document.createElement('span');sp.style[prop]=val;
+  try{r.surroundContents(sp);}
+  catch(e){var f=r.extractContents();sp.appendChild(f);r.insertNode(sp);}
+  saveSoon();return true;
+}
+function styleProp(prop,val){if(styleSelection(prop,val))return;applyStyle(function(s){s[prop]=val;});}
 function select(el){
   if(selEl)selEl.classList.remove('selected');
   selEl=el;
@@ -325,13 +356,13 @@ function deselect(){select(null);}
 $('#inspClose').addEventListener('click',deselect);
 $('#inspReset').addEventListener('click',function(){if(selEl){selEl.removeAttribute('style');select(selEl);saveSoon();}});
 function applyStyle(fn){if(!selEl)return;fn(selEl.style);saveSoon();}
-$('#inSize').addEventListener('input',function(e){$('#vSize').textContent=e.target.value+'px';applyStyle(function(s){s.fontSize=e.target.value+'px';});});
+$('#inSize').addEventListener('input',function(e){$('#vSize').textContent=e.target.value+'px';styleProp('fontSize',e.target.value+'px');});
 $('#inLh').addEventListener('input',function(e){applyStyle(function(s){s.lineHeight=e.target.value;});});
-$('#inWeight').addEventListener('change',function(e){applyStyle(function(s){s.fontWeight=e.target.value;});});
-$('#inFamily').addEventListener('change',function(e){applyStyle(function(s){s.fontFamily=FAMS[e.target.value];});});
+$('#inWeight').addEventListener('change',function(e){styleProp('fontWeight',e.target.value);});
+$('#inFamily').addEventListener('change',function(e){styleProp('fontFamily',FAMS[e.target.value]);});
 $('#inAlign').addEventListener('change',function(e){applyStyle(function(s){s.textAlign=e.target.value;});});
-$('#inColor').addEventListener('input',function(e){applyStyle(function(s){s.color=e.target.value;});});
-$$('.sw').forEach(function(b){b.addEventListener('click',function(){applyStyle(function(s){s.color=b.dataset.c;});$('#inColor').value=b.dataset.c;});});
+$('#inColor').addEventListener('input',function(e){styleProp('color',e.target.value);});
+$$('.sw').forEach(function(b){b.addEventListener('click',function(){styleProp('color',b.dataset.c);$('#inColor').value=b.dataset.c;});});
 
 function removeEl(el){
   var big=el.matches(BLOCK_SEL);
@@ -339,6 +370,42 @@ function removeEl(el){
   if(selEl&&el.contains(selEl))deselect();
   el.remove();save(false);
   toast(big?'بخش کامل حذف شد':'المان حذف شد');
+}
+
+/* ── جست‌وجو و جایگزینی ── */
+function findReplace(){
+  var f=prompt('جست‌وجو برای:');if(!f)return;
+  var r=prompt('جایگزینی با:');if(r===null)return;
+  var count=0;
+  $$('#sheet [data-edit]').forEach(function(el){
+    var walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null);
+    var nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+    nodes.forEach(function(n){
+      if(n.nodeValue.indexOf(f)>-1){count+=n.nodeValue.split(f).length-1;n.nodeValue=n.nodeValue.split(f).join(r);}
+    });
+  });
+  if(count){save(false);toast(count+' مورد جایگزین شد');}else toast('پیدا نشد');
+}
+
+/* ── ابزار جدول ── */
+function tableTools(cell){
+  var table=cell.closest('table'),tr=cell.closest('tr');
+  addTitle('ابزار جدول');
+  addItem('＋','افزودن سطر',function(){
+    var last=table.rows[table.rows.length-1],nr=table.insertRow(-1);
+    for(var i=0;i<last.cells.length;i++){var c=nr.insertCell(-1);c.setAttribute('data-edit','');c.textContent='…';}
+    syncEditable(nr);save(false);
+  });
+  addItem('＋','افزودن ستون',function(){
+    Array.prototype.forEach.call(table.rows,function(row,idx){
+      var c=row.insertCell(-1);c.setAttribute('data-edit','');
+      c.textContent=(idx===0&&row.parentNode.tagName==='THEAD')?'ستون جدید':'…';
+    });
+    syncEditable(table);save(false);
+  });
+  addItem('－','حذف این سطر',function(){if(table.rows.length>1){tr.parentNode.removeChild(tr);save(false);}});
+  addItem('－','حذف این ستون',function(){var idx=cell.cellIndex;Array.prototype.forEach.call(table.rows,function(row){if(row.cells[idx])row.deleteCell(idx);});save(false);});
+  addSep();
 }
 
 /* ── منوی کلیک‌راست ── */
@@ -377,7 +444,7 @@ function openInsertMenu(){
   addItem('📶','نوار فرکانس',function(){insertHTML(TPL.freq);});
   placeCtx();
 }
-var SHORTCUTS_TXT=' among شرتکات‌ها (حالت ویرایش):\nCtrl+Shift+→ : راست‌چین\nCtrl+Shift+← : چپ‌چین\nCtrl+E : وسط‌چین\nCtrl+J : کشیده (justify)\nCtrl+B : ضخیم · Ctrl+I : ایتالیک · Ctrl+U : زیرخط\nCtrl+] : بزرگ‌تر · Ctrl+[ : کوچک‌تر\nCtrl+D : پنل استایل متن جاری\nCtrl+S : ذخیره\nEsc : لغو انتخاب / بستن منو';
+var SHORTCUTS_TXT='شرتکات‌ها (حالت ویرایش):\nCtrl+Shift+→ : راست‌چین\nCtrl+Shift+← : چپ‌چین\nCtrl+E : وسط‌چین · Ctrl+J : کشیده\nCtrl+B/I/U : ضخیم/ایتالیک/زیرخط (روی کلمهٔ انتخاب‌شده)\nانتخاب کلمه + تغییر سایز/وزن/رنگ/فونت از پنل : فقط روی انتخاب\nCtrl+] / Ctrl+[ : سایز ±\nCtrl+D : پنل استایل\nCtrl+Z / Ctrl+Y : واگرد / ازنو\nCtrl+H : جست‌وجو و جایگزینی\nCtrl+S : ذخیره\nEsc : لغو انتخاب / بستن منو';
 document.addEventListener('contextmenu',function(e){
   if(e.target.closest('.insp'))return;
   e.preventDefault();
@@ -386,6 +453,8 @@ document.addEventListener('contextmenu',function(e){
   anchorEl=t.closest(BLOCK_SEL)||t.closest('#sheet .sec');
   ctx.innerHTML='';
   if(editing&&t.closest('#sheet')){
+    var cell=t.closest('td,th');
+    if(cell)tableTools(cell);
     var small=t.closest(SEL), block=t.closest(BLOCK_SEL), edt=t.closest('[data-edit]');
     if(small||block){
       addTitle('المان زیر نشانگر');
@@ -393,7 +462,12 @@ document.addEventListener('contextmenu',function(e){
       var sty=small||block;
       if(sty)addItem('🎨','استایل این المان <'+sty.tagName.toLowerCase()+'>',function(){select(sty);});
       if(small)addItem('🗑','حذف این المان <'+small.tagName.toLowerCase()+'>',function(){removeEl(small);});
-      if(block&&block!==small)addItem('⛔','حذف کل بخش <'+block.tagName.toLowerCase()+'>',function(){removeEl(block);});
+      if(block&&block!==small){
+        addItem('⛔','حذف کل بخش <'+block.tagName.toLowerCase()+'>',function(){removeEl(block);});
+        addItem('⧉','تکثیر این بخش',function(){var c=block.cloneNode(true);block.parentNode.insertBefore(c,block.nextElementSibling);makeEditableSafe(c);syncEditable(c);save(false);});
+        addItem('⬆','جابه‌جایی به بالا',function(){var p=block.previousElementSibling;if(p){block.parentNode.insertBefore(block,p);save(false);}});
+        addItem('⬇','جابه‌جایی به پایین',function(){var n=block.nextElementSibling;if(n){block.parentNode.insertBefore(block,n.nextElementSibling);save(false);}});
+      }
       addSep();
     }
   }
@@ -401,6 +475,9 @@ document.addEventListener('contextmenu',function(e){
   if(editing){
     addItem('➕','درج بلوک جدید…',openInsertMenu);
     addItem('📄','افزودن بخش جدید',addSectionFn);
+    addItem('🔎','جست‌وجو و جایگزینی',findReplace);
+    addItem('↩','واگرد (Undo)',undo);
+    addItem('↪','ازنو (Redo)',redo);
   }
   addSep();
   addItem('🖼','خروجی PNG',exportPNG,'×'+PPI);
@@ -428,7 +505,7 @@ function changePPI(){
   if(!isNaN(v)){PPI=Math.min(6,Math.max(0.5,v));toast('کیفیت خروجی: ×'+PPI);}
 }
 
-/* ── شرتکات‌ها (سبک Word) ── */
+/* ── شرتکات‌ها ── */
 function editTargetFromSelection(){
   var sel=getSelection();
   var node=sel&&sel.anchorNode;
@@ -437,11 +514,7 @@ function editTargetFromSelection(){
   return (el&&el.closest('[data-edit]'))||selEl;
 }
 function wrapSelection(tag){
-  var sel=getSelection();if(!sel||!sel.rangeCount)return;
-  var r=sel.getRangeAt(0);if(r.collapsed)return;
-  var host=r.commonAncestorContainer;
-  host=host.nodeType===1?host:host.parentElement;
-  if(!host||!host.closest('[data-edit]'))return;
+  var r=currentSelectionRange();if(!r)return;
   var el=document.createElement(tag);
   try{r.surroundContents(el);}
   catch(err){var f=r.extractContents();el.appendChild(f);r.insertNode(el);}
@@ -452,6 +525,9 @@ document.addEventListener('keydown',function(e){
   if(!(e.ctrlKey||e.metaKey))return;
   var tgt=editTargetFromSelection();
   var k=e.key;
+  if(!e.shiftKey&&(k==='z'||k==='Z')){e.preventDefault();undo();return;}
+  if(!e.shiftKey&&(k==='y'||k==='Y')){e.preventDefault();redo();return;}
+  if(!e.shiftKey&&(k==='h'||k==='H')){e.preventDefault();findReplace();return;}
   if(e.shiftKey&&k==='ArrowRight'){e.preventDefault();if(tgt){tgt.style.textAlign='right';select(tgt);saveSoon();}return;}
   if(e.shiftKey&&k==='ArrowLeft'){e.preventDefault();if(tgt){tgt.style.textAlign='left';select(tgt);saveSoon();}return;}
   if(!e.shiftKey&&(k==='e'||k==='E')){e.preventDefault();if(tgt){tgt.style.textAlign='center';select(tgt);saveSoon();}return;}
@@ -465,10 +541,28 @@ document.addEventListener('keydown',function(e){
   if(!e.shiftKey&&(k==='s'||k==='S')){e.preventDefault();save(false);return;}
 });
 
-/* ── رویدادهای کلیک ── */
+/* ── کلیک‌ها (شامل دکمه‌های داخلی نقشهٔ راه) ── */
 document.addEventListener('click',function(e){
   var t=e.target, editing=document.body.classList.contains('editing');
   if(editing&&t.closest('#sheet a'))e.preventDefault();
+  if(!editing&&t.closest('.t-link.unset')){e.preventDefault();toast('در حالت ویرایش، با کلیک‌راست → 🔗 آدرس صفحه را تنظیم کنید');return;}
+  var col=t.closest('.col-btn');
+  if(col){col.closest('.phase').classList.toggle('closed');return;}
+  if(editing){
+    var lk=t.closest('.lk');
+    if(lk){
+      var a=lk.closest('.topic').querySelector('.t-link');
+      var v=prompt('آدرس صفحهٔ این مبحث (مثلاً lesson-02.html):',a.getAttribute('href')||'#');
+      if(v!==null){var url=v.trim()||'#';a.setAttribute('href',url);a.classList.toggle('unset',url==='#');save(false);}
+      return;
+    }
+    var del=t.closest('.del');
+    if(del){
+      var li=del.closest('.topic'),ph=del.closest('.phase');
+      if(li)removeEl(li);else if(ph)removeEl(ph);
+      return;
+    }
+  }
   if(t.closest('#addSection')&&editing){addSectionFn();return;}
   if(editing&&!t.closest('button')&&!t.closest('.insp')){
     var s=t.closest(SEL);
@@ -546,61 +640,4 @@ function buildPdf(pages){
     offsets[cO(i)]=off;
     push(cO(i)+' 0 obj<</Length '+enc.encode(cs).length+'>>stream\n'+cs+'\nendstream endobj\n');
     offsets[iO(i)]=off;
-    push(iO(i)+' 0 obj<</Subtype/Image/ColorSpace/DeviceRGB/BitsPerComponent 8/Width '+p.w+'/Height '+p.h+'/Filter/DCTDecode/Length '+p.data.length+'>>stream\n');
-    push(p.data);push('\nendstream endobj\n');
-  });
-  var xOff=off,total=3+3*n;
-  push('xref\n0 '+total+'\n0000000000 65535 f \n');
-  for(var i=1;i<total;i++)push(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
-  push('trailer<</Size '+total+'/Root 1 0 R>>\nstartxref\n'+xOff+'\n%%EOF');
-  return new Blob(chunks,{type:'application/pdf'});
-}
-function exportPDF(){
-  toast('در حال رندر PDF با ×'+PPI+' …');
-  raster().then(function(o){
-    var pageCssH=o.W*297/210;
-    var top=sheet.getBoundingClientRect().top;
-    var bounds=$$('#sheet .sec-head,#sheet .piece,#sheet tr,#sheet header,#sheet .rule-double,#sheet .divider,#sheet footer,#sheet .note,#sheet .formula,#sheet .features,#sheet .key-point,#sheet .ex-item,#sheet .summary,#sheet .qa,#sheet .seq,#sheet figure')
-      .map(function(el){return el.getBoundingClientRect().bottom-top;}).sort(function(a,b){return a-b;});
-    var pages=[],y=0;
-    function step(){
-      if(y>=o.H-2){dl(URL.createObjectURL(buildPdf(pages)),BASE+'.pdf');toast('PDF دانلود شد 📄 ('+pages.length+' صفحه)');return Promise.resolve();}
-      var target=Math.min(y+pageCssH,o.H);
-      if(target<o.H){var best=null;bounds.forEach(function(bd){if(bd>y+pageCssH*.6&&bd<=y+pageCssH)best=bd;});if(best)target=best;}
-      var h=target-y,dw=Math.round(1654*PPI/3),dh=Math.max(2,Math.round(dw*h/o.W));
-      var c=document.createElement('canvas');c.width=dw;c.height=dh;
-      var x=c.getContext('2d');x.fillStyle='#f7f4ee';x.fillRect(0,0,dw,dh);
-      x.drawImage(o.img,0,y,o.W,h,0,0,dw,dh);
-      return new Promise(function(res){c.toBlob(function(bl){bl.arrayBuffer().then(function(ab){res(new Uint8Array(ab));});},'image/jpeg',.92);}).then(function(jb){
-        pages.push({w:dw,h:dh,data:jb});y=target;return step();
-      });
-    }
-    return step();
-  }).catch(function(err){showErr('PDF: '+(err.message||err));});
-}
-
-/* ── سورس ── */
-function buildSource(){
-  var clone=document.documentElement.cloneNode(true);
-  clone.querySelectorAll('[contenteditable]').forEach(function(el){el.removeAttribute('contenteditable');});
-  clone.querySelectorAll('.selected').forEach(function(el){el.classList.remove('selected');});
-  clone.querySelectorAll('body').forEach(function(bd){bd.classList.remove('editing');});
-  var i=clone.querySelector('#insp');if(i)i.setAttribute('hidden','');
-  var c=clone.querySelector('#ctx');if(c)c.classList.remove('open');
-  var f=clone.querySelector('#imgFileInput');if(f)f.parentNode.removeChild(f);
-  return '<!DOCTYPE html>\n'+clone.outerHTML;
-}
-function saveSource(){
-  setEditing(false);
-  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),(location.pathname.split('/').pop()||'index.html'));
-  toast('سورس با همه تغییرات ذخیره شد 💾 — جایگزین فایل گیت‌هاب کن');
-}
-function dlCopy(){
-  setEditing(false);
-  dl(URL.createObjectURL(new Blob([buildSource()],{type:'text/html'})),BASE+'-copy.html');
-  toast('نسخه کپی دانلود شد ⬇');
-}
-
-STATUS='JS فعال ✓';
-}catch(err){showErr('بارگذاری: '+(err.message||err));}
-})();
+    push(iO(i)+' 0 obj<</Subtype/Image/ColorSpace/DeviceRGB/BitsPerComponent 8/Width '+p.w
