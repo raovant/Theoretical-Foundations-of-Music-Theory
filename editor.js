@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   editor.js — موتور ویرایشگر درسنامه‌ها · نسخه v10
+   editor.js — موتور ویرایشگر درسنامه‌ها · نسخه v11
    ═══════════════════════════════════════════════════════════ */
 (function(){
 'use strict';
@@ -148,7 +148,6 @@ footer{text-align:center}
 footer .fl{font-size:.8rem;color:var(--ink-3);line-height:2.2}
 footer .fl b{color:var(--ink-2)}
 footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bottom:6px}
-/* ── اجزای نقشهٔ راه (فاز/مبحث) ── */
 .topics{list-style:none}
 .topic{display:flex;align-items:center;gap:10px;padding:4px 2px;border-bottom:1px solid var(--rule)}
 .t-link{flex:1;display:flex;align-items:center;gap:10px;padding:7px 2px;text-decoration:none;color:var(--ink-2);transition:.15s;min-width:0}
@@ -165,7 +164,6 @@ footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bot
 .phase-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .45s ease}
 .phase.closed .phase-body{grid-template-rows:0fr}
 .phase-inner{overflow:hidden}
-/* ── موتور ── */
 body:not(.editing) .edit-only{display:none!important}
 body.editing [data-edit]{cursor:text;border-radius:4px}
 body.editing [data-edit]:hover{outline:1.5px dashed var(--accent);outline-offset:4px}
@@ -229,12 +227,11 @@ try{
 var $=function(s){return document.querySelector(s);}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
 var BASE=(location.pathname.split('/').pop()||'index.html').replace(/\.html$/,'')||'index';
 var KEY='edit-'+BASE;
-var VER='v10';
+var VER='v11';
 var sheet=$('#sheet');
 var selEl=null, PPI=3, anchorEl=null, lastX=0, lastY=0;
 var insp=$('#insp'), ctx=$('#ctx');
 
-/* ── تاریخچه Undo/Redo ── */
 var hist=[],histIdx=-1;
 function persist(){try{localStorage.setItem(KEY,sheet.innerHTML);}catch(e){}}
 function pushHist(){var snap=sheet.innerHTML;if(hist[histIdx]===snap)return;hist=hist.slice(0,histIdx+1);hist.push(snap);if(hist.length>60)hist.shift();histIdx=hist.length-1;}
@@ -318,7 +315,6 @@ function insertImageURL(){
   if(u&&u.trim())insertHTML('<figure class="fig"><img src="'+u.trim()+'" alt=""><figcaption data-edit>توضیح تصویر…</figcaption></figure>');
 }
 
-/* ── پنل استایل + استایل سطح کلمه ── */
 var SEL='#sheet h1,#sheet h2,#sheet h3,#sheet h4,#sheet p,#sheet li,#sheet a,#sheet span,#sheet b,#sheet td,#sheet th,#sheet caption,#sheet .formula,#sheet .seq,#sheet .int-type,#sheet .feature,#sheet .piece,#sheet .inv-card,#sheet .key-point,#sheet figure';
 var BLOCK_SEL='#sheet .sec,#sheet header,#sheet footer,#sheet nav.toc,#sheet .rule-double,#sheet .divider,#sheet .sec-head,#sheet article.piece,#sheet table,#sheet .interval-types,#sheet .features,#sheet .inversion-grid,#sheet .summary,#sheet .note,#sheet .key-point,#sheet .ex-item,#sheet .qa,#sheet .letters,#sheet .freq,#sheet figure,#sheet .phase';
 var FAMS={body:"'IRANSans','Kalameh',sans-serif",disp:"'Kalameh',sans-serif",fa:"'IRANSans FaNum','IRANSans',sans-serif"};
@@ -375,7 +371,6 @@ function removeEl(el){
   toast(big?'بخش کامل حذف شد':'المان حذف شد');
 }
 
-/* ── جست‌وجو و جایگزینی ── */
 function findReplace(){
   var f=prompt('جست‌وجو برای:');if(!f)return;
   var r=prompt('جایگزینی با:');if(r===null)return;
@@ -390,7 +385,6 @@ function findReplace(){
   if(count){save(false);toast(count+' مورد جایگزین شد');}else toast('پیدا نشد');
 }
 
-/* ── ابزار جدول ── */
 function tableTools(cell){
   var table=cell.closest('table'),tr=cell.closest('tr');
   addTitle('ابزار جدول');
@@ -411,7 +405,6 @@ function tableTools(cell){
   addSep();
 }
 
-/* ── منوی کلیک‌راست ── */
 function hideCtx(){ctx.classList.remove('open');}
 function addItem(icon,label,fn,extra){
   var b=document.createElement('button');
@@ -430,12 +423,12 @@ function placeCtx(){
 function openInsertMenu(){
   ctx.innerHTML='';
   addTitle('درج بلوک (قبل از بخش انتخاب‌شده)');
-  addItem('🖼','تصویر (از فایل)',pickImageFile);
+  addItem('','تصویر (از فایل)',pickImageFile);
   addItem('🔗','تصویر (از لینک)',insertImageURL);
   addItem('➖','خط جداکننده',function(){insertHTML(TPL.divider);});
   addItem('🩷','باکس صورتی نکته / کاربرد',function(){insertHTML(TPL.note);});
   addItem('📦','کانتینر (عنوان + متن)',function(){insertHTML(TPL.keypoint);});
-  addItem('📊','جدول (۳×۳)',function(){insertHTML(TPL.table);});
+  addItem('','جدول (۳×۳)',function(){insertHTML(TPL.table);});
   addItem('🧮','باکس فرمول',function(){insertHTML(TPL.formula);});
   addItem('🎼','ردیف نت‌ها (seq)',function(){insertHTML(TPL.seq);});
   addItem('🎸','کارت تحلیل قطعه',function(){insertHTML(TPL.piece);});
@@ -447,7 +440,7 @@ function openInsertMenu(){
   addItem('📶','نوار فرکانس',function(){insertHTML(TPL.freq);});
   placeCtx();
 }
-var SHORTCUTS_TXT='شرتکات‌ها (حالت ویرایش):\nCtrl+Shift+→ : راست‌چین\nCtrl+Shift+← : چپ‌چین\nCtrl+E : وسط‌چین · Ctrl+J : کشیده\nCtrl+B/I/U : ضخیم/ایتالیک/زیرخط (روی کلمهٔ انتخاب‌شده)\nانتخاب کلمه + تغییر سایز/وزن/رنگ/فونت از پنل : فقط روی انتخاب\nCtrl+] / Ctrl+[ : سایز ±\nCtrl+D : پنل استایل\nCtrl+Z / Ctrl+Y : واگرد / ازنو\nCtrl+H : جست‌وجو و جایگزینی\nCtrl+S : ذخیره\nEsc : لغو انتخاب / بستن منو';
+var SHORTCUTS_TXT='شرتکات‌ها (حالت ویرایش):\nCtrl+Shift+→ : راست‌چین (Right align)\nCtrl+Shift+← : چپ‌چین (Left align)\nCtrl+E : وسط‌چین (Center)\nCtrl+J : کشیده (Justify)\nCtrl+B : ضخیم (Bold)\nCtrl+I : ایتالیک (Italic)\nCtrl+U : زیرخط (Underline)\nCtrl+] : سایز بزرگتر (Increase size)\nCtrl+[ : سایز کوچکتر (Decrease size)\nCtrl+D : پنل استایل (Style panel)\nCtrl+S : ذخیره (Save)\nCtrl+Z : واگرد (Undo)\nCtrl+Y : ازنو (Redo)\nCtrl+H : جست‌وجو و جایگزینی (Find & Replace)\nCtrl+P : خروجی PDF (Export PDF)\nCtrl+Shift+P : خروجی PNG (Export PNG)\nCtrl+Shift+D : تکثیر (Duplicate)\nCtrl+Shift+↑ : جابه‌جایی به بالا (Move up)\nCtrl+Shift+↓ : جابه‌جایی به پایین (Move down)\nCtrl+Shift+N : افزودن بخش جدید (Add section)\nCtrl+F : جست‌وجو (Find)\nEsc : لغو (Cancel)';
 document.addEventListener('contextmenu',function(e){
   if(e.target.closest('.insp'))return;
   e.preventDefault();
@@ -461,36 +454,36 @@ document.addEventListener('contextmenu',function(e){
     var small=t.closest(SEL), block=t.closest(BLOCK_SEL), edt=t.closest('[data-edit]');
     if(small||block){
       addTitle('المان زیر نشانگر');
-      if(edt)addItem('✍️','ویرایش متن این بخش',function(){setEditing(true);edt.focus();});
+      if(edt)addItem('✍️','ویرایش متن این بخش (Edit text)',function(){setEditing(true);edt.focus();});
       var sty=small||block;
-      if(sty)addItem('🎨','استایل این المان <'+sty.tagName.toLowerCase()+'>',function(){select(sty);});
-      if(small)addItem('🗑','حذف این المان <'+small.tagName.toLowerCase()+'>',function(){removeEl(small);});
+      if(sty)addItem('🎨','استایل این المان (Style element)',function(){select(sty);});
+      if(small)addItem('🗑','حذف این المان (Delete element)',function(){removeEl(small);});
       if(block&&block!==small){
-        addItem('⛔','حذف کل بخش <'+block.tagName.toLowerCase()+'>',function(){removeEl(block);});
-        addItem('⧉','تکثیر این بخش',function(){var c=block.cloneNode(true);block.parentNode.insertBefore(c,block.nextElementSibling);makeEditableSafe(c);syncEditable(c);save(false);});
-        addItem('⬆','جابه‌جایی به بالا',function(){var p=block.previousElementSibling;if(p){block.parentNode.insertBefore(block,p);save(false);}});
-        addItem('⬇','جابه‌جایی به پایین',function(){var n=block.nextElementSibling;if(n){block.parentNode.insertBefore(block,n.nextElementSibling);save(false);}});
+        addItem('⛔','حذف کل بخش (Delete section)',function(){removeEl(block);});
+        addItem('⧉','تکثیر این بخش (Duplicate section)',function(){var c=block.cloneNode(true);block.parentNode.insertBefore(c,block.nextElementSibling);makeEditableSafe(c);syncEditable(c);save(false);});
+        addItem('⬆','جابه‌جایی به بالا (Move up)',function(){var p=block.previousElementSibling;if(p){block.parentNode.insertBefore(block,p);save(false);}});
+        addItem('⬇','جابه‌جایی به پایین (Move down)',function(){var n=block.nextElementSibling;if(n){block.parentNode.insertBefore(block,n.nextElementSibling);save(false);}});
       }
       addSep();
     }
   }
-  addItem(editing?'✅':'✏️',editing?'خروج از حالت ویرایش':'حالت ویرایش',function(){setEditing(!editing);});
+  addItem(editing?'✅':'✏️',editing?'خروج از حالت ویرایش (Exit edit mode)':'حالت ویرایش (Enter edit mode)',function(){setEditing(!editing);});
   if(editing){
-    addItem('➕','درج بلوک جدید…',openInsertMenu);
-    addItem('📄','افزودن بخش جدید',addSectionFn);
-    addItem('🔎','جست‌وجو و جایگزینی',findReplace);
+    addItem('➕','درج بلوک جدید (Insert block)',openInsertMenu);
+    addItem('📄','افزودن بخش جدید (Add section)',addSectionFn);
+    addItem('🔎','جست‌وجو و جایگزینی (Find & Replace)',findReplace);
     addItem('↩','واگرد (Undo)',undo);
     addItem('↪','ازنو (Redo)',redo);
   }
   addSep();
-  addItem('🖼','خروجی PNG',exportPNG,'×'+PPI);
-  addItem('📄','خروجی PDF',exportPDF,'×'+PPI);
-  addItem('⚙️','کیفیت خروجی (PPI)',changePPI,'×'+PPI);
+  addItem('🖼','خروجی PNG (Export PNG)',exportPNG,'×'+PPI);
+  addItem('','خروجی PDF (Export PDF)',exportPDF,'×'+PPI);
+  addItem('️','کیفیت خروجی (PPI quality)',changePPI,'×'+PPI);
   addSep();
-  addItem('💾','ذخیره تغییرات در سورس',saveSource);
-  addItem('⬇','دانلود کپی سورس',dlCopy);
-  addItem('↺','بازنشانی به نسخه اولیه',resetFn);
-  addItem('⌨','فهرست شرتکات‌ها',function(){alert(SHORTCUTS_TXT);});
+  addItem('💾','ذخیره تغییرات در سورس (Save source)',saveSource);
+  addItem('⬇','دانلود کپی سورس (Download copy)',dlCopy);
+  addItem('↺','بازنشانی (Reset)',resetFn);
+  addItem('','فهرست شرتکات‌ها (Shortcuts list)',function(){alert(SHORTCUTS_TXT);});
   addSep();
   var stt=document.createElement('div');
   stt.className='cstatus'+(STATUS.indexOf('✗')===0?' bad':'');
@@ -508,7 +501,6 @@ function changePPI(){
   if(!isNaN(v)){PPI=Math.min(6,Math.max(0.5,v));toast('کیفیت خروجی: ×'+PPI);}
 }
 
-/* ── شرتکات‌ها ── */
 function editTargetFromSelection(){
   var sel=getSelection();
   var node=sel&&sel.anchorNode;
@@ -523,6 +515,18 @@ function wrapSelection(tag){
   catch(err){var f=r.extractContents();el.appendChild(f);r.insertNode(el);}
   saveSoon();
 }
+function duplicateSelected(){
+  if(!selEl)return;
+  var c=selEl.cloneNode(true);
+  selEl.parentNode.insertBefore(c,selEl.nextElementSibling);
+  makeEditableSafe(c);save(false);
+  toast('تکثیر شد ');
+}
+function moveSelected(dir){
+  if(!selEl)return;
+  if(dir==='up'){var p=selEl.previousElementSibling;if(p){selEl.parentNode.insertBefore(selEl,p);save(false);}}
+  else{var n=selEl.nextElementSibling;if(n){selEl.parentNode.insertBefore(selEl,n.nextElementSibling);save(false);}}
+}
 document.addEventListener('keydown',function(e){
   if(!document.body.classList.contains('editing'))return;
   if(!(e.ctrlKey||e.metaKey))return;
@@ -531,6 +535,13 @@ document.addEventListener('keydown',function(e){
   if(!e.shiftKey&&(k==='z'||k==='Z')){e.preventDefault();undo();return;}
   if(!e.shiftKey&&(k==='y'||k==='Y')){e.preventDefault();redo();return;}
   if(!e.shiftKey&&(k==='h'||k==='H')){e.preventDefault();findReplace();return;}
+  if(!e.shiftKey&&(k==='f'||k==='F')){e.preventDefault();var s=prompt('جست‌وجو برای:');if(s){alert('جست‌وجو: '+s);}return;}
+  if(!e.shiftKey&&(k==='p'||k==='P')){e.preventDefault();exportPDF();return;}
+  if(e.shiftKey&&(k==='p'||k==='P')){e.preventDefault();exportPNG();return;}
+  if(e.shiftKey&&(k==='d'||k==='D')){e.preventDefault();duplicateSelected();return;}
+  if(e.shiftKey&&k==='ArrowUp'){e.preventDefault();moveSelected('up');return;}
+  if(e.shiftKey&&k==='ArrowDown'){e.preventDefault();moveSelected('down');return;}
+  if(e.shiftKey&&(k==='n'||k==='N')){e.preventDefault();addSectionFn();return;}
   if(e.shiftKey&&k==='ArrowRight'){e.preventDefault();if(tgt){tgt.style.textAlign='right';select(tgt);saveSoon();}return;}
   if(e.shiftKey&&k==='ArrowLeft'){e.preventDefault();if(tgt){tgt.style.textAlign='left';select(tgt);saveSoon();}return;}
   if(!e.shiftKey&&(k==='e'||k==='E')){e.preventDefault();if(tgt){tgt.style.textAlign='center';select(tgt);saveSoon();}return;}
@@ -544,7 +555,6 @@ document.addEventListener('keydown',function(e){
   if(!e.shiftKey&&(k==='s'||k==='S')){e.preventDefault();save(false);return;}
 });
 
-/* ── کلیک‌ها (شامل دکمه‌های داخلی نقشهٔ راه) ── */
 document.addEventListener('click',function(e){
   var t=e.target, editing=document.body.classList.contains('editing');
   if(editing&&t.closest('#sheet a'))e.preventDefault();
@@ -579,7 +589,6 @@ function resetFn(){
   if(confirm('همه ویرایش‌ها پاک و نسخه اولیه بازگردانده شود؟')){try{localStorage.removeItem(KEY);}catch(e){}location.reload();}
 }
 
-/* ── خروجی‌ها ── */
 var FONT_FILES=['fonts/Kalameh-SemiBold.woff2','fonts/Kalameh-Bold.woff2','fonts/IRANSansWeb_Light.woff2','fonts/IRANSansWeb.woff2','fonts/IRANSansWeb_Medium.woff2','fonts/IRANSansWeb_Bold.woff2','fonts/IRANSansWeb_FaNum.woff2','fonts/IRANSansWeb_Bold_FaNum.woff2'];
 function b64(buf){var s='';var u=new Uint8Array(buf);for(var i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s);}
 function collectFonts(){
@@ -595,7 +604,7 @@ function collectFonts(){
 }
 function raster(){
   setEditing(false);deselect();hideCtx();if(document.activeElement)document.activeElement.blur();
-  return new Promise(function(r){setTimeout(r,80);}).then(function(){
+  return new Promise(function(r){setTimeout(r,100);}).then(function(){
     var css='';$$('style').forEach(function(s){css+=s.textContent+'\n';});
     css+="svg{--paper:#f7f4ee;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;}";
     return collectFonts().then(function(fontMap){
@@ -611,7 +620,10 @@ function raster(){
       var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:'+W+'px;box-sizing:border-box;background:#f7f4ee;color:#221d17;font-family:\'IRANSans\',\'Kalameh\',sans-serif;font-size:14.5px;line-height:2.05;direction:rtl"><style><![CDATA['+css+']]></style>'+x+'</div></foreignObject></svg>';
       var img=new Image();
       img.src=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
-      return img.decode().then(function(){URL.revokeObjectURL(img.src);return{img:img,W:W,H:H};},function(e){URL.revokeObjectURL(img.src);throw new Error('رندر SVG ناموفق: '+(e.message||e));});
+      return new Promise(function(resolve,reject){
+        img.onload=function(){URL.revokeObjectURL(img.src);resolve({img:img,W:W,H:H});};
+        img.onerror=function(e){URL.revokeObjectURL(img.src);reject(new Error('رندر SVG ناموفق: '+e.message));};
+      });
     });
   });
 }
@@ -624,7 +636,7 @@ function exportPNG(){
     var x=c.getContext('2d');
     x.fillStyle='#f7f4ee';x.fillRect(0,0,c.width,c.height);
     x.scale(PPI,PPI);x.drawImage(o.img,0,0,o.W,o.H);
-    c.toBlob(function(bl){dl(URL.createObjectURL(bl),BASE+'-'+PPI+'x.png');toast('PNG دانلود شد 🖼');},'image/png');
+    c.toBlob(function(bl){if(bl){dl(URL.createObjectURL(bl),BASE+'-'+PPI+'x.png');toast('PNG دانلود شد 🖼');}else{showErr('PNG: خطا در ساخت blob');}},'image/png');
   }).catch(function(err){showErr('PNG: '+(err.message||err));});
 }
 function buildPdf(pages){
@@ -668,8 +680,8 @@ function exportPDF(){
       var c=document.createElement('canvas');c.width=dw;c.height=dh;
       var x=c.getContext('2d');x.fillStyle='#f7f4ee';x.fillRect(0,0,dw,dh);
       x.drawImage(o.img,0,y,o.W,h,0,0,dw,dh);
-      return new Promise(function(res){c.toBlob(function(bl){bl.arrayBuffer().then(function(ab){res(new Uint8Array(ab));});},'image/jpeg',.92);}).then(function(jb){
-        pages.push({w:dw,h:dh,data:jb});y=target;return step();
+      return new Promise(function(res){c.toBlob(function(bl){if(bl){bl.arrayBuffer().then(function(ab){res(new Uint8Array(ab));});}else{res(null);}},'image/jpeg',.92);}).then(function(jb){
+        if(jb){pages.push({w:dw,h:dh,data:jb});}y=target;return step();
       });
     }
     return step();
