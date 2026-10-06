@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 280" role="img" aria-labelledby="title desc">
+ <title id="title">Neighboring keys and modulation around C major</title><desc id="desc">F major and G major are adjacent to C major on the circle of fifths; A minor is C major's relative minor and shares its key signature.</desc>
+ <rect width="840" height="280" rx="18" fill="#fbf7ee"/><text x="420" y="34" text-anchor="middle" fill="#544c40" font-family="Arial,sans-serif" font-size="16" font-weight="700">NEARBY KEYS OFFER COMMON MODULATION PATHS</text>
+ <g stroke="#d8cebd" stroke-width="3"><path d="M420 146 245 104M420 146 595 104M420 146V220"/></g>
+ <path d="M395 140 257 108M445 140 583 108" fill="none" stroke="#b23a26" stroke-width="3"/><path d="m263 101-12 6 10 9M577 101l12 6-10 9" fill="none" stroke="#b23a26" stroke-width="3"/>
+ <g font-family="Arial,sans-serif" text-anchor="middle"><circle cx="420" cy="146" r="48" fill="#f1e3d2" stroke="#b23a26" stroke-width="2"/><circle cx="245" cy="104" r="39" fill="#fffdf8" stroke="#d8cebd" stroke-width="2"/><circle cx="595" cy="104" r="39" fill="#fffdf8" stroke="#d8cebd" stroke-width="2"/><circle cx="420" cy="220" r="34" fill="#e0ebe3" stroke="#4e7164" stroke-width="2"/>
+ <text x="420" y="143" fill="#544c40" font-size="19" font-weight="700">C major</text><text x="420" y="163" fill="#8b8272" font-size="12">0 alterations</text><text x="245" y="109" fill="#544c40" font-size="17" font-weight="700">F major</text><text x="595" y="109" fill="#544c40" font-size="17" font-weight="700">G major</text><text x="420" y="225" fill="#4e7164" font-size="15" font-weight="700">A minor</text>
+ <text x="245" y="164" fill="#8b8272" font-size="11">one flat</text><text x="595" y="164" fill="#8b8272" font-size="11">one sharp</text><text x="420" y="266" fill="#8b8272" font-size="11">relative key · same signature</text></g>
+</svg>

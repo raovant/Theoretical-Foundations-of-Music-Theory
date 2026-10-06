@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 270" role="img" aria-labelledby="title desc">
+  <title id="title">Melodic and harmonic intervals</title><desc id="desc">A melodic interval is heard as two notes one after another; a harmonic interval is heard as two notes at the same time.</desc>
+  <rect width="840" height="270" rx="18" fill="#fbf7ee"/><text x="420" y="34" text-anchor="middle" fill="#544c40" font-family="Arial,sans-serif" font-size="16" font-weight="700">TWO WAYS TO HEAR AN INTERVAL</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle"><text x="220" y="72" fill="#b23a26" font-size="18" font-weight="700">MELODIC · ONE AFTER ANOTHER</text><text x="620" y="72" fill="#4e7164" font-size="18" font-weight="700">HARMONIC · AT THE SAME TIME</text></g>
+  <g stroke="#d8cebd" stroke-width="2"><path d="M75 115H365M75 145H365M75 175H365M75 205H365"/><path d="M475 115H765M475 145H765M475 175H765M475 205H765"/></g>
+  <g fill="#b23a26"><ellipse cx="135" cy="190" rx="12" ry="8" transform="rotate(-18 135 190)"/><ellipse cx="300" cy="130" rx="12" ry="8" transform="rotate(-18 300 130)"/></g>
+  <path d="M157 157H273" stroke="#b23a26" stroke-width="3"/><path d="m263 149 12 8-12 8" fill="none" stroke="#b23a26" stroke-width="3"/>
+  <g fill="#4e7164"><ellipse cx="580" cy="190" rx="12" ry="8" transform="rotate(-18 580 190)"/><ellipse cx="580" cy="130" rx="12" ry="8" transform="rotate(-18 580 130)"/></g>
+  <g fill="#544c40" font-family="Arial,sans-serif" font-size="15" font-weight="700" text-anchor="middle"><text x="135" y="232">C</text><text x="300" y="232">E</text><text x="580" y="232">C + E</text></g>
+  <g fill="#8b8272" font-family="Arial,sans-serif" font-size="12" text-anchor="middle"><text x="220" y="253">time →</text><text x="620" y="253">one shared moment</text></g>
+</svg>
