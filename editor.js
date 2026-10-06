@@ -1,9 +1,12 @@
 /* ═══════════════════════════════════════════════════════════
-   editor.js — موتور ویرایشگر درسنامه‌ها · نسخه v11
+   editor.js — موتور ویرایشگر درسنامه‌ها · نسخه v9
+   شامل: فونت‌ها + تمام استایل‌ها + ویرایشگر + منوی افزودن بلوک
+   + شرتکات‌ها + خروجی PNG/PDF + ذخیرهٔ سورس
    ═══════════════════════════════════════════════════════════ */
 (function(){
 'use strict';
 
+/* ══════════ ۱) تزریق فونت‌ها و استایل‌ها ══════════ */
 var FONT_CSS=`
 @font-face{font-family:'Kalameh';font-weight:600;font-display:swap;src:url('fonts/Kalameh-SemiBold.woff2') format('woff2'),url('fonts/Kalameh-SemiBold.woff') format('woff');}
 @font-face{font-family:'Kalameh';font-weight:700;font-display:swap;src:url('fonts/Kalameh-Bold.woff2') format('woff2'),url('fonts/Kalameh-Bold.woff') format('woff');}
@@ -18,7 +21,7 @@ var COMP_CSS=`
 :root{--paper:#f7f4ee;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;--measure:42rem;}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;color-scheme:light}
-body{font-family:var(--f-body);background:var(--paper);color:var(--ink);font-size:14.5px;line-height:2.05;-webkit-font-smoothing:antialiased}
+body{font-family:var(--f-body);background:var(--paper);color:var(--ink);font-size:calc(14.5px * var(--reader-scale,1));line-height:2.05;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--accent);color:var(--paper)}
 a{color:var(--accent)}
 .ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
@@ -148,22 +151,6 @@ footer{text-align:center}
 footer .fl{font-size:.8rem;color:var(--ink-3);line-height:2.2}
 footer .fl b{color:var(--ink-2)}
 footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bottom:6px}
-.topics{list-style:none}
-.topic{display:flex;align-items:center;gap:10px;padding:4px 2px;border-bottom:1px solid var(--rule)}
-.t-link{flex:1;display:flex;align-items:center;gap:10px;padding:7px 2px;text-decoration:none;color:var(--ink-2);transition:.15s;min-width:0}
-.t-link:hover{color:var(--accent)}
-.t-text{flex:1;font-size:.95rem;line-height:2;min-width:0}
-.go{flex:none;color:var(--rule-2);font-size:.95rem;transition:.2s}
-.t-link:hover .go{color:var(--accent);transform:translateX(-5px)}
-.t-link.unset{opacity:.75}
-.phase-head{display:flex;align-items:flex-start;gap:12px}
-.ph-t{flex:1;min-width:0}
-.col-btn{width:31px;height:31px;border-radius:50%;border:1px solid var(--rule-2);background:var(--card);color:var(--ink-3);font-size:.8rem;transition:transform .3s,border-color .2s}
-.col-btn:hover{border-color:var(--accent);color:var(--accent)}
-.phase.closed .col-btn{transform:rotate(90deg)}
-.phase-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .45s ease}
-.phase.closed .phase-body{grid-template-rows:0fr}
-.phase-inner{overflow:hidden}
 body:not(.editing) .edit-only{display:none!important}
 body.editing [data-edit]{cursor:text;border-radius:4px}
 body.editing [data-edit]:hover{outline:1.5px dashed var(--accent);outline-offset:4px}
@@ -173,9 +160,9 @@ body.editing #sheet *{cursor:pointer}
 body.editing #sheet [data-edit]{cursor:text}
 .add-phase{display:block;width:100%;margin-top:44px;padding:14px;border-radius:14px;border:1.5px dashed var(--rule-2);background:transparent;color:var(--ink-3);font-size:.9rem;font-weight:700;transition:.2s}
 .add-phase:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
-.ctx{position:fixed;z-index:70;min-width:250px;max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none;font-family:var(--f-body)}
+.ctx{position:fixed;z-index:70;min-width:250px;max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none}
 .ctx.open{display:block}
-.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s;font-family:var(--f-body)}
+.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s}
 .ctx button:hover{background:var(--accent-bg);color:var(--accent)}
 .ctx button .ci{width:20px;text-align:center;flex:none}
 .ctx button .ck{margin-inline-start:auto;font-size:.65rem;color:var(--ink-3)}
@@ -185,7 +172,7 @@ body.editing #sheet [data-edit]{cursor:text}
 .ctx .cstatus.bad{color:var(--accent)}
 .insp{position:fixed;bottom:14px;inset-inline:0;z-index:45;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
 .insp[hidden]{display:none}
-.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px;font-family:var(--f-body)}
+.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px}
 .insp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .insp-head b{font-size:.78rem;color:var(--accent)}
 #inspTag{font-size:.7rem;color:var(--ink-3);direction:ltr}
@@ -201,24 +188,126 @@ body.editing #sheet [data-edit]{cursor:text}
 .ib{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule-2);background:transparent;color:var(--ink-3);font-size:.8rem;line-height:1;transition:.15s}
 .ib:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 .toast{position:fixed;bottom:24px;inset-inline:0;display:flex;justify-content:center;z-index:50;pointer-events:none}
-.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center;font-family:var(--f-body)}
+.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center}
+.toast span.show{opacity:1;transform:none}
+:root{--canvas:#e7dfd2;--paper:#fffdf8;--reader-scale:1}
+html{font-size:calc(16px * var(--reader-scale,1));scroll-padding-top:108px}
+body{background-color:var(--canvas);background-image:radial-gradient(rgba(116,91,58,.045) .7px,transparent .7px);background-size:5px 5px}
+.page{position:relative;width:min(calc(100% - 36px),48rem);max-width:none;min-height:calc(100vh - 150px);margin:24px auto 64px;padding:clamp(38px,5vw,64px) clamp(26px,6vw,68px) 58px;background:var(--paper);border:1px solid #ded5c5;border-radius:3px;box-shadow:0 1px 2px rgba(53,42,27,.08),0 18px 44px rgba(53,42,27,.14),0 45px 85px rgba(53,42,27,.08)}
+.page::before{content:"";position:absolute;inset-block:0;inset-inline-start:24px;width:1px;background:linear-gradient(180deg,transparent,rgba(178,58,38,.13) 8%,rgba(178,58,38,.13) 92%,transparent);pointer-events:none}
+#sheet .sec{scroll-margin-top:112px}
+.paper-chrome{position:sticky;top:10px;z-index:60;width:min(calc(100% - 24px),54rem);margin:12px auto 0}
+.paper-toolbar{display:flex;align-items:center;gap:12px;min-height:54px;padding:8px 10px;background:rgba(255,253,248,.94);border:1px solid #d8cebd;border-radius:16px;box-shadow:0 7px 26px rgba(53,42,27,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.paper-brand{display:flex;align-items:center;gap:8px;flex:none;color:var(--ink);font-family:var(--f-disp);font-size:.78rem;font-weight:700;text-decoration:none;white-space:nowrap}
+.paper-brand-mark{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:var(--accent);color:#fff;font-family:var(--f-body);font-size:1rem}
+.paper-doc-title{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2);font-size:.78rem}
+.paper-controls,.paper-lesson-nav{display:flex;align-items:center;gap:5px;flex:none}.paper-lesson-nav[hidden]{display:none!important}
+.paper-control{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:5px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--ink-2);font:500 .75rem var(--f-body);cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.paper-control:hover{border-color:var(--rule);background:#f4efe5;color:var(--accent)}
+.paper-control:focus-visible,.paper-outline button:focus-visible,.paper-outline a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.paper-control.primary{border-color:var(--accent);background:var(--accent);color:#fff}
+.paper-control.primary:hover{background:#962e1e;color:#fff}
+.paper-control.square{width:34px;padding:0;font-size:1rem}
+.paper-control[aria-pressed="true"]{background:var(--ink);color:#fff}
+.paper-save-state{max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-3);font-size:.65rem}
+.paper-progress{height:3px;margin:0 14px;overflow:hidden;border-radius:0 0 4px 4px;background:rgba(84,76,64,.12)}
+.paper-progress-fill{width:0;height:100%;background:var(--accent);transition:width .12s linear}
+.paper-outline{position:absolute;top:calc(100% + 9px);inset-inline-start:8px;width:min(350px,calc(100vw - 40px));max-height:min(65vh,520px);overflow:auto;padding:10px;background:var(--paper);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 48px rgba(34,29,23,.2)}
+.paper-outline[hidden]{display:none}
+.paper-outline-title{padding:8px 12px 10px;color:var(--ink-3);font-size:.72rem;font-weight:700;border-bottom:1px solid var(--rule)}
+.paper-outline button{display:flex;align-items:baseline;gap:10px;width:100%;padding:8px 12px;border:0;border-radius:8px;background:transparent;text-align:start;color:var(--ink-2);font:400 .8rem/1.8 var(--f-body);cursor:pointer}
+.paper-outline button:hover{background:var(--accent-bg);color:var(--accent)}
+.paper-outline .outline-index{flex:none;width:26px;color:var(--accent);font:700 .68rem var(--f-fa)}
+.phase.sec{margin:22px 0 0;padding:20px 22px 14px;border:1px solid var(--rule);border-radius:16px;background:rgba(255,253,248,.76);box-shadow:0 3px 12px rgba(53,42,27,.035)}
+.phase .sec-head.phase-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:14px;margin-bottom:0}
+.phase .ph-t{min-width:0}
+.phase .sec-label{letter-spacing:.025em}
+.phase .head-tools{display:flex;align-items:center;gap:7px;flex:none}
+.phase .col-btn{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);color:var(--ink-2);font-size:1rem;cursor:pointer;transition:.15s}
+.phase .col-btn:hover{border-color:var(--accent);color:var(--accent)}
+.phase-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .22s ease}
+.phase-inner{min-height:0;overflow:hidden}
+.phase.collapsed .phase-head{border-bottom:0;padding-bottom:2px}
+.phase.collapsed .phase-body{display:none}
+.topics{display:grid;gap:7px;list-style:none;margin:14px 0 10px;padding:0}
+.topic{display:flex;align-items:center;gap:5px;min-width:0;padding:3px 4px 3px 8px;border:1px solid transparent;border-radius:11px;transition:background .15s,border-color .15s}
+.topic:hover{border-color:var(--rule);background:#fffefa}
+.t-link{display:flex;align-items:center;justify-content:space-between;gap:14px;flex:1;min-width:0;padding:7px 10px;color:var(--ink-2);text-decoration:none;font-size:.88rem;line-height:1.8}
+.t-link:hover{color:var(--accent)}
+.t-link.unset{color:var(--ink-3)}
+.t-link.unset .t-text::after{content:" · در برنامه";color:#a79b87;font-size:.68rem}
+.t-text{min-width:0}
+.t-link .go{flex:none;color:var(--accent);font-size:.9rem;transition:transform .15s}
+.t-link:hover .go{transform:translateX(-3px)}
+.topic .ib{flex:none}
+.add-topic{display:block;margin:10px 4px 2px;padding:7px 12px;border:1px dashed var(--rule-2);border-radius:9px;background:transparent;color:var(--ink-3);font:500 .76rem var(--f-body);cursor:pointer}
+.add-topic:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+#addPhase{margin-top:24px}
+.lesson-figure{margin:22px 0 28px;padding:12px 14px 9px;border:1px solid var(--rule);border-radius:14px;background:rgba(255,253,248,.78);break-inside:avoid}
+.lesson-figure img{display:block;width:100%;height:auto}
+.lesson-figure figcaption{margin-top:8px;color:var(--ink-3);font-size:.78rem;line-height:1.9;text-align:center}
+@media(max-width:560px){.lesson-figure{margin:18px 0;padding:8px 6px 7px}.lesson-figure figcaption{font-size:.72rem}}
+@media print{.lesson-figure{background:#fff;padding:7px;border-color:#ddd}}
+@media print{
+  @page{size:A4;margin:15mm 16mm}
+  body{background:#fff!important;background-image:none!important;font-size:11pt}
+  .paper-chrome,.paper-outline{display:none!important}
+  .page{width:auto;max-width:100%;min-height:0;margin:0;padding:0;border:0;border-radius:0;background:#fff;box-shadow:none}
+  .page::before{display:none}
+  .phase.sec{break-inside:avoid;border:0;border-bottom:1px solid #ccc;border-radius:0;box-shadow:none;background:#fff;padding:12px 0;margin:0}
+  .phase.collapsed .phase-body{display:block!important}
+  .phase .head-tools,.add-topic,#addPhase{display:none!important}
+  .sec{margin-top:2.4em}
+}
+@media(max-width:720px){
+  .paper-chrome{top:6px;width:calc(100% - 16px);margin-top:8px}
+  .paper-toolbar{gap:6px;padding:6px;min-height:48px;border-radius:13px}
+  .paper-brand{gap:6px;font-size:.68rem}.paper-brand span:last-child,.paper-doc-title{display:none}
+  .paper-brand-mark{width:28px;height:28px}
+  .paper-doc-title{font-size:.68rem}
+  .paper-control{min-height:32px;padding:4px 7px;font-size:.68rem}
+  .paper-control.square{width:31px}
+  .paper-save-state{display:none}
+  .page{width:calc(100% - 18px);min-height:calc(100vh - 100px);margin:16px auto 32px;padding:34px 24px 42px}
+  .page::before{inset-inline-start:12px}
+  .phase.sec{padding:15px 14px 12px}
+  .phase .sec-head.phase-head{gap:8px}
+  .phase .sec-head h2{font-size:1.1rem!important}
+}
+@media(max-width:480px){
+  .paper-brand span:last-child,.paper-doc-title{display:none}
+  .paper-toolbar{justify-content:space-between}
+  .paper-controls{gap:2px}
+  .paper-control{padding-inline:6px}
+  .paper-lesson-nav .paper-control{width:32px;min-width:32px;height:32px;padding:0;overflow:hidden;color:transparent;font-size:0}
+  .paper-lesson-nav #paperPrev::after,.paper-lesson-nav #paperNext::after{color:var(--ink-2);font-size:1rem;line-height:1}
+  .paper-lesson-nav #paperPrev::after{content:"←"}
+  .paper-lesson-nav #paperNext::after{content:"→"}
+  .phase.sec{border-radius:12px}
+  .topic{padding-inline:1px}
+  .t-link{gap:6px;padding-inline:7px;font-size:.81rem}
+  .topic .ib{width:23px;height:23px;font-size:.72rem}
+}
 @media print{@page{margin:17mm}body{background:#fff;font-size:11.5pt}.page{max-width:100%;padding:0}.sec{margin-top:2.4em;break-inside:auto}.note,.piece,.ex-item,table,.features{break-inside:avoid}a{color:inherit;text-decoration:none}.edit-only,.toast,.insp,.ctx,.back-link{display:none!important}}
-@media(max-width:560px){.page{padding:40px 20px}body{font-size:15.5px}.ex-item{gap:12px}.freq{flex-direction:column}.freq>div+div{border-inline-start:none;border-top:1px solid var(--rule)}}
+@media(max-width:560px){.page{padding:40px 20px}body{font-size:calc(15.5px * var(--reader-scale,1))}.ex-item{gap:12px}.freq{flex-direction:column}.freq>div+div{border-inline-start:none;border-top:1px solid var(--rule)}}
 `;
 function injectStyle(id,css){var el=document.getElementById(id);if(!el){el=document.createElement('style');el.id=id;document.head.appendChild(el);}el.textContent=css;}
 injectStyle('inj-fonts',FONT_CSS);
 injectStyle('inj-css',COMP_CSS);
 
-var INSP_HTML='<div class="insp" id="insp" hidden><div class="insp-card"><div class="insp-head"><b>استایل المان / انتخاب</b><span id="inspTag"></span><span class="sp"></span><button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button><button type="button" class="ib" id="inspClose" title="بستن">×</button></div><div class="insp-grid"><label>سایز قلم <span class="ltr" id="vSize"></span><input type="range" id="inSize" min="10" max="56" step="1"></label><label>فاصله خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label><label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label><label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label><label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label><label>رنگ<div class="swatches"><button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button><button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button><button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button><button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button><input type="color" id="inColor" value="#221d17"></div></label></div></div></div>';
-function ensureChrome(){
+/* ══════════ ۲) ساخت اجزای رابط اگر وجود نداشتن ══════════ */
+var INSP_HTML='<div class="insp" id="insp" hidden><div class="insp-card"><div class="insp-head"><b>استایل المان</b><span id="inspTag"></span><span class="sp"></span><button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button><button type="button" class="ib" id="inspClose" title="بستن">×</button></div><div class="insp-grid"><label>سایز قلم <span class="ltr" id="vSize"></span><input type="range" id="inSize" min="10" max="56" step="1"></label><label>فاصله خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label><label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label><label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label><label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label><label>رنگ<div class="swatches"><button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button><button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button><button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button><button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button><input type="color" id="inColor" value="#221d17"></div></label></div></div></div>';
+var PAPER_HTML='<div class="paper-chrome" id="paperChrome"><div class="paper-toolbar" role="toolbar" aria-label="ابزارهای مطالعه"><a class="paper-brand" href="index.html" aria-label="بازگشت به نقشهٔ راه"><span class="paper-brand-mark" aria-hidden="true">♪</span><span>دفتر تئوری موسیقی</span></a><div class="paper-doc-title" id="paperDocTitle"></div><div class="paper-lesson-nav" id="paperLessonNav" hidden><a class="paper-control" id="paperPrev" href="#" aria-label="درس قبلی">← قبلی</a><a class="paper-control" id="paperNext" href="#" aria-label="درس بعدی">بعدی →</a></div><span class="paper-save-state" id="paperSaveState" aria-live="polite">حالت مطالعه</span><div class="paper-controls"><button class="paper-control" type="button" id="paperContents" aria-expanded="false" aria-controls="paperOutline">فهرست</button><button class="paper-control square" type="button" id="paperFontDown" aria-label="کوچک کردن قلم" title="کوچک کردن قلم">−</button><button class="paper-control square" type="button" id="paperFontUp" aria-label="بزرگ کردن قلم" title="بزرگ کردن قلم">+</button><button class="paper-control" type="button" id="paperPrint">چاپ</button><button class="paper-control" type="button" id="paperSave">ذخیره</button><button class="paper-control primary" type="button" id="paperEdit" aria-pressed="false">ویرایش</button></div></div><div class="paper-progress" id="paperProgress" role="progressbar" aria-label="پیشرفت مطالعه" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="paper-progress-fill" id="paperProgressFill"></div></div><nav class="paper-outline" id="paperOutline" aria-label="فهرست سند" hidden><div class="paper-outline-title">رفتن به بخش</div><div id="paperOutlineItems"></div></nav></div>';function ensureChrome(){
+  if(!document.getElementById('paperChrome')){var pc=document.createElement('div');pc.innerHTML=PAPER_HTML;document.body.insertBefore(pc.firstChild,document.getElementById('sheet'));}
   if(!document.getElementById('ctx')){var c=document.createElement('div');c.id='ctx';c.className='ctx';document.body.appendChild(c);}
   if(!document.getElementById('insp')){document.body.insertAdjacentHTML('beforeend',INSP_HTML);}
   if(!document.querySelector('.toast')){var t=document.createElement('div');t.className='toast';t.innerHTML='<span id="toastMsg"></span>';document.body.appendChild(t);}
   if(!document.getElementById('imgFileInput')){var f=document.createElement('input');f.type='file';f.accept='image/*';f.id='imgFileInput';f.style.display='none';document.body.appendChild(f);}
-  if(!document.getElementById('addSection')){var foot=document.querySelector('#sheet .rule-double.bottom')||document.querySelector('#sheet footer');if(foot){foot.insertAdjacentHTML('beforebegin','<button type="button" class="add-phase edit-only" id="addSection">+ افزودن بخش جدید</button>');}}
+  if(!document.getElementById('addSection')&&!document.getElementById('addPhase')){var foot=document.querySelector('#sheet .rule-double.bottom')||document.querySelector('#sheet footer');if(foot){var isRoadmap=!!document.querySelector('#sheet #phases');foot.insertAdjacentHTML('beforebegin',isRoadmap?'<button type="button" class="add-phase edit-only" id="addPhase">+ افزودن فاز</button>':'<button type="button" class="add-phase edit-only" id="addSection">+ افزودن بخش جدید</button>');}}
 }
 ensureChrome();
 
+/* ══════════ ۳) موتور ══════════ */
 var STATUS='در حال بررسی…';
 function showErr(m){STATUS='✗ '+m;var t=document.getElementById('toastMsg');if(t){t.textContent='⚠️ '+m;t.classList.add('show');}if(window.console)console.error(m);}
 window.addEventListener('error',function(e){showErr(e.message||'خطای جاوااسکریپت');});
@@ -227,25 +316,19 @@ try{
 var $=function(s){return document.querySelector(s);}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
 var BASE=(location.pathname.split('/').pop()||'index.html').replace(/\.html$/,'')||'index';
 var KEY='edit-'+BASE;
-var VER='v11';
+var VER='v9';
 var sheet=$('#sheet');
 var selEl=null, PPI=3, anchorEl=null, lastX=0, lastY=0;
 var insp=$('#insp'), ctx=$('#ctx');
 
-var hist=[],histIdx=-1;
-function persist(){try{localStorage.setItem(KEY,sheet.innerHTML);}catch(e){}}
-function pushHist(){var snap=sheet.innerHTML;if(hist[histIdx]===snap)return;hist=hist.slice(0,histIdx+1);hist.push(snap);if(hist.length>60)hist.shift();histIdx=hist.length-1;}
-function afterRestore(){makeEditableSafe(sheet);if(document.body.classList.contains('editing'))setEditing(true);deselect();}
-function undo(){if(histIdx>0){histIdx--;sheet.innerHTML=hist[histIdx];persist();afterRestore();toast('واگرد ↩');}}
-function redo(){if(histIdx<hist.length-1){histIdx++;sheet.innerHTML=hist[histIdx];persist();afterRestore();toast('ازنو ↪');}}
-
 var st;
-function save(quiet){persist();pushHist();if(!quiet)toast('ذخیره شد ✓');}
-function saveSoon(){clearTimeout(st);st=setTimeout(function(){save(true);},500);}
-function toast(msg){var el=$('#toastMsg');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show');},2200);}
+function updatePaperState(text){var el=document.getElementById('paperSaveState');if(el)el.textContent=text;}
+function save(quiet){try{localStorage.setItem(KEY,sheet.innerHTML);}catch(e){} updatePaperState('تغییرات ذخیره شد');if(!quiet)toast('ذخیره شد ✓');}
+function saveSoon(){updatePaperState('در حال ذخیره…');clearTimeout(st);st=setTimeout(function(){save(true);},500);}function toast(msg){var el=$('#toastMsg');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show');},2200);}
 try{var saved=localStorage.getItem(KEY);if(saved&&saved.indexOf('<section')>-1&&saved.length>800)sheet.innerHTML=saved;}catch(e){}
 sheet=$('#sheet');
 
+/* ── رفع مشکل ادیت‌نبودن باکس‌ها: پیچیدن خودکار متن‌های لخت در data-edit ── */
 var WRAP_BOXES='.note,.example,.key-point,.int-type,.feature,.piece,.ex-body,.inv-card,.lt,.freq>div,.summary,.qa,.fig';
 function makeEditableSafe(root){
   (root||sheet).querySelectorAll(WRAP_BOXES).forEach(function(box){
@@ -260,7 +343,6 @@ function makeEditableSafe(root){
   });
 }
 makeEditableSafe(sheet);
-pushHist();
 
 function setEditing(on){
   document.body.classList.toggle('editing',on);
@@ -269,9 +351,52 @@ function setEditing(on){
     else el.contentEditable='false';
   });
   if(!on)deselect();
+  var editButton=document.getElementById('paperEdit');if(editButton){editButton.textContent=on?'پایان ویرایش':'ویرایش';editButton.setAttribute('aria-pressed',String(on));}
+  updatePaperState(on?'حالت ویرایش':'حالت مطالعه');
 }
 setEditing(false);
+/* ── نوار مطالعه و ناوبری کاغذی ── */
+var paperOutlineTargets=[];
+function buildPaperOutline(){
+  var box=document.getElementById('paperOutlineItems');if(!box)return;
+  box.innerHTML='';paperOutlineTargets=[];
+  var tocLinks=$$('#sheet nav.toc a[href^="#"]');
+  if(tocLinks.length){tocLinks.forEach(function(a){var id=(a.getAttribute('href')||'').slice(1);var target=document.getElementById(id);if(target)paperOutlineTargets.push({label:a.textContent.trim(),target:target});});}
+  else{
+    var phases=$$('#sheet #phases > .phase');
+    if(phases.length){phases.forEach(function(p){var label=p.querySelector('.ph-t h2')||p.querySelector('h2');paperOutlineTargets.push({label:label?label.textContent.trim():'فاز',target:p});});}
+    else{$$('#sheet > .sec').forEach(function(sec){var label=sec.querySelector('.sec-head h2');if(label)paperOutlineTargets.push({label:label.textContent.trim(),target:sec});});}
+  }
+  paperOutlineTargets.forEach(function(item,i){var b=document.createElement('button');b.type='button';b.setAttribute('data-outline-index',i);var n=document.createElement('span');n.className='outline-index';n.textContent=String(i+1).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[Number(d)];});var t=document.createElement('span');t.textContent=item.label;b.appendChild(n);b.appendChild(t);box.appendChild(b);});
+}
+function updatePaperProgress(){
+  var fill=document.getElementById('paperProgressFill'),track=document.getElementById('paperProgress');if(!fill||!track)return;
+  var root=document.scrollingElement||document.documentElement,max=root.scrollHeight-innerHeight,p=max>0?Math.round(Math.max(0,Math.min(1,root.scrollTop/max))*100):0;
+  fill.style.width=p+'%';track.setAttribute('aria-valuenow',String(p));
+}
+function setPaperScale(value){
+  var scale=Math.max(.88,Math.min(1.22,Math.round(value*100)/100));document.documentElement.style.setProperty('--reader-scale',String(scale));
+  try{localStorage.setItem('paper-reader-scale',String(scale));}catch(e){}
+}
+(function initPaperChrome(){
+  var h=$('#sheet h1'),title=document.getElementById('paperDocTitle');if(title&&h)title.textContent=h.textContent.replace(/[.…]+$/,'').trim();
+  $$('.phase .col-btn').forEach(function(b){var phase=b.closest('.phase'),collapsed=phase&&phase.classList.contains('collapsed');b.textContent=collapsed?'▸':'▾';b.setAttribute('aria-expanded',String(!collapsed));});
+  try{var storedScale=parseFloat(localStorage.getItem('paper-reader-scale'));if(storedScale>=.88&&storedScale<=1.22)setPaperScale(storedScale);}catch(e){}
+  var contents=document.getElementById('paperContents'),outline=document.getElementById('paperOutline');
+  if(contents&&outline){contents.addEventListener('click',function(){buildPaperOutline();outline.hidden=!outline.hidden;contents.setAttribute('aria-expanded',String(!outline.hidden));});outline.addEventListener('click',function(e){var b=e.target.closest('[data-outline-index]');if(!b)return;var item=paperOutlineTargets[Number(b.getAttribute('data-outline-index'))];if(item&&item.target)item.target.scrollIntoView({behavior:'smooth',block:'start'});outline.hidden=true;contents.setAttribute('aria-expanded','false');});document.addEventListener('click',function(e){if(!e.target.closest('#paperChrome')){outline.hidden=true;contents.setAttribute('aria-expanded','false');}});}
+  var edit=document.getElementById('paperEdit');if(edit)edit.addEventListener('click',function(){setEditing(!document.body.classList.contains('editing'));});
+  var print=document.getElementById('paperPrint');if(print)print.addEventListener('click',function(){window.print();});
+  var saveButton=document.getElementById('paperSave');if(saveButton)saveButton.addEventListener('click',function(){save(false);});
+  var down=document.getElementById('paperFontDown'),up=document.getElementById('paperFontUp');
+  function currentScale(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--reader-scale'))||1;}
+  if(down)down.addEventListener('click',function(){setPaperScale(currentScale()-.05);});if(up)up.addEventListener('click',function(){setPaperScale(currentScale()+.05);});
+  var files=['lesson-01.html','lesson-02.html','lesson-03.html','lesson-04.html','lesson-05.html'],idx=files.indexOf(BASE+'.html'),nav=document.getElementById('paperLessonNav');
+  if(idx>=0&&nav){nav.hidden=false;var prev=document.getElementById('paperPrev'),next=document.getElementById('paperNext');prev.href=idx===0?'index.html':files[idx-1];next.href=idx===files.length-1?'index.html':files[idx+1];prev.setAttribute('aria-label',idx===0?'نقشهٔ راه':('درس '+idx+'؛ قبلی'));next.setAttribute('aria-label',idx===files.length-1?'نقشهٔ راه':('درس '+(idx+2)+'؛ بعدی'));}
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&outline){outline.hidden=true;if(contents)contents.setAttribute('aria-expanded','false');}});
+  updatePaperProgress();window.addEventListener('scroll',updatePaperProgress,{passive:true});window.addEventListener('resize',updatePaperProgress);
+})();
 
+/* ── قالب‌های بلوک‌ها برای منوی افزودن ── */
 var TPL={
   note:'<div class="note"><span class="tag" data-edit>نکته — </span><span data-edit>متن نکته یا کاربرد…</span></div>',
   keypoint:'<div class="key-point"><h3 data-edit>عنوان کانتینر</h3><p data-edit>متن توضیح…</p></div>',
@@ -286,6 +411,7 @@ var TPL={
   summary:'<div class="summary"><h3 data-edit>جمع‌بندی</h3><ul><li data-edit>مورد اول…</li><li data-edit>مورد دوم…</li></ul></div>',
   letters:'<div class="letters"><div class="lt" data-edit><b>C</b><span>دو</span></div><div class="lt" data-edit><b>D</b><span>ر</span></div><div class="lt" data-edit><b>E</b><span>می</span></div></div>',
   freq:'<div class="freq"><div data-edit><b>A4</b><span>440 Hz</span><i>توضیح</i></div><div data-edit><b>A5</b><span>880 Hz</span><i>توضیح</i></div></div>',
+  phase:'<section class="phase sec"><div class="sec-head phase-head"><div class="ph-t"><p class="sec-label" data-edit>فاز تازه</p><h2 data-edit>عنوان فاز…</h2></div><div class="head-tools"><button type="button" class="col-btn" aria-expanded="true">▾</button><button type="button" class="ib del edit-only" title="حذف فاز">×</button></div></div><div class="phase-body"><div class="phase-inner"><ul class="topics"></ul><button type="button" class="add-topic edit-only">+ افزودن مبحث</button></div></div></section>',
   section:'<section class="sec"><div class="sec-head"><p class="sec-label" data-edit>بخش جدید</p><h2 data-edit>عنوان بخش…</h2></div><div class="prose"><p data-edit>متن بخش…</p></div></section>'
 };
 function insertHTML(html){
@@ -300,6 +426,10 @@ function syncEditable(root){
   root.querySelectorAll('[data-edit]').forEach(function(el){try{el.contentEditable='plaintext-only';}catch(e){el.contentEditable='true';}});
 }
 function addSectionFn(){insertHTML(TPL.section);}
+function addPhaseFn(){insertHTML(TPL.phase);}
+function addTopicFn(button){var phase=button.closest('.phase'),list=phase&&phase.querySelector('.topics');if(!list)return;var li=document.createElement('li');li.className='topic';li.innerHTML='<a class="t-link unset" href="#"><span class="t-text" data-edit>مبحث تازه</span><span class="go">←</span></a><button type="button" class="ib lk edit-only" title="تنظیم آدرس صفحه">🔗</button><button type="button" class="ib del edit-only" title="حذف">×</button>';list.appendChild(li);makeEditableSafe(li);syncEditable(li);save(false);var text=li.querySelector('[data-edit]');if(text)text.focus();}
+
+/* ── تصویر ── */
 function pickImageFile(){
   var inp=$('#imgFileInput');
   inp.onchange=function(){
@@ -315,27 +445,11 @@ function insertImageURL(){
   if(u&&u.trim())insertHTML('<figure class="fig"><img src="'+u.trim()+'" alt=""><figcaption data-edit>توضیح تصویر…</figcaption></figure>');
 }
 
+/* ── پنل استایل ── */
 var SEL='#sheet h1,#sheet h2,#sheet h3,#sheet h4,#sheet p,#sheet li,#sheet a,#sheet span,#sheet b,#sheet td,#sheet th,#sheet caption,#sheet .formula,#sheet .seq,#sheet .int-type,#sheet .feature,#sheet .piece,#sheet .inv-card,#sheet .key-point,#sheet figure';
-var BLOCK_SEL='#sheet .sec,#sheet header,#sheet footer,#sheet nav.toc,#sheet .rule-double,#sheet .divider,#sheet .sec-head,#sheet article.piece,#sheet table,#sheet .interval-types,#sheet .features,#sheet .inversion-grid,#sheet .summary,#sheet .note,#sheet .key-point,#sheet .ex-item,#sheet .qa,#sheet .letters,#sheet .freq,#sheet figure,#sheet .phase';
+var BLOCK_SEL='#sheet .sec,#sheet header,#sheet footer,#sheet nav.toc,#sheet .rule-double,#sheet .divider,#sheet .sec-head,#sheet article.piece,#sheet table,#sheet .interval-types,#sheet .features,#sheet .inversion-grid,#sheet .summary,#sheet .note,#sheet .key-point,#sheet .ex-item,#sheet .qa,#sheet .letters,#sheet .freq,#sheet figure';
 var FAMS={body:"'IRANSans','Kalameh',sans-serif",disp:"'Kalameh',sans-serif",fa:"'IRANSans FaNum','IRANSans',sans-serif"};
 function rgbHex(c){var m=c.match(/\d+/g);return m?'#'+m.slice(0,3).map(function(x){return (+x).toString(16).padStart(2,'0');}).join(''):'#221d17';}
-function currentSelectionRange(){
-  var sel=getSelection();
-  if(!sel||!sel.rangeCount)return null;
-  var r=sel.getRangeAt(0);
-  if(r.collapsed)return null;
-  var host=r.commonAncestorContainer;host=host.nodeType===1?host:host.parentElement;
-  if(!host||!host.closest('[data-edit]'))return null;
-  return r;
-}
-function styleSelection(prop,val){
-  var r=currentSelectionRange();if(!r)return false;
-  var sp=document.createElement('span');sp.style[prop]=val;
-  try{r.surroundContents(sp);}
-  catch(e){var f=r.extractContents();sp.appendChild(f);r.insertNode(sp);}
-  saveSoon();return true;
-}
-function styleProp(prop,val){if(styleSelection(prop,val))return;applyStyle(function(s){s[prop]=val;});}
 function select(el){
   if(selEl)selEl.classList.remove('selected');
   selEl=el;
@@ -355,13 +469,13 @@ function deselect(){select(null);}
 $('#inspClose').addEventListener('click',deselect);
 $('#inspReset').addEventListener('click',function(){if(selEl){selEl.removeAttribute('style');select(selEl);saveSoon();}});
 function applyStyle(fn){if(!selEl)return;fn(selEl.style);saveSoon();}
-$('#inSize').addEventListener('input',function(e){$('#vSize').textContent=e.target.value+'px';styleProp('fontSize',e.target.value+'px');});
+$('#inSize').addEventListener('input',function(e){$('#vSize').textContent=e.target.value+'px';applyStyle(function(s){s.fontSize=e.target.value+'px';});});
 $('#inLh').addEventListener('input',function(e){applyStyle(function(s){s.lineHeight=e.target.value;});});
-$('#inWeight').addEventListener('change',function(e){styleProp('fontWeight',e.target.value);});
-$('#inFamily').addEventListener('change',function(e){styleProp('fontFamily',FAMS[e.target.value]);});
+$('#inWeight').addEventListener('change',function(e){applyStyle(function(s){s.fontWeight=e.target.value;});});
+$('#inFamily').addEventListener('change',function(e){applyStyle(function(s){s.fontFamily=FAMS[e.target.value];});});
 $('#inAlign').addEventListener('change',function(e){applyStyle(function(s){s.textAlign=e.target.value;});});
-$('#inColor').addEventListener('input',function(e){styleProp('color',e.target.value);});
-$$('.sw').forEach(function(b){b.addEventListener('click',function(){styleProp('color',b.dataset.c);$('#inColor').value=b.dataset.c;});});
+$('#inColor').addEventListener('input',function(e){applyStyle(function(s){s.color=e.target.value;});});
+$$('.sw').forEach(function(b){b.addEventListener('click',function(){applyStyle(function(s){s.color=b.dataset.c;});$('#inColor').value=b.dataset.c;});});
 
 function removeEl(el){
   var big=el.matches(BLOCK_SEL);
@@ -371,40 +485,7 @@ function removeEl(el){
   toast(big?'بخش کامل حذف شد':'المان حذف شد');
 }
 
-function findReplace(){
-  var f=prompt('جست‌وجو برای:');if(!f)return;
-  var r=prompt('جایگزینی با:');if(r===null)return;
-  var count=0;
-  $$('#sheet [data-edit]').forEach(function(el){
-    var walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null);
-    var nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
-    nodes.forEach(function(n){
-      if(n.nodeValue.indexOf(f)>-1){count+=n.nodeValue.split(f).length-1;n.nodeValue=n.nodeValue.split(f).join(r);}
-    });
-  });
-  if(count){save(false);toast(count+' مورد جایگزین شد');}else toast('پیدا نشد');
-}
-
-function tableTools(cell){
-  var table=cell.closest('table'),tr=cell.closest('tr');
-  addTitle('ابزار جدول');
-  addItem('＋','افزودن سطر',function(){
-    var last=table.rows[table.rows.length-1],nr=table.insertRow(-1);
-    for(var i=0;i<last.cells.length;i++){var c=nr.insertCell(-1);c.setAttribute('data-edit','');c.textContent='…';}
-    syncEditable(nr);save(false);
-  });
-  addItem('＋','افزودن ستون',function(){
-    Array.prototype.forEach.call(table.rows,function(row,idx){
-      var c=row.insertCell(-1);c.setAttribute('data-edit','');
-      c.textContent=(idx===0&&row.parentNode.tagName==='THEAD')?'ستون جدید':'…';
-    });
-    syncEditable(table);save(false);
-  });
-  addItem('－','حذف این سطر',function(){if(table.rows.length>1){tr.parentNode.removeChild(tr);save(false);}});
-  addItem('－','حذف این ستون',function(){var idx=cell.cellIndex;Array.prototype.forEach.call(table.rows,function(row){if(row.cells[idx])row.deleteCell(idx);});save(false);});
-  addSep();
-}
-
+/* ── منوی کلیک‌راست ── */
 function hideCtx(){ctx.classList.remove('open');}
 function addItem(icon,label,fn,extra){
   var b=document.createElement('button');
@@ -423,12 +504,12 @@ function placeCtx(){
 function openInsertMenu(){
   ctx.innerHTML='';
   addTitle('درج بلوک (قبل از بخش انتخاب‌شده)');
-  addItem('','تصویر (از فایل)',pickImageFile);
+  addItem('🖼','تصویر (از فایل)',pickImageFile);
   addItem('🔗','تصویر (از لینک)',insertImageURL);
   addItem('➖','خط جداکننده',function(){insertHTML(TPL.divider);});
   addItem('🩷','باکس صورتی نکته / کاربرد',function(){insertHTML(TPL.note);});
   addItem('📦','کانتینر (عنوان + متن)',function(){insertHTML(TPL.keypoint);});
-  addItem('','جدول (۳×۳)',function(){insertHTML(TPL.table);});
+  addItem('📊','جدول (۳×۳)',function(){insertHTML(TPL.table);});
   addItem('🧮','باکس فرمول',function(){insertHTML(TPL.formula);});
   addItem('🎼','ردیف نت‌ها (seq)',function(){insertHTML(TPL.seq);});
   addItem('🎸','کارت تحلیل قطعه',function(){insertHTML(TPL.piece);});
@@ -440,50 +521,40 @@ function openInsertMenu(){
   addItem('📶','نوار فرکانس',function(){insertHTML(TPL.freq);});
   placeCtx();
 }
-var SHORTCUTS_TXT='شرتکات‌ها (حالت ویرایش):\nCtrl+Shift+→ : راست‌چین (Right align)\nCtrl+Shift+← : چپ‌چین (Left align)\nCtrl+E : وسط‌چین (Center)\nCtrl+J : کشیده (Justify)\nCtrl+B : ضخیم (Bold)\nCtrl+I : ایتالیک (Italic)\nCtrl+U : زیرخط (Underline)\nCtrl+] : سایز بزرگتر (Increase size)\nCtrl+[ : سایز کوچکتر (Decrease size)\nCtrl+D : پنل استایل (Style panel)\nCtrl+S : ذخیره (Save)\nCtrl+Z : واگرد (Undo)\nCtrl+Y : ازنو (Redo)\nCtrl+H : جست‌وجو و جایگزینی (Find & Replace)\nCtrl+P : خروجی PDF (Export PDF)\nCtrl+Shift+P : خروجی PNG (Export PNG)\nCtrl+Shift+D : تکثیر (Duplicate)\nCtrl+Shift+↑ : جابه‌جایی به بالا (Move up)\nCtrl+Shift+↓ : جابه‌جایی به پایین (Move down)\nCtrl+Shift+N : افزودن بخش جدید (Add section)\nCtrl+F : جست‌وجو (Find)\nEsc : لغو (Cancel)';
+var SHORTCUTS_TXT=' among شرتکات‌ها (حالت ویرایش):\nCtrl+Shift+→ : راست‌چین\nCtrl+Shift+← : چپ‌چین\nCtrl+E : وسط‌چین\nCtrl+J : کشیده (justify)\nCtrl+B : ضخیم · Ctrl+I : ایتالیک · Ctrl+U : زیرخط\nCtrl+] : بزرگ‌تر · Ctrl+[ : کوچک‌تر\nCtrl+D : پنل استایل متن جاری\nCtrl+S : ذخیره\nEsc : لغو انتخاب / بستن منو';
 document.addEventListener('contextmenu',function(e){
-  if(e.target.closest('.insp'))return;
+  if(e.target.closest('.insp,.paper-chrome'))return;
   e.preventDefault();
   lastX=e.clientX;lastY=e.clientY;
   var t=e.target, editing=document.body.classList.contains('editing');
   anchorEl=t.closest(BLOCK_SEL)||t.closest('#sheet .sec');
   ctx.innerHTML='';
   if(editing&&t.closest('#sheet')){
-    var cell=t.closest('td,th');
-    if(cell)tableTools(cell);
     var small=t.closest(SEL), block=t.closest(BLOCK_SEL), edt=t.closest('[data-edit]');
     if(small||block){
       addTitle('المان زیر نشانگر');
-      if(edt)addItem('✍️','ویرایش متن این بخش (Edit text)',function(){setEditing(true);edt.focus();});
+      if(edt)addItem('✍️','ویرایش متن این بخش',function(){setEditing(true);edt.focus();});
       var sty=small||block;
-      if(sty)addItem('🎨','استایل این المان (Style element)',function(){select(sty);});
-      if(small)addItem('🗑','حذف این المان (Delete element)',function(){removeEl(small);});
-      if(block&&block!==small){
-        addItem('⛔','حذف کل بخش (Delete section)',function(){removeEl(block);});
-        addItem('⧉','تکثیر این بخش (Duplicate section)',function(){var c=block.cloneNode(true);block.parentNode.insertBefore(c,block.nextElementSibling);makeEditableSafe(c);syncEditable(c);save(false);});
-        addItem('⬆','جابه‌جایی به بالا (Move up)',function(){var p=block.previousElementSibling;if(p){block.parentNode.insertBefore(block,p);save(false);}});
-        addItem('⬇','جابه‌جایی به پایین (Move down)',function(){var n=block.nextElementSibling;if(n){block.parentNode.insertBefore(block,n.nextElementSibling);save(false);}});
-      }
+      if(sty)addItem('🎨','استایل این المان <'+sty.tagName.toLowerCase()+'>',function(){select(sty);});
+      if(small)addItem('🗑','حذف این المان <'+small.tagName.toLowerCase()+'>',function(){removeEl(small);});
+      if(block&&block!==small)addItem('⛔','حذف کل بخش <'+block.tagName.toLowerCase()+'>',function(){removeEl(block);});
       addSep();
     }
   }
-  addItem(editing?'✅':'✏️',editing?'خروج از حالت ویرایش (Exit edit mode)':'حالت ویرایش (Enter edit mode)',function(){setEditing(!editing);});
+  addItem(editing?'✅':'✏️',editing?'خروج از حالت ویرایش':'حالت ویرایش',function(){setEditing(!editing);});
   if(editing){
-    addItem('➕','درج بلوک جدید (Insert block)',openInsertMenu);
-    addItem('📄','افزودن بخش جدید (Add section)',addSectionFn);
-    addItem('🔎','جست‌وجو و جایگزینی (Find & Replace)',findReplace);
-    addItem('↩','واگرد (Undo)',undo);
-    addItem('↪','ازنو (Redo)',redo);
+    addItem('➕','درج بلوک جدید…',openInsertMenu);
+    addItem('📄','افزودن بخش جدید',addSectionFn);
   }
   addSep();
-  addItem('🖼','خروجی PNG (Export PNG)',exportPNG,'×'+PPI);
-  addItem('','خروجی PDF (Export PDF)',exportPDF,'×'+PPI);
-  addItem('️','کیفیت خروجی (PPI quality)',changePPI,'×'+PPI);
+  addItem('🖼','خروجی PNG',exportPNG,'×'+PPI);
+  addItem('📄','خروجی PDF',exportPDF,'×'+PPI);
+  addItem('⚙️','کیفیت خروجی (PPI)',changePPI,'×'+PPI);
   addSep();
-  addItem('💾','ذخیره تغییرات در سورس (Save source)',saveSource);
-  addItem('⬇','دانلود کپی سورس (Download copy)',dlCopy);
-  addItem('↺','بازنشانی (Reset)',resetFn);
-  addItem('','فهرست شرتکات‌ها (Shortcuts list)',function(){alert(SHORTCUTS_TXT);});
+  addItem('💾','ذخیره تغییرات در سورس',saveSource);
+  addItem('⬇','دانلود کپی سورس',dlCopy);
+  addItem('↺','بازنشانی به نسخه اولیه',resetFn);
+  addItem('⌨','فهرست شرتکات‌ها',function(){alert(SHORTCUTS_TXT);});
   addSep();
   var stt=document.createElement('div');
   stt.className='cstatus'+(STATUS.indexOf('✗')===0?' bad':'');
@@ -501,6 +572,7 @@ function changePPI(){
   if(!isNaN(v)){PPI=Math.min(6,Math.max(0.5,v));toast('کیفیت خروجی: ×'+PPI);}
 }
 
+/* ── شرتکات‌ها (سبک Word) ── */
 function editTargetFromSelection(){
   var sel=getSelection();
   var node=sel&&sel.anchorNode;
@@ -509,39 +581,21 @@ function editTargetFromSelection(){
   return (el&&el.closest('[data-edit]'))||selEl;
 }
 function wrapSelection(tag){
-  var r=currentSelectionRange();if(!r)return;
+  var sel=getSelection();if(!sel||!sel.rangeCount)return;
+  var r=sel.getRangeAt(0);if(r.collapsed)return;
+  var host=r.commonAncestorContainer;
+  host=host.nodeType===1?host:host.parentElement;
+  if(!host||!host.closest('[data-edit]'))return;
   var el=document.createElement(tag);
   try{r.surroundContents(el);}
   catch(err){var f=r.extractContents();el.appendChild(f);r.insertNode(el);}
   saveSoon();
-}
-function duplicateSelected(){
-  if(!selEl)return;
-  var c=selEl.cloneNode(true);
-  selEl.parentNode.insertBefore(c,selEl.nextElementSibling);
-  makeEditableSafe(c);save(false);
-  toast('تکثیر شد ');
-}
-function moveSelected(dir){
-  if(!selEl)return;
-  if(dir==='up'){var p=selEl.previousElementSibling;if(p){selEl.parentNode.insertBefore(selEl,p);save(false);}}
-  else{var n=selEl.nextElementSibling;if(n){selEl.parentNode.insertBefore(selEl,n.nextElementSibling);save(false);}}
 }
 document.addEventListener('keydown',function(e){
   if(!document.body.classList.contains('editing'))return;
   if(!(e.ctrlKey||e.metaKey))return;
   var tgt=editTargetFromSelection();
   var k=e.key;
-  if(!e.shiftKey&&(k==='z'||k==='Z')){e.preventDefault();undo();return;}
-  if(!e.shiftKey&&(k==='y'||k==='Y')){e.preventDefault();redo();return;}
-  if(!e.shiftKey&&(k==='h'||k==='H')){e.preventDefault();findReplace();return;}
-  if(!e.shiftKey&&(k==='f'||k==='F')){e.preventDefault();var s=prompt('جست‌وجو برای:');if(s){alert('جست‌وجو: '+s);}return;}
-  if(!e.shiftKey&&(k==='p'||k==='P')){e.preventDefault();exportPDF();return;}
-  if(e.shiftKey&&(k==='p'||k==='P')){e.preventDefault();exportPNG();return;}
-  if(e.shiftKey&&(k==='d'||k==='D')){e.preventDefault();duplicateSelected();return;}
-  if(e.shiftKey&&k==='ArrowUp'){e.preventDefault();moveSelected('up');return;}
-  if(e.shiftKey&&k==='ArrowDown'){e.preventDefault();moveSelected('down');return;}
-  if(e.shiftKey&&(k==='n'||k==='N')){e.preventDefault();addSectionFn();return;}
   if(e.shiftKey&&k==='ArrowRight'){e.preventDefault();if(tgt){tgt.style.textAlign='right';select(tgt);saveSoon();}return;}
   if(e.shiftKey&&k==='ArrowLeft'){e.preventDefault();if(tgt){tgt.style.textAlign='left';select(tgt);saveSoon();}return;}
   if(!e.shiftKey&&(k==='e'||k==='E')){e.preventDefault();if(tgt){tgt.style.textAlign='center';select(tgt);saveSoon();}return;}
@@ -555,28 +609,16 @@ document.addEventListener('keydown',function(e){
   if(!e.shiftKey&&(k==='s'||k==='S')){e.preventDefault();save(false);return;}
 });
 
+/* ── رویدادهای کلیک ── */
 document.addEventListener('click',function(e){
   var t=e.target, editing=document.body.classList.contains('editing');
+  var col=t.closest('.col-btn');if(col){var phase=col.closest('.phase');if(phase){var collapsed=phase.classList.toggle('collapsed');col.textContent=collapsed?'▸':'▾';col.setAttribute('aria-expanded',String(!collapsed));saveSoon();}return;}
   if(editing&&t.closest('#sheet a'))e.preventDefault();
-  if(!editing&&t.closest('.t-link.unset')){e.preventDefault();toast('در حالت ویرایش، با کلیک‌راست → 🔗 آدرس صفحه را تنظیم کنید');return;}
-  var col=t.closest('.col-btn');
-  if(col){col.closest('.phase').classList.toggle('closed');return;}
-  if(editing){
-    var lk=t.closest('.lk');
-    if(lk){
-      var a=lk.closest('.topic').querySelector('.t-link');
-      var v=prompt('آدرس صفحهٔ این مبحث (مثلاً lesson-02.html):',a.getAttribute('href')||'#');
-      if(v!==null){var url=v.trim()||'#';a.setAttribute('href',url);a.classList.toggle('unset',url==='#');save(false);}
-      return;
-    }
-    var del=t.closest('.del');
-    if(del){
-      var li=del.closest('.topic'),ph=del.closest('.phase');
-      if(li)removeEl(li);else if(ph)removeEl(ph);
-      return;
-    }
-  }
   if(t.closest('#addSection')&&editing){addSectionFn();return;}
+  if(t.closest('#addPhase')&&editing){anchorEl=t.closest('#addPhase');addPhaseFn();return;}
+  if(editing&&t.closest('.add-topic')){addTopicFn(t.closest('.add-topic'));return;}
+  if(editing&&t.closest('.lk')){var lk=t.closest('.lk'),topic=lk.closest('.topic'),link=topic&&topic.querySelector('.t-link');if(link){var value=prompt('آدرس فایل صفحه را وارد کنید:',link.getAttribute('href')==='#'?'':link.getAttribute('href'));if(value!==null){var url=value.trim();link.setAttribute('href',url||'#');link.classList.toggle('unset',!url);save(false);}}return;}
+  if(editing&&t.closest('.del')){var del=t.closest('.del'),row=del.closest('.topic'),container=row||del.closest('.phase')||del.closest('.sec');if(container)removeEl(container);return;}
   if(editing&&!t.closest('button')&&!t.closest('.insp')){
     var s=t.closest(SEL);
     if(s)select(s);
@@ -589,6 +631,7 @@ function resetFn(){
   if(confirm('همه ویرایش‌ها پاک و نسخه اولیه بازگردانده شود؟')){try{localStorage.removeItem(KEY);}catch(e){}location.reload();}
 }
 
+/* ── خروجی‌ها ── */
 var FONT_FILES=['fonts/Kalameh-SemiBold.woff2','fonts/Kalameh-Bold.woff2','fonts/IRANSansWeb_Light.woff2','fonts/IRANSansWeb.woff2','fonts/IRANSansWeb_Medium.woff2','fonts/IRANSansWeb_Bold.woff2','fonts/IRANSansWeb_FaNum.woff2','fonts/IRANSansWeb_Bold_FaNum.woff2'];
 function b64(buf){var s='';var u=new Uint8Array(buf);for(var i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s);}
 function collectFonts(){
@@ -604,9 +647,9 @@ function collectFonts(){
 }
 function raster(){
   setEditing(false);deselect();hideCtx();if(document.activeElement)document.activeElement.blur();
-  return new Promise(function(r){setTimeout(r,100);}).then(function(){
+  return new Promise(function(r){setTimeout(r,80);}).then(function(){
     var css='';$$('style').forEach(function(s){css+=s.textContent+'\n';});
-    css+="svg{--paper:#f7f4ee;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;}";
+    css+="svg{--paper:#fffdf8;--canvas:#e7dfd2;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;}";
     return collectFonts().then(function(fontMap){
       fontMap.forEach(function(f){css=css.split("url('"+f.path+"')").join("url('"+f.dataUrl+"')");});
       css=css.replace(/url\('fonts\/[^']+'\)/g,"url('data:,')");
@@ -617,13 +660,10 @@ function raster(){
       clone.querySelectorAll('.edit-only').forEach(function(el){el.remove();});
       clone.querySelectorAll('[contenteditable]').forEach(function(el){el.removeAttribute('contenteditable');});
       var x=new XMLSerializer().serializeToString(clone);
-      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:'+W+'px;box-sizing:border-box;background:#f7f4ee;color:#221d17;font-family:\'IRANSans\',\'Kalameh\',sans-serif;font-size:14.5px;line-height:2.05;direction:rtl"><style><![CDATA['+css+']]></style>'+x+'</div></foreignObject></svg>';
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:'+W+'px;box-sizing:border-box;background:#fffdf8;color:#221d17;font-family:\'IRANSans\',\'Kalameh\',sans-serif;font-size:calc(14.5px * var(--reader-scale,1));line-height:2.05;direction:rtl"><style><![CDATA['+css+']]></style>'+x+'</div></foreignObject></svg>';
       var img=new Image();
       img.src=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
-      return new Promise(function(resolve,reject){
-        img.onload=function(){URL.revokeObjectURL(img.src);resolve({img:img,W:W,H:H});};
-        img.onerror=function(e){URL.revokeObjectURL(img.src);reject(new Error('رندر SVG ناموفق: '+e.message));};
-      });
+      return img.decode().then(function(){URL.revokeObjectURL(img.src);return{img:img,W:W,H:H};},function(e){URL.revokeObjectURL(img.src);throw new Error('رندر SVG ناموفق: '+(e.message||e));});
     });
   });
 }
@@ -634,9 +674,9 @@ function exportPNG(){
     var c=document.createElement('canvas');
     c.width=Math.round(o.W*PPI);c.height=Math.round(o.H*PPI);
     var x=c.getContext('2d');
-    x.fillStyle='#f7f4ee';x.fillRect(0,0,c.width,c.height);
+    x.fillStyle='#fffdf8';x.fillRect(0,0,c.width,c.height);
     x.scale(PPI,PPI);x.drawImage(o.img,0,0,o.W,o.H);
-    c.toBlob(function(bl){if(bl){dl(URL.createObjectURL(bl),BASE+'-'+PPI+'x.png');toast('PNG دانلود شد 🖼');}else{showErr('PNG: خطا در ساخت blob');}},'image/png');
+    c.toBlob(function(bl){dl(URL.createObjectURL(bl),BASE+'-'+PPI+'x.png');toast('PNG دانلود شد 🖼');},'image/png');
   }).catch(function(err){showErr('PNG: '+(err.message||err));});
 }
 function buildPdf(pages){
@@ -669,7 +709,7 @@ function exportPDF(){
   raster().then(function(o){
     var pageCssH=o.W*297/210;
     var top=sheet.getBoundingClientRect().top;
-    var bounds=$$('#sheet .sec-head,#sheet .piece,#sheet tr,#sheet header,#sheet .rule-double,#sheet .divider,#sheet footer,#sheet .note,#sheet .formula,#sheet .features,#sheet .key-point,#sheet .ex-item,#sheet .summary,#sheet .qa,#sheet .seq,#sheet figure,#sheet .topic')
+    var bounds=$$('#sheet .sec-head,#sheet .piece,#sheet tr,#sheet header,#sheet .rule-double,#sheet .divider,#sheet footer,#sheet .note,#sheet .formula,#sheet .features,#sheet .key-point,#sheet .ex-item,#sheet .summary,#sheet .qa,#sheet .seq,#sheet figure')
       .map(function(el){return el.getBoundingClientRect().bottom-top;}).sort(function(a,b){return a-b;});
     var pages=[],y=0;
     function step(){
@@ -678,18 +718,21 @@ function exportPDF(){
       if(target<o.H){var best=null;bounds.forEach(function(bd){if(bd>y+pageCssH*.6&&bd<=y+pageCssH)best=bd;});if(best)target=best;}
       var h=target-y,dw=Math.round(1654*PPI/3),dh=Math.max(2,Math.round(dw*h/o.W));
       var c=document.createElement('canvas');c.width=dw;c.height=dh;
-      var x=c.getContext('2d');x.fillStyle='#f7f4ee';x.fillRect(0,0,dw,dh);
+      var x=c.getContext('2d');x.fillStyle='#fffdf8';x.fillRect(0,0,dw,dh);
       x.drawImage(o.img,0,y,o.W,h,0,0,dw,dh);
-      return new Promise(function(res){c.toBlob(function(bl){if(bl){bl.arrayBuffer().then(function(ab){res(new Uint8Array(ab));});}else{res(null);}},'image/jpeg',.92);}).then(function(jb){
-        if(jb){pages.push({w:dw,h:dh,data:jb});}y=target;return step();
+      return new Promise(function(res){c.toBlob(function(bl){bl.arrayBuffer().then(function(ab){res(new Uint8Array(ab));});},'image/jpeg',.92);}).then(function(jb){
+        pages.push({w:dw,h:dh,data:jb});y=target;return step();
       });
     }
     return step();
   }).catch(function(err){showErr('PDF: '+(err.message||err));});
 }
 
+/* ── سورس ── */
 function buildSource(){
   var clone=document.documentElement.cloneNode(true);
+  var chrome=clone.querySelector('#paperChrome');if(chrome)chrome.parentNode.removeChild(chrome);
+  clone.style.removeProperty('--reader-scale');
   clone.querySelectorAll('[contenteditable]').forEach(function(el){el.removeAttribute('contenteditable');});
   clone.querySelectorAll('.selected').forEach(function(el){el.classList.remove('selected');});
   clone.querySelectorAll('body').forEach(function(bd){bd.classList.remove('editing');});
