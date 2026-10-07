@@ -1,0 +1,485 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl" style=""><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>درس چهارم · دایره پنجم‌ها و سرکلیدها</title>
+<style id="inj-fonts">
+@font-face{font-family:'Kalameh';font-weight:600;font-display:swap;src:url('fonts/Kalameh-SemiBold.woff2') format('woff2'),url('fonts/Kalameh-SemiBold.woff') format('woff');}
+@font-face{font-family:'Kalameh';font-weight:700;font-display:swap;src:url('fonts/Kalameh-Bold.woff2') format('woff2'),url('fonts/Kalameh-Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:300;font-display:swap;src:url('fonts/IRANSansWeb_Light.woff2') format('woff2'),url('fonts/IRANSansWeb_Light.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:400;font-display:swap;src:url('fonts/IRANSansWeb.woff2') format('woff2'),url('fonts/IRANSansWeb.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:500;font-display:swap;src:url('fonts/IRANSansWeb_Medium.woff2') format('woff2'),url('fonts/IRANSansWeb_Medium.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:700;font-display:swap;src:url('fonts/IRANSansWeb_Bold.woff2') format('woff2'),url('fonts/IRANSansWeb_Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:400;font-display:swap;src:url('fonts/IRANSansWeb_FaNum.woff2') format('woff2'),url('fonts/IRANSansWeb_FaNum.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:700;font-display:swap;src:url('fonts/IRANSansWeb_Bold_FaNum.woff2') format('woff2'),url('fonts/IRANSansWeb_Bold_FaNum.woff') format('woff');}
+</style><style id="inj-css">
+:root{--paper:#f7f4ee;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;--measure:42rem;}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;color-scheme:light}
+body{font-family:var(--f-body);background:var(--paper);color:var(--ink);font-size:14.5px;line-height:2.05;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent);color:var(--paper)}
+a{color:var(--accent)}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.fanum{font-family:var(--f-fa)}
+.page{max-width:var(--measure);margin:0 auto;padding:56px 28px 40px}
+.rule-double{height:7px;border-top:2.5px solid var(--ink);border-bottom:1px solid var(--ink);margin-bottom:26px}
+.rule-double.bottom{margin:34px 0 22px}
+.divider{border:none;border-top:1px solid var(--rule-2);margin:30px 0}
+.fig{margin:26px 0;text-align:center}
+.fig img{max-width:100%;border-radius:12px;border:1px solid var(--rule);background:var(--card)}
+.fig figcaption{font-size:.78rem;color:var(--ink-3);margin-top:8px}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:500;color:var(--ink-3);text-decoration:none;padding:6px 14px;border:1px solid var(--rule);border-radius:99px;background:var(--card);transition:.18s;margin-bottom:18px}
+.back-link:hover{border-color:var(--accent);color:var(--accent)}
+.back-link .arrow{transition:transform .2s}
+.back-link:hover .arrow{transform:translateX(4px)}
+.doc-kicker{font-size:.75rem;font-weight:500;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.doc-kicker::after{content:'';flex:1;border-top:1px solid var(--rule)}
+h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.8rem,5vw,2.2rem);line-height:1.55;margin-bottom:16px}
+h1 .h1-dot{color:var(--accent)}
+.doc-lead{font-weight:300;font-size:1.06rem;line-height:2.15;color:var(--ink-2);max-width:36rem;margin-bottom:22px}
+.doc-meta{display:flex;flex-wrap:wrap;gap:6px 0;font-size:.8rem;color:var(--ink-3)}
+.doc-meta span:not(:last-child)::after{content:'·';margin:0 10px;color:var(--rule-2)}
+.doc-meta b{font-family:var(--f-fa);font-weight:700;color:var(--ink-2)}
+.toc{margin:34px 0 0;border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px 26px 8px}
+.toc-title{font-size:.75rem;font-weight:700;color:var(--ink-3);margin-bottom:6px}
+.toc ol{list-style:none}
+.toc li{border-bottom:1px solid var(--rule)}
+.toc li:last-child{border-bottom:none}
+.toc a{display:flex;align-items:baseline;gap:12px;padding:9px 2px;text-decoration:none;color:var(--ink-2);font-size:.9rem;font-weight:400;transition:color .15s}
+.toc a:hover{color:var(--accent)}
+.toc .n{font-family:var(--f-fa);font-size:.72rem;font-weight:700;color:var(--accent);flex:none;width:44px}
+.sec{margin-top:72px;scroll-margin-top:32px}
+.sec-label{font-size:.8rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.sec h2{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.3rem,3.2vw,1.55rem);line-height:1.65}
+.sec h2 .h2-sub{font-family:var(--f-body);font-weight:300;font-size:.6em;color:var(--ink-3)}
+.sec-head{border-bottom:1px solid var(--rule-2);padding-bottom:16px;margin-bottom:26px}
+.sec-head p{font-size:.92rem;color:var(--ink-3);margin-top:4px;font-weight:300}
+.prose p{margin-bottom:1.15rem;text-align:right}
+.prose p:last-child{margin-bottom:0}
+strong{font-weight:700;color:var(--ink)}
+em{font-style:normal;font-weight:500}
+u{text-underline-offset:3px}
+.tk{direction:ltr;unicode-bidi:isolate;display:inline-block;font-weight:500;font-size:.9em;line-height:1.5;color:var(--ink-2);background:var(--well);border:1px solid var(--rule);border-radius:6px;padding:.02em .55em;vertical-align:baseline}
+.seq{direction:ltr;text-align:center;font-weight:500;font-size:.95rem;letter-spacing:.05em;line-height:2;background:var(--well);border:1px solid var(--rule);border-radius:9px;padding:9px 14px;margin:14px 0;color:var(--ink-2)}
+.letters{display:flex;direction:ltr;justify-content:center;gap:6px;margin:30px 0 10px;flex-wrap:wrap}
+.lt{min-width:62px;text-align:center;padding:10px 4px 12px;border-bottom:2px solid var(--rule-2)}
+.lt b{display:block;font-family:var(--f-disp);font-weight:700;font-size:1.55rem;line-height:1.4;color:var(--ink)}
+.lt span{font-size:.7rem;color:var(--ink-3)}
+.letters-cap{text-align:center;font-size:.78rem;color:var(--ink-3);margin-bottom:26px}
+.letters-cap b{color:var(--accent);font-weight:700}
+.interval-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:24px 0}
+.int-type{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px}
+.int-type h3{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.int-type h3 .icon{font-size:1.2rem}
+.int-type p{font-size:.88rem;color:var(--ink-2);line-height:2}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+.feature{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px}
+.feature h3{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:8px;color:var(--accent)}
+.feature p{font-size:.88rem;color:var(--ink-2);line-height:2;margin-bottom:8px}
+.feature .example{background:var(--well);border-radius:8px;padding:10px 14px;font-size:.85rem;line-height:1.9;margin-top:10px}
+.note{border-inline-start:3px solid var(--accent);background:var(--accent-bg);border-radius:0 12px 12px 0;padding:14px 20px;margin:24px 0;font-size:.93rem;line-height:2.1;color:var(--ink-2)}
+.note .tag{color:var(--accent);font-weight:700;font-size:.82rem}
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.88rem}
+caption{caption-side:top;text-align:right;font-size:.78rem;color:var(--ink-3);padding-bottom:8px;font-weight:500}
+th{font-size:.72rem;font-weight:700;color:var(--ink-3);text-align:right;padding:10px 8px;border-bottom:1.5px solid var(--rule-2);vertical-align:top}
+td{padding:10px 8px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2);font-size:.85rem;line-height:1.8}
+tr:last-child td{border-bottom:none}
+td.num{font-weight:700;font-size:1rem;color:var(--accent);width:35px;direction:ltr;text-align:right}
+td.sym{font-weight:700;color:var(--ink);width:60px;direction:ltr;text-align:right}
+td.semi{width:40px;direction:ltr;text-align:right;font-weight:700;font-family:var(--f-fa)}
+td.ex{direction:ltr;text-align:right;width:80px;color:var(--ink);font-weight:500}
+td.name{direction:ltr;text-align:right;color:var(--ink);font-weight:500;width:120px}
+td.emotion{color:var(--ink-2);font-size:.82rem}
+td.use{font-size:.82rem;color:var(--ink-3)}
+td .en{font-weight:500;font-size:.88em;color:var(--ink-2);direction:ltr;unicode-bidi:isolate;display:inline-block}
+.formula{direction:ltr;text-align:center;font-weight:500;font-size:1.04rem;line-height:2;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px 16px;margin:24px 0 8px;color:var(--ink)}
+.formula b{color:var(--accent);font-weight:700}
+.formula-cap{text-align:center;font-size:.8rem;color:var(--ink-3);margin-bottom:24px}
+.freq{display:flex;border:1px solid var(--rule);border-radius:12px;background:var(--card);margin:26px 0;overflow:hidden}
+.freq>div{flex:1;text-align:center;padding:16px 8px}
+.freq>div+div{border-inline-start:1px solid var(--rule)}
+.freq b{display:block;font-weight:700;font-size:1.3rem;direction:ltr;line-height:1.7}
+.freq span{display:block;font-weight:500;font-size:.82rem;color:var(--ink-2);direction:ltr}
+.freq i{display:block;font-style:normal;font-size:.72rem;color:var(--ink-3);margin-top:4px}
+.freq .ref b{color:var(--accent)}
+.freq .ref i{color:var(--accent);font-weight:700}
+.piece{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:22px 26px;margin:22px 0}
+.piece h3{font-family:var(--f-disp);font-weight:700;font-size:1.08rem;line-height:1.9}
+.piece h3 .en-name{font-family:var(--f-body);font-weight:700;font-size:.95em;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.piece .artist{font-family:var(--f-body);font-size:.78rem;color:var(--ink-3);font-weight:300}
+.piece .oct-tag{display:inline-block;font-size:.72rem;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:1px 12px;margin-inline-start:10px;vertical-align:middle}
+.piece .an{font-size:.9rem;color:var(--ink-2);line-height:2.15;margin-top:12px}
+.piece .an b{color:var(--ink)}
+.piece .an-label{color:var(--accent);font-weight:700;font-size:.82rem}
+.inversion-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:24px 0}
+.inv-card{border:1px solid var(--rule);border-radius:10px;background:var(--card);padding:14px;text-align:center}
+.inv-card .arrow{display:block;font-size:1.2rem;color:var(--accent);margin:6px 0}
+.inv-card .from,.inv-card .to{font-size:.85rem;font-weight:500}
+.inv-card .from{color:var(--ink-2)}
+.inv-card .to{color:var(--accent);font-weight:700}
+.key-point{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px;margin:20px 0}
+.key-point h3{font-family:var(--f-disp);font-weight:700;font-size:.95rem;margin-bottom:10px;color:var(--accent)}
+.key-point p{font-size:.88rem;color:var(--ink-2);line-height:2}
+.qa{margin:26px 0}
+.qa .q,.qa .a{margin-bottom:10px}
+.qa-mark{display:inline-block;font-size:.7rem;font-weight:700;border-radius:99px;padding:2px 13px;margin-inline-end:10px;vertical-align:2px}
+.q .qa-mark{color:var(--accent);border:1px solid var(--accent);background:transparent}
+.a .qa-mark{color:var(--ink-3);border:1px solid var(--rule-2);background:var(--card)}
+.qa .q{font-weight:700;line-height:2.1}
+.qa .a{color:var(--ink-2);font-size:.93rem;line-height:2.15;padding-inline-start:4px}
+.ex-item{display:flex;gap:16px;margin:26px 0}
+.ex-num{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-fa);font-weight:700;font-size:1.05rem;margin-top:6px}
+.ex-body{flex:1;min-width:0}
+.ex-body h4{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:2px}
+.ex-body>p{font-size:.93rem;color:var(--ink-2)}
+.ex-list{list-style:none;margin-top:10px;padding-inline-start:0}
+.ex-list li{padding:4px 0;font-size:.88rem;color:var(--ink-2);line-height:2}
+.ex-list li::before{content:'•';color:var(--accent);font-weight:700;margin-inline-end:8px}
+.ex-ans{margin-top:12px;border-top:1px dashed var(--rule-2);padding-top:10px;font-size:.88rem;color:var(--ink-2);line-height:2.1}
+.ex-ans b.ans-label{color:var(--accent);font-weight:700;font-size:.8rem}
+.summary{border:2px solid var(--accent);border-radius:14px;background:var(--accent-bg);padding:24px;margin:32px 0}
+.summary h3{font-family:var(--f-disp);font-weight:700;font-size:1.1rem;margin-bottom:14px;color:var(--accent)}
+.summary ul{list-style:none;padding:0}
+.summary li{padding:6px 0;font-size:.9rem;line-height:2;color:var(--ink-2)}
+.summary li::before{content:'✓';color:var(--accent);font-weight:700;margin-inline-end:10px}
+footer{text-align:center}
+footer .fl{font-size:.8rem;color:var(--ink-3);line-height:2.2}
+footer .fl b{color:var(--ink-2)}
+footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bottom:6px}
+.topics{list-style:none}
+.topic{display:flex;align-items:center;gap:10px;padding:4px 2px;border-bottom:1px solid var(--rule)}
+.t-link{flex:1;display:flex;align-items:center;gap:10px;padding:7px 2px;text-decoration:none;color:var(--ink-2);transition:.15s;min-width:0}
+.t-link:hover{color:var(--accent)}
+.t-text{flex:1;font-size:.95rem;line-height:2;min-width:0}
+.go{flex:none;color:var(--rule-2);font-size:.95rem;transition:.2s}
+.t-link:hover .go{color:var(--accent);transform:translateX(-5px)}
+.t-link.unset{opacity:.75}
+.phase-head{display:flex;align-items:flex-start;gap:12px}
+.ph-t{flex:1;min-width:0}
+.col-btn{width:31px;height:31px;border-radius:50%;border:1px solid var(--rule-2);background:var(--card);color:var(--ink-3);font-size:.8rem;transition:transform .3s,border-color .2s}
+.col-btn:hover{border-color:var(--accent);color:var(--accent)}
+.phase.closed .col-btn{transform:rotate(90deg)}
+.phase-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .45s ease}
+.phase.closed .phase-body{grid-template-rows:0fr}
+.phase-inner{overflow:hidden}
+body:not(.editing) .edit-only{display:none!important}
+body.editing [data-edit]{cursor:text;border-radius:4px}
+body.editing [data-edit]:hover{outline:1.5px dashed var(--accent);outline-offset:4px}
+body.editing [data-edit]:focus{outline:1.5px solid var(--accent);outline-offset:4px;background:var(--accent-bg)}
+.selected{outline:2px solid var(--accent)!important;outline-offset:4px;border-radius:4px}
+body.editing #sheet *{cursor:pointer}
+body.editing #sheet [data-edit]{cursor:text}
+.add-phase{display:block;width:100%;margin-top:44px;padding:14px;border-radius:14px;border:1.5px dashed var(--rule-2);background:transparent;color:var(--ink-3);font-size:.9rem;font-weight:700;transition:.2s}
+.add-phase:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.ctx{position:fixed;z-index:70;min-width:250px;max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none;font-family:var(--f-body)}
+.ctx.open{display:block}
+.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s;font-family:var(--f-body)}
+.ctx button:hover{background:var(--accent-bg);color:var(--accent)}
+.ctx button .ci{width:20px;text-align:center;flex:none}
+.ctx button .ck{margin-inline-start:auto;font-size:.65rem;color:var(--ink-3)}
+.ctx .csep{height:1px;background:var(--rule);margin:5px 8px}
+.ctx .ctitle{font-size:.62rem;color:var(--ink-3);padding:4px 12px 2px;font-weight:700}
+.ctx .cstatus{font-size:.62rem;color:var(--ink-3);padding:6px 12px 4px;text-align:center;direction:ltr}
+.ctx .cstatus.bad{color:var(--accent)}
+.insp{position:fixed;bottom:14px;inset-inline:0;z-index:45;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
+.insp[hidden]{display:none}
+.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px;font-family:var(--f-body)}
+.insp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.insp-head b{font-size:.78rem;color:var(--accent)}
+#inspTag{font-size:.7rem;color:var(--ink-3);direction:ltr}
+.insp-head .sp{flex:1}
+.insp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px 12px;align-items:end}
+.insp-grid label{display:flex;flex-direction:column;gap:3px;font-size:.68rem;color:var(--ink-3);font-weight:500}
+.insp-grid input[type=range]{width:100%;accent-color:var(--accent)}
+.insp-grid select,.insp-grid input[type=color]{width:100%;border:1px solid var(--rule-2);border-radius:8px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:.75rem;padding:4px 6px}
+.insp-grid input[type=color]{padding:2px;height:30px}
+.swatches{display:flex;gap:6px;align-items:center}
+.sw{width:20px;height:20px;border-radius:50%;border:1px solid var(--rule-2)}
+.sw:hover{transform:scale(1.15)}
+.ib{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule-2);background:transparent;color:var(--ink-3);font-size:.8rem;line-height:1;transition:.15s}
+.ib:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.toast{position:fixed;bottom:24px;inset-inline:0;display:flex;justify-content:center;z-index:50;pointer-events:none}
+.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center;font-family:var(--f-body)}
+@media print{@page{margin:17mm}body{background:#fff;font-size:11.5pt}.page{max-width:100%;padding:0}.sec{margin-top:2.4em;break-inside:auto}.note,.piece,.ex-item,table,.features{break-inside:avoid}a{color:inherit;text-decoration:none}.edit-only,.toast,.insp,.ctx,.back-link{display:none!important}}
+@media(max-width:560px){.page{padding:40px 20px}body{font-size:15.5px}.ex-item{gap:12px}.freq{flex-direction:column}.freq>div+div{border-inline-start:none;border-top:1px solid var(--rule)}}
+</style><style></style></head>
+<body data-new-gr-c-s-check-loaded="14.1333.0" data-gr-ext-installed="" cz-shortcut-listen="true" class="" data-gr-agent-presence-bridge-connection-id="1790790746372-0.5746554023969842" data-new-gr-c-s-loaded="14.1333.0">
+<div class="page" id="sheet">
+<div class="rule-double"></div>
+<header>
+<a href="index.html" class="back-link"><span class="arrow">←</span> بازگشت به نقشه راه</a>
+<p class="doc-kicker" data-edit="">مبانی نظری تئوری موسیقی — درس چهارم</p>
+<h1 data-edit="" style="font-size: 30px; text-align: center;" class="">دایره پنجم‌ها <span class="ltr">(Circle of Fifths)</span> و سرکلیدها <span class="h1-dot">...</span></h1>
+
+</header>
+
+<nav class="toc" aria-label="فهرست">
+<p class="toc-title" data-edit="">فهرست بخش‌ها</p>
+<ol>
+<li><a href="#s1" data-edit=""><span class="n">بخش ۱</span> مفهوم سرکلید (Key Signature)</a></li>
+<li><a href="#s2" data-edit=""><span class="n">بخش ۲</span> منطق ریاضی دایره پنجم‌ها</a></li>
+<li><a href="#s3" data-edit=""><span class="n">بخش ۳</span> ساختار دایره: گام‌های Sharp</a></li>
+<li><a href="#s4" data-edit=""><span class="n">بخش ۴</span> ساختار دایره: گام‌های Flat</a></li>
+<li><a href="#s5" data-edit=""><span class="n">بخش ۵</span> جدول کامل سرکلیدها و گام‌های نسبی</a></li>
+<li><a href="#s6" data-edit=""><span class="n">بخش ۶</span> کاربرد در هارمونی و آکوردها</a></li>
+<li><a href="#s7" data-edit=""><span class="n">بخش ۷</span> مدولاسیون (تغییر گام) بر اساس دایره</a></li>
+<li><a href="#s8" data-edit=""><span class="n">بخش ۸</span> مثال‌های تحلیلی در موسیقی معروف</a></li>
+<li><a href="#s9" data-edit="" class=""><span class="n">بخش ۹</span> نکات کلیدی</a></li>
+<li><a href="#s10" data-edit=""><span class="n">بخش ۱۰</span> تمرینات عملی</a></li>
+</ol>
+</nav>
+
+<section class="sec" id="s1">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش اول</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">مفهوم سرکلید <span class="h2-sub">(Key Signature)</span></h2>
+</div>
+<div class="prose">
+<p data-edit="">پیش از ورود به دایره، باید مفهوم سرکلید را درک کنیم. <strong>سرکلید</strong> مجموعه‌ای از علامت‌های <strong>دیز (♯)</strong> یا <strong>بمل (♭)</strong> است که در ابتدای خطوط حامل (پس از کلید و قبل از میزان اول) قرار می‌گیرد.</p>
+</div>
+<div class="key-point">
+<h3 data-edit="">هدف سرکلید</h3>
+<p data-edit="">هنگامی که قطعه‌ای در گامی غیر از C ماژور یا A مینور نوشته می‌شود، نت‌های خاصی در سراسر قطعه باید به‌طور مداوم نیم‌پرده بالاتر یا پایین‌تر نواخته شوند. به‌جای آنکه آهنگساز قبل از هر نت علامت عَرَضی (Accidental) قرار دهد، این علامت‌ها را در ابتدای قطعه به‌عنوان «قانون کلی» ثبت می‌کند.</p>
+</div>
+<div class="note">
+<span class="tag" data-edit="">قانون طلایی — </span>
+<span data-edit="">در سرکلیدهای رایجِ ماژور و مینور، علامت‌ها یا همگی دیز هستند، یا همگی بمل؛ در C ماژور و A مینور سرکلید علامتی ندارد.</span>
+</div>
+</section>
+
+<section class="sec" id="s2">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش دوم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">منطق ریاضی دایره پنجم‌ها</h2>
+</div>
+<div class="prose">
+<p data-edit="">چرا «پنجم»؟ همان‌طور که در درس دوم بررسی کردیم، فاصلهٔ <strong>پنجم درست (Perfect Fifth – P5)</strong> شامل ۷ نیم‌پرده است. دایرهٔ پنجم‌ها از حرکت پیاپی به اندازهٔ همین فاصله ساخته می‌شود؛ پس از ۱۲ گام، به همان ردهٔ زیر و بمی بازمی‌گردیم.</p>
+<p data-edit="" class="">اگر از نت <strong>C</strong> شروع کنیم و هر بار یک فاصله پنجمِ درست به بالا برویم، پس از ۱۲ حرکت، دقیقا به نقطه آغاز (C) بازخواهیم گشت و تمام ۱۲ نت کروماتیک را پوشش داده‌ایم. این چرخه، پایه و اساس دایره پنجم‌هاست.</p>
+</div>
+<div class="seq" data-edit="">C → G → D → A → E → B → F♯ → C♯ → G♯ → D♯ → A♯ → F → C</div>
+<figure class="lesson-figure"><img src="images/lesson-04-circle-of-fifths.svg" alt="دایرهٔ پنجم‌ها با نام گام‌های ماژور، تعداد دیزها یا بمل‌ها و مینور نسبی هر گام"><figcaption>حرکت ساعت‌گرد از C با پنجم‌های درست، دیزها را یکی‌یکی می‌افزاید؛ حرکت پادساعت‌گرد با چهارم‌های درست، بمل‌ها را. مینور نسبی هر گام در همان جایگاه آمده است.</figcaption></figure>
+</section>
+
+<section class="sec" id="s3">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش سوم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">ساختار دایره: گام‌های Sharp <span class="h2-sub">(حرکت ساعت‌گرد)</span></h2>
+</div>
+<div class="prose">
+<p data-edit="" class="" style="text-align: right;">با حرکت از C (ساعت ۱۲) در جهت عقربه‌های ساعت، هر بار یک فاصله پنجم بالا می‌رویم و <strong>یک Sharp</strong> یا <span style="font-weight: 700;">یک دیِز</span> به سرکلید اضافه می‌شود.</p>
+</div>
+<div class="features">
+<div class="feature" style="text-align: right;">
+<h3 data-edit="" class="">قانون افزودن دیِزها</h3>
+<p data-edit="" class="">ترتیب ظهور دیِزها در سرکلید همیشه ثابت است:</p>
+<div class="example" data-edit=""><strong>F♯, C♯, G♯, D♯, A♯, E♯, B♯</strong></div>
+</div>
+<div class="feature">
+<h3 data-edit="" class="">یافتن گام ماژور از روی دیِزها</h3>
+<p data-edit="" class="">نام گام ماژور، <strong>نیم‌پرده بالاتر از آخرین دیِز</strong> نوشته‌شده در سرکلید است.</p>
+<div class="example" data-edit="">مثال: دو دیزِ نخست F♯ و C♯ هستند. آخرین دیز C♯ است و نیم‌پرده بالاتر از آن D است؛ پس گام ماژور متناظر D ماژور است.</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="s4">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش چهارم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">ساختار دایره: گام‌های Flat <span class="h2-sub">(حرکت پادساعت‌گرد)</span></h2>
+</div>
+<div class="prose">
+<p data-edit="" class="">با حرکت از C در خلاف جهت عقربه‌های ساعت، هر بار یک فاصله پنجم <strong>پایین</strong> می‌رویم (یا چهارم درست بالا) و <strong>یک Flat</strong> یا <span style="font-weight: 700;">یک بِمُل</span> به سرکلید اضافه می‌شود.</p>
+</div>
+<div class="features">
+<div class="feature">
+<h3 data-edit="" class="">قانون افزودن بِمُل‌ها</h3>
+<p data-edit="" class="">ترتیب ظهور بمل‌ها دقیقا برعکس دیزهاست:</p>
+<div class="example" data-edit=""><strong>B♭, E♭, A♭, D♭, G♭, C♭, F♭</strong></div>
+</div>
+<div class="feature">
+<h3 data-edit="" class="">یافتن گام ماژور از روی بِمُل‌ها</h3>
+<p data-edit="" class="">برای سرکلیدهای با ۲ بمل یا بیشتر، نام گام ماژور همان <strong>نام بملِ دوم از آخر</strong> است.</p>
+<div class="example" data-edit="">مثال: سرکلید سه‌بملی B♭, E♭, A♭ است. بملِ ماقبل آخر E♭ است؛ پس گام ماژور متناظر E♭ ماژور است. سرکلید یک‌بملی نیز به F ماژور تعلق دارد.</div>
+</div>
+</div>
+<figure class="lesson-figure"><img src="images/lesson-04-accidental-order.svg" alt="ترتیب ثابت دیزها از فا تا سی و ترتیب بمل‌ها از سی تا فا"><figcaption>ترتیب دیزها همیشه فا، دو، سل، ر، لا، می، سی است؛ ترتیب بمل‌ها همین زنجیره از آخر به اول است.</figcaption></figure>
+</section>
+
+<section class="sec" id="s5">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش پنجم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">جدول کامل سرکلیدها و گام‌های نسبی</h2>
+</div>
+<table>
+<thead>
+<tr>
+<th data-edit="">تعداد</th>
+<th data-edit="">نوع</th>
+<th data-edit="">گام ماژور</th>
+<th data-edit="">گام مینور نسبی</th>
+</tr>
+</thead>
+<tbody>
+<tr><td class="num" data-edit="">۰</td><td data-edit="">—</td><td class="ex" data-edit="">C ماژور</td><td class="ex" data-edit="">A مینور</td></tr>
+<tr><td class="num" data-edit="">۱</td><td data-edit="">Sharp</td><td class="ex" data-edit="">G ماژور</td><td class="ex" data-edit="">E مینور</td></tr>
+<tr><td class="num" data-edit="">۲</td><td data-edit="">Sharps</td><td class="ex" data-edit="">D ماژور</td><td class="ex" data-edit="">B مینور</td></tr>
+<tr><td class="num" data-edit="">۳</td><td data-edit="">Sharps</td><td class="ex" data-edit="">A ماژور</td><td class="ex" data-edit="">F♯ مینور</td></tr>
+<tr><td class="num" data-edit="">۴</td><td data-edit="">Sharps</td><td class="ex" data-edit="">E ماژور</td><td class="ex" data-edit="">C♯ مینور</td></tr>
+<tr><td class="num" data-edit="">۵</td><td data-edit="">Sharps</td><td class="ex" data-edit="">B ماژور</td><td class="ex" data-edit="">G♯ مینور</td></tr>
+<tr><td class="num" data-edit="">۶</td><td data-edit="">Sharps</td><td class="ex" data-edit="">F♯ ماژور</td><td class="ex" data-edit="">D♯ مینور</td></tr>
+<tr><td class="num" data-edit="">۷</td><td data-edit="">Sharps</td><td class="ex" data-edit="">C♯ ماژور</td><td class="ex" data-edit="">A♯ مینور</td></tr>
+<tr><td class="num" data-edit="">۱</td><td data-edit="">Flat</td><td class="ex" data-edit="">F ماژور</td><td class="ex" data-edit="">D مینور</td></tr>
+<tr><td class="num" data-edit="">۲</td><td data-edit="">Flats</td><td class="ex" data-edit="">B♭ ماژور</td><td class="ex" data-edit="">G مینور</td></tr>
+<tr><td class="num" data-edit="">۳</td><td data-edit="">Flats</td><td class="ex" data-edit="">E♭ ماژور</td><td class="ex" data-edit="">C مینور</td></tr>
+<tr><td class="num" data-edit="">۴</td><td data-edit="">Flats</td><td class="ex" data-edit="">A♭ ماژور</td><td class="ex" data-edit="">F مینور</td></tr>
+<tr><td class="num" data-edit="">۵</td><td data-edit="">Flats</td><td class="ex" data-edit="">D♭ ماژور</td><td class="ex" data-edit="">B♭ مینور</td></tr>
+<tr><td class="num" data-edit="">۶</td><td data-edit="">Flats</td><td class="ex" data-edit="">G♭ ماژور</td><td class="ex" data-edit="">E♭ مینور</td></tr>
+<tr><td class="num" data-edit="">۷</td><td data-edit="">Flats</td><td class="ex" data-edit="">C♭ ماژور</td><td class="ex" data-edit="">A♭ مینور</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="sec" id="s6">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش ششم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">کاربرد در هارمونی و آکوردها</h2>
+</div>
+<div class="prose">
+<p data-edit="" class="">دایره پنجم‌ها فقط برای یافتن سرکلید نیست؛ بلکه <strong>نقشه راه هارمونیک</strong> قطعه است. آکوردهایی که در دایره کنار هم قرار دارند، بیشترین نت‌های مشترک را دارند و در کنار هم خوش‌صدا (Consonant) شنیده می‌شوند.</p>
+</div>
+<div class="key-point">
+<h3 data-edit="">قانون آکوردهای همسایه</h3>
+<p data-edit="">دایره، گام‌های ماژور را کنار هم می‌چیند. در گام C ماژور، گام‌های F ماژور و G ماژور همسایهٔ مستقیم C هستند و آکوردهای IV و V نیز F و G هستند. آکوردهای ii، iii و vi به‌ترتیب Dm، Em و Am‌اند؛ پیوند آن‌ها با دایره از راه گام‌های نسبی است: Dm با F، Em با G و Am با C هم‌سرکلیدند.</p>
+</div>
+</section>
+
+<section class="sec" id="s7">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش هفتم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">مدولاسیون (تغییر گام) بر اساس دایره</h2>
+</div>
+<div class="prose">
+<p data-edit="" class=""><strong>مدولاسیون</strong> به معنای تغییر گام در میانه قطعه است. مدولاسیون به گام‌های مجاور روی دایره، از مسیرهای رایج و نزدیک برای تغییر گام است.</p>
+</div>
+<div class="note">
+<span class="tag" data-edit="">مثال کاربردی — </span>
+<span data-edit="">اگر قطعه‌ای در <strong>C ماژور</strong> شروع شود، <strong>G ماژور</strong> و <strong>F ماژور</strong> همسایه‌های دایره‌اند و سرکلیدشان به‌ترتیب یک دیز یا یک بمل با C ماژور تفاوت دارد. <strong>A مینور</strong> مینور نسبی C ماژور است و همان سرکلید را دارد.</span>
+</div>
+<figure class="lesson-figure"><img src="images/lesson-04-neighbor-keys.svg" alt="گام دو ماژور با همسایه‌های فا ماژور و سل ماژور و مینور نسبی لا مینور"><figcaption>F و G همسایه‌های C روی دایره‌اند و هر کدام یک تغییر در سرکلید دارند؛ A مینور مینور نسبی C است و همان سرکلید را دارد.</figcaption></figure>
+</section>
+
+<section class="sec" id="s8">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش هشتم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">مثال‌های تحلیلی در موسیقی معروف</h2>
+</div>
+
+<article class="piece">
+<h3 data-edit="">مثال ۱: پیشرفت آکوردی کلاسیک — <span class="en-name">Let It Be</span> <span class="int-tag fanum">C ماژور</span><br><span class="artist">از <span class="ltr">The Beatles</span></span></h3>
+<p class="an" data-edit=""><span class="an-label" data-edit="">تحلیل: </span>پیشرفت <span class="tk">C–G–Am–F</span> در C ماژور به‌ترتیب I–V–vi–IV است. G و F گام‌های ماژور مجاور C هستند؛ Am نیز مینور نسبی C است. این نزدیکی‌ها به توضیح پیوندهای هارمونیک کمک می‌کنند، اما به‌تنهایی علت خوشایندی شنیداری یک قطعه را ثابت نمی‌کنند.</p>
+</article>
+
+<article class="piece">
+<h3 data-edit="">مثال ۲: مدولاسیون آموزشی — از G ماژور به D ماژور<br><span class="artist">نمونهٔ ساخته‌شده برای آموزش</span></h3>
+<p class="an" data-edit=""><span class="an-label" data-edit="">تحلیل: </span>در این مثال، به‌جای نسبت دادن مدولاسیون مشخص به ضبطی خاص، مسیر آموزشی G ماژور → D ماژور را بررسی می‌کنیم: آکورد A7 با نت C♯ نقش دومینانتِ D را می‌گیرد و با فرود به D، تغییر مرکز تونال را روشن می‌کند.</p>
+</article>
+</section>
+
+<section class="sec" id="s9">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش نهم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;" class="">نکات کلیدی </h2>
+</div>
+<div class="key-point">
+<h3 data-edit="" class="">نکته اول: دایره را حفظ نکنید، درک کنید</h3>
+<p data-edit="">به‌جای حفظ کردن طوطی‌وار، منطق «نیم‌پرده بالاتر از آخرین شارپ» و «فلت دوم از آخر» را تمرین کنید. دایره پنجم‌ها یک ابزار محاسباتی است، نه یک جدول حفظی.</p>
+</div>
+<div class="key-point">
+<h3 data-edit="" class="">نکته دوم: گام‌های انهارمونیک در دایره</h3>
+<p data-edit="" class="">در ساعت ۶ دایره، گام‌های ♯F ماژور و ♭G ماژور از نظر صوتی یکسان هستند (انهارمونیک)، اما در تئوری موسیقی و نت‌نویسی، بسته به جهت مدولاسیون، یکی بر دیگری ترجیح داده می‌شود.</p>
+</div>
+</section>
+
+<section class="sec" id="s10">
+<div class="sec-head">
+<p class="sec-label" data-edit="" style="text-align: center;">بخش دهم</p>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">تمرینات عملی برای هنرجو</h2>
+</div>
+
+<div class="ex-item">
+<div class="ex-num fanum">۱</div>
+<div class="ex-body">
+<h4 data-edit="">مهندسی معکوس سرکلیدها</h4>
+<p data-edit="">سرکلیدهای زیر را در نظر بگیرید و گام ماژور و مینور نسبی آن‌ها را استخراج کنید:</p>
+<ul class="ex-list">
+<li data-edit="">سرکلید چهار دیز: F♯, C♯, G♯, D♯</li>
+<li data-edit="">سرکلید دو بمل: B♭, E♭</li>
+<li data-edit="">سرکلید پنج بمل: B♭, E♭, A♭, D♭, G♭</li>
+</ul>
+</div>
+</div>
+
+<div class="ex-item">
+<div class="ex-num fanum">۲</div>
+<div class="ex-body">
+<h4 data-edit="">طراحی پیشرفت آکوردی در DAW</h4>
+<p data-edit="">گام <strong>E ماژور</strong> را در DAW خود انتخاب کنید. روی دایره پنجم‌ها، آکوردهای I, IV, V و vi را پیدا کنید. یک لوپ ۴ میزانی با این آکوردها بسازید و یک ملودی ساده روی آن بنویسید.</p>
+</div>
+</div>
+
+<div class="ex-item">
+<div class="ex-num fanum">۳</div>
+<div class="ex-body">
+<h4 data-edit="">مدولاسیون نرم</h4>
+<p data-edit="" class="">یک قطعه ۸ میزانی در گام <strong>A مینور</strong> بنویسید. در میزان نهم، به گام <strong>D مینور</strong> (یک قدم روی دایره) مدولاسیون کنید. دقت کنید که چگونه تغییر تنها یک نت (اضافه شدن ♭B در گام D مینور) فضای قطعه را تغییر می‌دهد.</p>
+</div>
+</div>
+</section>
+
+<section class="sec" id="summary">
+<div class="summary">
+<h3 data-edit="">جمع‌بندی درس چهارم</h3>
+<ul>
+<li data-edit="" class=""><strong>سرکلید</strong> نت‌های تغییریافتهٔ ثابت را نشان می‌دهد؛ به‌تنهایی گام قطعه را تعیین نمی‌کند.</li>
+<li data-edit="" class=""><strong>دایره پنجم‌ها</strong> نقشه هندسی ارتباط میان ۱۲ گام است.</li>
+<li data-edit=""><strong>حرکت ساعت‌گرد:</strong> دیزها به این ترتیب افزوده می‌شوند: F♯, C♯, G♯, D♯, A♯, E♯, B♯.</li>
+<li data-edit=""><strong>حرکت پادساعت‌گرد:</strong> بمل‌ها به این ترتیب افزوده می‌شوند: B♭, E♭, A♭, D♭, G♭, C♭, F♭.</li>
+<li data-edit=""><strong>آکوردهای وابسته به گام‌های مجاور</strong> روی دایره می‌توانند پیوند هارمونیک روشنی بسازند.</li>
+<li data-edit=""><strong>مدولاسیون</strong> به گام‌های مجاور روی دایره، از مسیرهای رایج تغییر گام است.</li>
+<li data-edit="">توالی‌های هارمونیک قدرتمند (مانند ii-V-I) مستقیما از روی این دایره استخراج می‌شوند.</li>
+</ul>
+</div>
+</section>
+
+<button type="button" class="add-phase edit-only" id="addSection">+ افزودن بخش جدید</button>
+
+<div class="rule-double bottom"></div>
+<footer>
+<span class="note-glyph">♪</span>
+</footer>
+</div>
+<script src="editor.js"></script><div id="ctx" class="ctx" style="left: 1023px; top: 68px;"><button><span class="ci">✅</span><span>خروج از حالت ویرایش (Exit edit mode)</span></button><button><span class="ci">➕</span><span>درج بلوک جدید (Insert block)</span></button><button><span class="ci">📄</span><span>افزودن بخش جدید (Add section)</span></button><button><span class="ci">🔎</span><span>جست‌وجو و جایگزینی (Find &amp; Replace)</span></button><button><span class="ci">↩</span><span>واگرد (Undo)</span></button><button><span class="ci">↪</span><span>ازنو (Redo)</span></button><div class="csep"></div><button><span class="ci">🖼</span><span>خروجی PNG (Export PNG)</span><span class="ck">×3</span></button><button><span class="ci"></span><span>خروجی PDF (Export PDF)</span><span class="ck">×3</span></button><button><span class="ci">️</span><span>کیفیت خروجی (PPI quality)</span><span class="ck">×3</span></button><div class="csep"></div><button><span class="ci">💾</span><span>ذخیره تغییرات در سورس (Save source)</span></button><button><span class="ci">⬇</span><span>دانلود کپی سورس (Download copy)</span></button><button><span class="ci">↺</span><span>بازنشانی (Reset)</span></button><button><span class="ci"></span><span>فهرست شرتکات‌ها (Shortcuts list)</span></button><div class="csep"></div><div class="cstatus">v11 · JS فعال ✓ · lesson-04</div></div><div class="insp" id="insp" hidden=""><div class="insp-card"><div class="insp-head"><b>استایل المان / انتخاب</b><span id="inspTag">&lt;li&gt;</span><span class="sp"></span><button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button><button type="button" class="ib" id="inspClose" title="بستن">×</button></div><div class="insp-grid"><label>سایز قلم <span class="ltr" id="vSize">14px</span><input type="range" id="inSize" min="10" max="56" step="1"></label><label>فاصله خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label><label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label><label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label><label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label><label>رنگ<div class="swatches"><button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button><button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button><button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button><button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button><input type="color" id="inColor" value="#221d17"></div></label></div></div></div><div class="toast"><span id="toastMsg" class="">سورس با همه تغییرات ذخیره شد 💾 — جایگزین فایل گیت‌هاب کن</span></div>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true" style="visibility: visible !important;"></grammarly-desktop-integration></html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
