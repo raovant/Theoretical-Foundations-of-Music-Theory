@@ -219,6 +219,11 @@ body{background-color:var(--canvas);background-image:radial-gradient(rgba(116,91
 .paper-outline button:hover{background:var(--accent-bg);color:var(--accent)}
 .paper-outline .outline-index{flex:none;width:26px;color:var(--accent);font:700 .68rem var(--f-fa)}
 .phase.sec{margin:22px 0 0;padding:20px 22px 14px;border:1px solid var(--rule);border-radius:16px;background:rgba(255,253,248,.76);box-shadow:0 3px 12px rgba(53,42,27,.035)}
+.course-card.phase{border-color:#c8d8cd;background:linear-gradient(145deg,rgba(239,246,240,.94),rgba(255,253,248,.92) 62%)}
+.course-card .sec-label{color:#4e7164}
+.course-intro{margin:12px 6px 8px;padding:10px 14px;border-inline-start:3px solid #4e7164;border-radius:8px;background:rgba(224,235,227,.45);color:var(--ink-2);font-size:.82rem;line-height:1.9}
+.course-card .t-link .go{color:#4e7164}
+.course-chip{padding:4px 9px;border:1px solid #c8d8cd;border-radius:999px;background:#e0ebe3;color:#4e7164;font:700 .68rem var(--f-body);direction:ltr}
 .phase .sec-head.phase-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:14px;margin-bottom:0}
 .phase .ph-t{min-width:0}
 .phase .sec-label{letter-spacing:.025em}
@@ -390,8 +395,9 @@ function setPaperScale(value){
   var down=document.getElementById('paperFontDown'),up=document.getElementById('paperFontUp');
   function currentScale(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--reader-scale'))||1;}
   if(down)down.addEventListener('click',function(){setPaperScale(currentScale()-.05);});if(up)up.addEventListener('click',function(){setPaperScale(currentScale()+.05);});
-  var files=['lesson-01.html','lesson-02.html','lesson-03.html','lesson-04.html','lesson-05.html'],idx=files.indexOf(BASE+'.html'),nav=document.getElementById('paperLessonNav');
-  if(idx>=0&&nav){nav.hidden=false;var prev=document.getElementById('paperPrev'),next=document.getElementById('paperNext');prev.href=idx===0?'index.html':files[idx-1];next.href=idx===files.length-1?'index.html':files[idx+1];prev.setAttribute('aria-label',idx===0?'نقشهٔ راه':('درس '+idx+'؛ قبلی'));next.setAttribute('aria-label',idx===files.length-1?'نقشهٔ راه':('درس '+(idx+2)+'؛ بعدی'));}
+  var lessonGroups=[{files:['lesson-01.html','lesson-02.html','lesson-03.html','lesson-04.html','lesson-05.html'],unit:'درس'},{files:['lesson-gp-01.html','lesson-gp-02.html','lesson-gp-03.html','lesson-gp-04.html','lesson-gp-05.html','lesson-gp-06.html'],unit:'جلسه'}],files=null,idx=-1,unit='درس',nav=document.getElementById('paperLessonNav');
+  for(var gi=0;gi<lessonGroups.length;gi++){var found=lessonGroups[gi].files.indexOf(BASE+'.html');if(found>=0){files=lessonGroups[gi].files;idx=found;unit=lessonGroups[gi].unit;break;}}
+  if(idx>=0&&nav){nav.hidden=false;var prev=document.getElementById('paperPrev'),next=document.getElementById('paperNext');prev.href=idx===0?'index.html':files[idx-1];next.href=idx===files.length-1?'index.html':files[idx+1];prev.setAttribute('aria-label',idx===0?'نقشهٔ راه':(unit+' '+idx+'؛ قبلی'));next.setAttribute('aria-label',idx===files.length-1?'نقشهٔ راه':(unit+' '+(idx+2)+'؛ بعدی'));}
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&outline){outline.hidden=true;if(contents)contents.setAttribute('aria-expanded','false');}});
   updatePaperProgress();window.addEventListener('scroll',updatePaperProgress,{passive:true});window.addEventListener('resize',updatePaperProgress);
 })();

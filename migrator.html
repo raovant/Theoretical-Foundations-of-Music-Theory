@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ابزار مهاجرت درس‌ها به editor.js</title>
+<style>
+body{font-family:Tahoma,sans-serif;background:#f7f4ee;color:#221d17;padding:40px;line-height:2}
+.card{max-width:640px;margin:0 auto;background:#fdfbf7;border:1px solid #d3c9b2;border-radius:16px;padding:28px}
+h1{font-size:1.2rem;margin-bottom:8px}
+p{font-size:.85rem;color:#544c40}
+input[type=file]{margin:18px 0;display:block}
+#log{list-style:none;padding:0;margin:16px 0}
+#log li{border:1px solid #e4dccb;border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:.82rem;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#log a{color:#b23a26;font-weight:700;text-decoration:none;border:1px solid #b23a26;border-radius:99px;padding:2px 14px;font-size:.75rem}
+.ok{color:#2e7d32;font-size:.72rem}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>🧰 ابزار مهاجرت درس‌ها به معماری جدید (editor.js)</h1>
+<p>فایل‌های درس قدیمی رو انتخاب کن. ابزار برای هر فایل: بلوک‌های <b>&lt;style&gt;</b> و <b>&lt;script&gt;</b> قدیمی و منوهای داخلی (#ctx / #insp / .toast) رو حذف می‌کنه، اسکریپت مشترک <b>editor.js</b> رو اضافه می‌کنه و اگه لینک «بازگشت به نقشهٔ راه» نباشه می‌ذاره. تمام متن‌ها، استایل‌های inline و کامنت‌ها دست‌نخورده می‌مونن.</p>
+<input type="file" id="f" multiple accept=".html,.htm,.txt">
+<ul id="log"></ul>
+<p style="font-size:.72rem;color:#8b8272">خروجی‌ها رو با همون نام (lesson-01.html و…) روی گیت‌هاب جایگزین کن؛ فایل editor.js رو هم یک‌بار کنارشون آپلود کن.</p>
+</div>
+<script>
+document.getElementById('f').addEventListener('change',function(e){
+  var log=document.getElementById('log');
+  Array.prototype.forEach.call(e.target.files,function(file){
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var doc=new DOMParser().parseFromString(r.result,'text/html');
+        /* حذف موتور قدیمی */
+        doc.querySelectorAll('style').forEach(function(s){s.parentNode.removeChild(s);});
+        doc.querySelectorAll('script').forEach(function(s){s.parentNode.removeChild(s);});
+        doc.querySelectorAll('#ctx,#insp,.toast,#imgFileInput').forEach(function(s){s.parentNode.removeChild(s);});
+        /* افزودن editor.js */
+        var sc=doc.createElement('script');sc.setAttribute('src','editor.js');
+        doc.body.appendChild(sc);
+        /* لینک بازگشت اگه نیست */
+        if(!doc.querySelector('.back-link')){
+          var h=doc.querySelector('#sheet header')||doc.querySelector('header');
+          if(h)h.insertAdjacentHTML('afterbegin','<a href="index.html" class="back-link"><span class="arrow">←</span> بازگشت به نقشهٔ راه</a>');
+        }
+        /* تمیزکاری atribut های حالت ویرایش */
+        doc.querySelectorAll('[contenteditable]').forEach(function(el){el.removeAttribute('contenteditable');});
+        doc.querySelectorAll('.selected').forEach(function(el){el.classList.remove('selected');});
+        doc.querySelectorAll('body').forEach(function(b){b.classList.remove('editing');});
+        var out='<!DOCTYPE html>\n'+doc.documentElement.outerHTML;
+        var url=URL.createObjectURL(new Blob([out],{type:'text/html'}));
+        var name=file.name.replace(/\.(txt|htm|html)$/i,'')+'.html';
+        var li=document.createElement('li');
+        li.innerHTML='<span>📄 '+file.name+'</span><span class="ok">✓ آماده شد</span><a href="'+url+'" download="'+name+'">دانلود '+name+'</a>';
+        log.appendChild(li);
+      }catch(err){
+        var li2=document.createElement('li');
+        li2.textContent='⚠️ خطا در پردازش '+file.name+': '+err.message;
+        log.appendChild(li2);
+      }
+    };
+    r.readAsText(file);
+  });
+  e.target.value='';
+});
+</script>
+</body>
+</html>
