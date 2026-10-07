@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,14 +6,301 @@
 <title>درس سوم · گام‌ها (Scales) – ساختار ماژور، مینور و انواع آن</title>
 
 
-</head>
-<body>
+<style id="inj-fonts">
+@font-face{font-family:'Kalameh';font-weight:600;font-display:swap;src:url('fonts/Kalameh-SemiBold.woff2') format('woff2'),url('fonts/Kalameh-SemiBold.woff') format('woff');}
+@font-face{font-family:'Kalameh';font-weight:700;font-display:swap;src:url('fonts/Kalameh-Bold.woff2') format('woff2'),url('fonts/Kalameh-Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:300;font-display:swap;src:url('fonts/IRANSansWeb_Light.woff2') format('woff2'),url('fonts/IRANSansWeb_Light.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:400;font-display:swap;src:url('fonts/IRANSansWeb.woff2') format('woff2'),url('fonts/IRANSansWeb.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:500;font-display:swap;src:url('fonts/IRANSansWeb_Medium.woff2') format('woff2'),url('fonts/IRANSansWeb_Medium.woff') format('woff');}
+@font-face{font-family:'IRANSans';font-weight:700;font-display:swap;src:url('fonts/IRANSansWeb_Bold.woff2') format('woff2'),url('fonts/IRANSansWeb_Bold.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:400;font-display:swap;src:url('fonts/IRANSansWeb_FaNum.woff2') format('woff2'),url('fonts/IRANSansWeb_FaNum.woff') format('woff');}
+@font-face{font-family:'IRANSans FaNum';font-weight:700;font-display:swap;src:url('fonts/IRANSansWeb_Bold_FaNum.woff2') format('woff2'),url('fonts/IRANSansWeb_Bold_FaNum.woff') format('woff');}
+</style><style id="inj-css">
+:root{--paper:#f7f4ee;--card:#fdfbf7;--well:#f0ebe0;--ink:#221d17;--ink-2:#544c40;--ink-3:#8b8272;--rule:#e4dccb;--rule-2:#d3c9b2;--accent:#b23a26;--accent-bg:rgba(178,58,38,.055);--f-disp:'Kalameh',sans-serif;--f-body:'IRANSans','Kalameh',sans-serif;--f-fa:'IRANSans FaNum','IRANSans',sans-serif;--measure:42rem;}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;color-scheme:light}
+body{font-family:var(--f-body);background:var(--paper);color:var(--ink);font-size:calc(14.5px * var(--reader-scale,1));line-height:2.05;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent);color:var(--paper)}
+a{color:var(--accent)}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.fanum{font-family:var(--f-fa)}
+.page{max-width:var(--measure);margin:0 auto;padding:56px 28px 40px}
+.rule-double{height:7px;border-top:2.5px solid var(--ink);border-bottom:1px solid var(--ink);margin-bottom:26px}
+.rule-double.bottom{margin:34px 0 22px}
+.divider{border:none;border-top:1px solid var(--rule-2);margin:30px 0}
+.fig{margin:26px 0;text-align:center}
+.fig img{max-width:100%;border-radius:12px;border:1px solid var(--rule);background:var(--card)}
+.fig figcaption{font-size:.78rem;color:var(--ink-3);margin-top:8px}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:500;color:var(--ink-3);text-decoration:none;padding:6px 14px;border:1px solid var(--rule);border-radius:99px;background:var(--card);transition:.18s;margin-bottom:18px}
+.back-link:hover{border-color:var(--accent);color:var(--accent)}
+.back-link .arrow{transition:transform .2s}
+.back-link:hover .arrow{transform:translateX(4px)}
+.doc-kicker{font-size:.75rem;font-weight:500;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.doc-kicker::after{content:'';flex:1;border-top:1px solid var(--rule)}
+h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.8rem,5vw,2.2rem);line-height:1.55;margin-bottom:16px}
+h1 .h1-dot{color:var(--accent)}
+.doc-lead{font-weight:300;font-size:1.06rem;line-height:2.15;color:var(--ink-2);max-width:36rem;margin-bottom:22px}
+.doc-meta{display:flex;flex-wrap:wrap;gap:6px 0;font-size:.8rem;color:var(--ink-3)}
+.doc-meta span:not(:last-child)::after{content:'·';margin:0 10px;color:var(--rule-2)}
+.doc-meta b{font-family:var(--f-fa);font-weight:700;color:var(--ink-2)}
+.toc{margin:34px 0 0;border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px 26px 8px}
+.toc-title{font-size:.75rem;font-weight:700;color:var(--ink-3);margin-bottom:6px}
+.toc ol{list-style:none}
+.toc li{border-bottom:1px solid var(--rule)}
+.toc li:last-child{border-bottom:none}
+.toc a{display:flex;align-items:baseline;gap:12px;padding:9px 2px;text-decoration:none;color:var(--ink-2);font-size:.9rem;font-weight:400;transition:color .15s}
+.toc a:hover{color:var(--accent)}
+.toc .n{font-family:var(--f-fa);font-size:.72rem;font-weight:700;color:var(--accent);flex:none;width:44px}
+.sec{margin-top:72px;scroll-margin-top:32px}
+.sec-label{font-size:.8rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.sec h2{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.3rem,3.2vw,1.55rem);line-height:1.65}
+.sec h2 .h2-sub{font-family:var(--f-body);font-weight:300;font-size:.6em;color:var(--ink-3)}
+.sec-head{border-bottom:1px solid var(--rule-2);padding-bottom:16px;margin-bottom:26px}
+.sec-head p{font-size:.92rem;color:var(--ink-3);margin-top:4px;font-weight:300}
+.prose p{margin-bottom:1.15rem;text-align:right}
+.prose p:last-child{margin-bottom:0}
+strong{font-weight:700;color:var(--ink)}
+em{font-style:normal;font-weight:500}
+u{text-underline-offset:3px}
+.tk{direction:ltr;unicode-bidi:isolate;display:inline-block;font-weight:500;font-size:.9em;line-height:1.5;color:var(--ink-2);background:var(--well);border:1px solid var(--rule);border-radius:6px;padding:.02em .55em;vertical-align:baseline}
+.seq{direction:ltr;text-align:center;font-weight:500;font-size:.95rem;letter-spacing:.05em;line-height:2;background:var(--well);border:1px solid var(--rule);border-radius:9px;padding:9px 14px;margin:14px 0;color:var(--ink-2)}
+.letters{display:flex;direction:ltr;justify-content:center;gap:6px;margin:30px 0 10px;flex-wrap:wrap}
+.lt{min-width:62px;text-align:center;padding:10px 4px 12px;border-bottom:2px solid var(--rule-2)}
+.lt b{display:block;font-family:var(--f-disp);font-weight:700;font-size:1.55rem;line-height:1.4;color:var(--ink)}
+.lt span{font-size:.7rem;color:var(--ink-3)}
+.letters-cap{text-align:center;font-size:.78rem;color:var(--ink-3);margin-bottom:26px}
+.letters-cap b{color:var(--accent);font-weight:700}
+.interval-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:24px 0}
+.int-type{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px}
+.int-type h3{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.int-type h3 .icon{font-size:1.2rem}
+.int-type p{font-size:.88rem;color:var(--ink-2);line-height:2}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+.feature{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px}
+.feature h3{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:8px;color:var(--accent)}
+.feature p{font-size:.88rem;color:var(--ink-2);line-height:2;margin-bottom:8px}
+.feature .example{background:var(--well);border-radius:8px;padding:10px 14px;font-size:.85rem;line-height:1.9;margin-top:10px}
+.note{border-inline-start:3px solid var(--accent);background:var(--accent-bg);border-radius:0 12px 12px 0;padding:14px 20px;margin:24px 0;font-size:.93rem;line-height:2.1;color:var(--ink-2)}
+.note .tag{color:var(--accent);font-weight:700;font-size:.82rem}
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.88rem}
+caption{caption-side:top;text-align:right;font-size:.78rem;color:var(--ink-3);padding-bottom:8px;font-weight:500}
+th{font-size:.72rem;font-weight:700;color:var(--ink-3);text-align:right;padding:10px 8px;border-bottom:1.5px solid var(--rule-2);vertical-align:top}
+td{padding:10px 8px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2);font-size:.85rem;line-height:1.8}
+tr:last-child td{border-bottom:none}
+td.num{font-weight:700;font-size:1rem;color:var(--accent);width:35px;direction:ltr;text-align:right}
+td.sym{font-weight:700;color:var(--ink);width:60px;direction:ltr;text-align:right}
+td.semi{width:40px;direction:ltr;text-align:right;font-weight:700;font-family:var(--f-fa)}
+td.ex{direction:ltr;text-align:right;width:80px;color:var(--ink);font-weight:500}
+td.name{direction:ltr;text-align:right;color:var(--ink);font-weight:500;width:120px}
+td.emotion{color:var(--ink-2);font-size:.82rem}
+td.use{font-size:.82rem;color:var(--ink-3)}
+td .en{font-weight:500;font-size:.88em;color:var(--ink-2);direction:ltr;unicode-bidi:isolate;display:inline-block}
+.formula{direction:ltr;text-align:center;font-weight:500;font-size:1.04rem;line-height:2;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px 16px;margin:24px 0 8px;color:var(--ink)}
+.formula b{color:var(--accent);font-weight:700}
+.formula-cap{text-align:center;font-size:.8rem;color:var(--ink-3);margin-bottom:24px}
+.freq{display:flex;border:1px solid var(--rule);border-radius:12px;background:var(--card);margin:26px 0;overflow:hidden}
+.freq>div{flex:1;text-align:center;padding:16px 8px}
+.freq>div+div{border-inline-start:1px solid var(--rule)}
+.freq b{display:block;font-weight:700;font-size:1.3rem;direction:ltr;line-height:1.7}
+.freq span{display:block;font-weight:500;font-size:.82rem;color:var(--ink-2);direction:ltr}
+.freq i{display:block;font-style:normal;font-size:.72rem;color:var(--ink-3);margin-top:4px}
+.freq .ref b{color:var(--accent)}
+.freq .ref i{color:var(--accent);font-weight:700}
+.piece{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:22px 26px;margin:22px 0}
+.piece h3{font-family:var(--f-disp);font-weight:700;font-size:1.08rem;line-height:1.9}
+.piece h3 .en-name{font-family:var(--f-body);font-weight:700;font-size:.95em;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.piece .artist{font-family:var(--f-body);font-size:.78rem;color:var(--ink-3);font-weight:300}
+.piece .oct-tag{display:inline-block;font-size:.72rem;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:1px 12px;margin-inline-start:10px;vertical-align:middle}
+.piece .an{font-size:.9rem;color:var(--ink-2);line-height:2.15;margin-top:12px}
+.piece .an b{color:var(--ink)}
+.piece .an-label{color:var(--accent);font-weight:700;font-size:.82rem}
+.inversion-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:24px 0}
+.inv-card{border:1px solid var(--rule);border-radius:10px;background:var(--card);padding:14px;text-align:center}
+.inv-card .arrow{display:block;font-size:1.2rem;color:var(--accent);margin:6px 0}
+.inv-card .from,.inv-card .to{font-size:.85rem;font-weight:500}
+.inv-card .from{color:var(--ink-2)}
+.inv-card .to{color:var(--accent);font-weight:700}
+.key-point{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px;margin:20px 0}
+.key-point h3{font-family:var(--f-disp);font-weight:700;font-size:.95rem;margin-bottom:10px;color:var(--accent)}
+.key-point p{font-size:.88rem;color:var(--ink-2);line-height:2}
+.qa{margin:26px 0}
+.qa .q,.qa .a{margin-bottom:10px}
+.qa-mark{display:inline-block;font-size:.7rem;font-weight:700;border-radius:99px;padding:2px 13px;margin-inline-end:10px;vertical-align:2px}
+.q .qa-mark{color:var(--accent);border:1px solid var(--accent);background:transparent}
+.a .qa-mark{color:var(--ink-3);border:1px solid var(--rule-2);background:var(--card)}
+.qa .q{font-weight:700;line-height:2.1}
+.qa .a{color:var(--ink-2);font-size:.93rem;line-height:2.15;padding-inline-start:4px}
+.ex-item{display:flex;gap:16px;margin:26px 0}
+.ex-num{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-fa);font-weight:700;font-size:1.05rem;margin-top:6px}
+.ex-body{flex:1;min-width:0}
+.ex-body h4{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:2px}
+.ex-body>p{font-size:.93rem;color:var(--ink-2)}
+.ex-list{list-style:none;margin-top:10px;padding-inline-start:0}
+.ex-list li{padding:4px 0;font-size:.88rem;color:var(--ink-2);line-height:2}
+.ex-list li::before{content:'•';color:var(--accent);font-weight:700;margin-inline-end:8px}
+.ex-ans{margin-top:12px;border-top:1px dashed var(--rule-2);padding-top:10px;font-size:.88rem;color:var(--ink-2);line-height:2.1}
+.ex-ans b.ans-label{color:var(--accent);font-weight:700;font-size:.8rem}
+.summary{border:2px solid var(--accent);border-radius:14px;background:var(--accent-bg);padding:24px;margin:32px 0}
+.summary h3{font-family:var(--f-disp);font-weight:700;font-size:1.1rem;margin-bottom:14px;color:var(--accent)}
+.summary ul{list-style:none;padding:0}
+.summary li{padding:6px 0;font-size:.9rem;line-height:2;color:var(--ink-2)}
+.summary li::before{content:'✓';color:var(--accent);font-weight:700;margin-inline-end:10px}
+footer{text-align:center}
+footer .fl{font-size:.8rem;color:var(--ink-3);line-height:2.2}
+footer .fl b{color:var(--ink-2)}
+footer .note-glyph{font-size:1.3rem;color:var(--accent);display:block;margin-bottom:6px}
+body:not(.editing) .edit-only{display:none!important}
+body.editing [data-edit]{cursor:text;border-radius:4px}
+body.editing [data-edit]:hover{outline:1.5px dashed var(--accent);outline-offset:4px}
+body.editing [data-edit]:focus{outline:1.5px solid var(--accent);outline-offset:4px;background:var(--accent-bg)}
+.selected{outline:2px solid var(--accent)!important;outline-offset:4px;border-radius:4px}
+body.editing #sheet *{cursor:pointer}
+body.editing #sheet [data-edit]{cursor:text}
+.add-phase{display:block;width:100%;margin-top:44px;padding:14px;border-radius:14px;border:1.5px dashed var(--rule-2);background:transparent;color:var(--ink-3);font-size:.9rem;font-weight:700;transition:.2s}
+.add-phase:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.ctx{position:fixed;z-index:70;min-width:250px;max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 50px rgba(34,29,23,.28);padding:6px;display:none}
+.ctx.open{display:block}
+.ctx button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:none;border-radius:9px;padding:8px 12px;font-size:.8rem;color:var(--ink-2);transition:.12s}
+.ctx button:hover{background:var(--accent-bg);color:var(--accent)}
+.ctx button .ci{width:20px;text-align:center;flex:none}
+.ctx button .ck{margin-inline-start:auto;font-size:.65rem;color:var(--ink-3)}
+.ctx .csep{height:1px;background:var(--rule);margin:5px 8px}
+.ctx .ctitle{font-size:.62rem;color:var(--ink-3);padding:4px 12px 2px;font-weight:700}
+.ctx .cstatus{font-size:.62rem;color:var(--ink-3);padding:6px 12px 4px;text-align:center;direction:ltr}
+.ctx .cstatus.bad{color:var(--accent)}
+.insp{position:fixed;bottom:14px;inset-inline:0;z-index:45;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
+.insp[hidden]{display:none}
+.insp-card{pointer-events:auto;width:min(680px,100%);background:var(--card);border:1px solid var(--rule-2);border-radius:16px;box-shadow:0 14px 44px rgba(34,29,23,.18);padding:12px 18px 14px}
+.insp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.insp-head b{font-size:.78rem;color:var(--accent)}
+#inspTag{font-size:.7rem;color:var(--ink-3);direction:ltr}
+.insp-head .sp{flex:1}
+.insp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px 12px;align-items:end}
+.insp-grid label{display:flex;flex-direction:column;gap:3px;font-size:.68rem;color:var(--ink-3);font-weight:500}
+.insp-grid input[type=range]{width:100%;accent-color:var(--accent)}
+.insp-grid select,.insp-grid input[type=color]{width:100%;border:1px solid var(--rule-2);border-radius:8px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:.75rem;padding:4px 6px}
+.insp-grid input[type=color]{padding:2px;height:30px}
+.swatches{display:flex;gap:6px;align-items:center}
+.sw{width:20px;height:20px;border-radius:50%;border:1px solid var(--rule-2)}
+.sw:hover{transform:scale(1.15)}
+.ib{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule-2);background:transparent;color:var(--ink-3);font-size:.8rem;line-height:1;transition:.15s}
+.ib:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.toast{position:fixed;bottom:24px;inset-inline:0;display:flex;justify-content:center;z-index:50;pointer-events:none}
+.toast span{background:var(--ink);color:var(--paper);font-size:.78rem;padding:8px 22px;border-radius:99px;opacity:0;transform:translateY(14px);transition:.3s;max-width:88%;text-align:center}
+.toast span.show{opacity:1;transform:none}
+:root{--canvas:#e7dfd2;--paper:#fffdf8;--reader-scale:1}
+html{font-size:calc(16px * var(--reader-scale,1));scroll-padding-top:108px}
+body{background-color:var(--canvas);background-image:radial-gradient(rgba(116,91,58,.045) .7px,transparent .7px);background-size:5px 5px}
+.page{position:relative;width:min(calc(100% - 36px),48rem);max-width:none;min-height:calc(100vh - 150px);margin:24px auto 64px;padding:clamp(38px,5vw,64px) clamp(26px,6vw,68px) 58px;background:var(--paper);border:1px solid #ded5c5;border-radius:3px;box-shadow:0 1px 2px rgba(53,42,27,.08),0 18px 44px rgba(53,42,27,.14),0 45px 85px rgba(53,42,27,.08)}
+.page::before{content:"";position:absolute;inset-block:0;inset-inline-start:24px;width:1px;background:linear-gradient(180deg,transparent,rgba(178,58,38,.13) 8%,rgba(178,58,38,.13) 92%,transparent);pointer-events:none}
+#sheet .sec{scroll-margin-top:112px}
+.paper-chrome{position:sticky;top:10px;z-index:60;width:min(calc(100% - 24px),54rem);margin:12px auto 0}
+.paper-toolbar{display:flex;align-items:center;gap:12px;min-height:54px;padding:8px 10px;background:rgba(255,253,248,.94);border:1px solid #d8cebd;border-radius:16px;box-shadow:0 7px 26px rgba(53,42,27,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.paper-brand{display:flex;align-items:center;gap:8px;flex:none;color:var(--ink);font-family:var(--f-disp);font-size:.78rem;font-weight:700;text-decoration:none;white-space:nowrap}
+.paper-brand-mark{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:var(--accent);color:#fff;font-family:var(--f-body);font-size:1rem}
+.paper-doc-title{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2);font-size:.78rem}
+.paper-controls,.paper-lesson-nav{display:flex;align-items:center;gap:5px;flex:none}.paper-lesson-nav[hidden]{display:none!important}
+.paper-control{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:5px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--ink-2);font:500 .75rem var(--f-body);cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.paper-control:hover{border-color:var(--rule);background:#f4efe5;color:var(--accent)}
+.paper-control:focus-visible,.paper-outline button:focus-visible,.paper-outline a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.paper-control.primary{border-color:var(--accent);background:var(--accent);color:#fff}
+.paper-control.primary:hover{background:#962e1e;color:#fff}
+.paper-control.square{width:34px;padding:0;font-size:1rem}
+.paper-control[aria-pressed="true"]{background:var(--ink);color:#fff}
+.paper-save-state{max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-3);font-size:.65rem}
+.paper-progress{height:3px;margin:0 14px;overflow:hidden;border-radius:0 0 4px 4px;background:rgba(84,76,64,.12)}
+.paper-progress-fill{width:0;height:100%;background:var(--accent);transition:width .12s linear}
+.paper-outline{position:absolute;top:calc(100% + 9px);inset-inline-start:8px;width:min(350px,calc(100vw - 40px));max-height:min(65vh,520px);overflow:auto;padding:10px;background:var(--paper);border:1px solid var(--rule-2);border-radius:14px;box-shadow:0 18px 48px rgba(34,29,23,.2)}
+.paper-outline[hidden]{display:none}
+.paper-outline-title{padding:8px 12px 10px;color:var(--ink-3);font-size:.72rem;font-weight:700;border-bottom:1px solid var(--rule)}
+.paper-outline button{display:flex;align-items:baseline;gap:10px;width:100%;padding:8px 12px;border:0;border-radius:8px;background:transparent;text-align:start;color:var(--ink-2);font:400 .8rem/1.8 var(--f-body);cursor:pointer}
+.paper-outline button:hover{background:var(--accent-bg);color:var(--accent)}
+.paper-outline .outline-index{flex:none;width:26px;color:var(--accent);font:700 .68rem var(--f-fa)}
+.phase.sec{margin:22px 0 0;padding:20px 22px 14px;border:1px solid var(--rule);border-radius:16px;background:rgba(255,253,248,.76);box-shadow:0 3px 12px rgba(53,42,27,.035)}
+.course-card.phase{border-color:#c8d8cd;background:linear-gradient(145deg,rgba(239,246,240,.94),rgba(255,253,248,.92) 62%)}
+.course-card .sec-label{color:#4e7164}
+.course-intro{margin:12px 6px 8px;padding:10px 14px;border-inline-start:3px solid #4e7164;border-radius:8px;background:rgba(224,235,227,.45);color:var(--ink-2);font-size:.82rem;line-height:1.9}
+.course-card .t-link .go{color:#4e7164}
+.course-chip{padding:4px 9px;border:1px solid #c8d8cd;border-radius:999px;background:#e0ebe3;color:#4e7164;font:700 .68rem var(--f-body);direction:ltr}
+.phase .sec-head.phase-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:14px;margin-bottom:0}
+.phase .ph-t{min-width:0}
+.phase .sec-label{letter-spacing:.025em}
+.phase .head-tools{display:flex;align-items:center;gap:7px;flex:none}
+.phase .col-btn{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);color:var(--ink-2);font-size:1rem;cursor:pointer;transition:.15s}
+.phase .col-btn:hover{border-color:var(--accent);color:var(--accent)}
+.phase-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .22s ease}
+.phase-inner{min-height:0;overflow:hidden}
+.phase.collapsed .phase-head{border-bottom:0;padding-bottom:2px}
+.phase.collapsed .phase-body{display:none}
+.topics{display:grid;gap:7px;list-style:none;margin:14px 0 10px;padding:0}
+.topic{display:flex;align-items:center;gap:5px;min-width:0;padding:3px 4px 3px 8px;border:1px solid transparent;border-radius:11px;transition:background .15s,border-color .15s}
+.topic:hover{border-color:var(--rule);background:#fffefa}
+.t-link{display:flex;align-items:center;justify-content:space-between;gap:14px;flex:1;min-width:0;padding:7px 10px;color:var(--ink-2);text-decoration:none;font-size:.88rem;line-height:1.8}
+.t-link:hover{color:var(--accent)}
+.t-link.unset{color:var(--ink-3)}
+.t-link.unset .t-text::after{content:" · در برنامه";color:#a79b87;font-size:.68rem}
+.t-text{min-width:0}
+.t-link .go{flex:none;color:var(--accent);font-size:.9rem;transition:transform .15s}
+.t-link:hover .go{transform:translateX(-3px)}
+.topic .ib{flex:none}
+.add-topic{display:block;margin:10px 4px 2px;padding:7px 12px;border:1px dashed var(--rule-2);border-radius:9px;background:transparent;color:var(--ink-3);font:500 .76rem var(--f-body);cursor:pointer}
+.add-topic:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+#addPhase{margin-top:24px}
+.lesson-figure{margin:22px 0 28px;padding:12px 14px 9px;border:1px solid var(--rule);border-radius:14px;background:rgba(255,253,248,.78);break-inside:avoid}
+.lesson-figure img{display:block;width:100%;height:auto}
+.lesson-figure figcaption{margin-top:8px;color:var(--ink-3);font-size:.78rem;line-height:1.9;text-align:center}
+@media(max-width:560px){.lesson-figure{margin:18px 0;padding:8px 6px 7px}.lesson-figure figcaption{font-size:.72rem}}
+@media print{.lesson-figure{background:#fff;padding:7px;border-color:#ddd}}
+@media print{
+  @page{size:A4;margin:15mm 16mm}
+  body{background:#fff!important;background-image:none!important;font-size:11pt}
+  .paper-chrome,.paper-outline{display:none!important}
+  .page{width:auto;max-width:100%;min-height:0;margin:0;padding:0;border:0;border-radius:0;background:#fff;box-shadow:none}
+  .page::before{display:none}
+  .phase.sec{break-inside:avoid;border:0;border-bottom:1px solid #ccc;border-radius:0;box-shadow:none;background:#fff;padding:12px 0;margin:0}
+  .phase.collapsed .phase-body{display:block!important}
+  .phase .head-tools,.add-topic,#addPhase{display:none!important}
+  .sec{margin-top:2.4em}
+}
+@media(max-width:720px){
+  .paper-chrome{top:6px;width:calc(100% - 16px);margin-top:8px}
+  .paper-toolbar{gap:6px;padding:6px;min-height:48px;border-radius:13px}
+  .paper-brand{gap:6px;font-size:.68rem}.paper-brand span:last-child,.paper-doc-title{display:none}
+  .paper-brand-mark{width:28px;height:28px}
+  .paper-doc-title{font-size:.68rem}
+  .paper-control{min-height:32px;padding:4px 7px;font-size:.68rem}
+  .paper-control.square{width:31px}
+  .paper-save-state{display:none}
+  .page{width:calc(100% - 18px);min-height:calc(100vh - 100px);margin:16px auto 32px;padding:34px 24px 42px}
+  .page::before{inset-inline-start:12px}
+  .phase.sec{padding:15px 14px 12px}
+  .phase .sec-head.phase-head{gap:8px}
+  .phase .sec-head h2{font-size:1.1rem!important}
+}
+@media(max-width:480px){
+  .paper-brand span:last-child,.paper-doc-title{display:none}
+  .paper-toolbar{justify-content:space-between}
+  .paper-controls{gap:2px}
+  .paper-control{padding-inline:6px}
+  .paper-lesson-nav .paper-control{width:32px;min-width:32px;height:32px;padding:0;overflow:hidden;color:transparent;font-size:0}
+  .paper-lesson-nav #paperPrev::after,.paper-lesson-nav #paperNext::after{color:var(--ink-2);font-size:1rem;line-height:1}
+  .paper-lesson-nav #paperPrev::after{content:"←"}
+  .paper-lesson-nav #paperNext::after{content:"→"}
+  .phase.sec{border-radius:12px}
+  .topic{padding-inline:1px}
+  .t-link{gap:6px;padding-inline:7px;font-size:.81rem}
+  .topic .ib{width:23px;height:23px;font-size:.72rem}
+}
+@media print{@page{margin:17mm}body{background:#fff;font-size:11.5pt}.page{max-width:100%;padding:0}.sec{margin-top:2.4em;break-inside:auto}.note,.piece,.ex-item,table,.features{break-inside:avoid}a{color:inherit;text-decoration:none}.edit-only,.toast,.insp,.ctx,.back-link{display:none!important}}
+@media(max-width:560px){.page{padding:40px 20px}body{font-size:calc(15.5px * var(--reader-scale,1))}.ex-item{gap:12px}.freq{flex-direction:column}.freq>div+div{border-inline-start:none;border-top:1px solid var(--rule)}}
+</style><style></style></head>
+<body cz-shortcut-listen="true" data-new-gr-c-s-check-loaded="14.1335.0" data-gr-ext-installed="" class="" data-gr-agent-presence-bridge-connection-id="1791378091922-0.34696062840884867" data-new-gr-c-s-loaded="14.1335.0">
 <div class="page" id="sheet">
 <div class="rule-double"></div>
 <header>
 <a href="index.html" class="back-link"><span class="arrow">←</span> بازگشت به نقشه راه</a>
 <p class="doc-kicker" data-edit="">مبانی نظری تئوری موسیقی — درس سوم</p>
-<h1 data-edit="" style="font-size: 30px; text-align: center;">گام‌ها <span class="ltr">(Scales)</span> — ساختار ماژور، مینور و انواع آن <span class="h1-dot">.</span></h1>
+<h1 data-edit="" style="font-size: 30px; text-align: center;" class="">گام‌ها <span class="ltr">(Scales)</span> — ساختار ماژور، مینور و انواع آن <span class="h1-dot">...</span></h1>
 <p class="doc-lead" data-edit="">در درس دوم با مفهوم فواصل آشنا شدیم. اکنون با ترکیب فواصل در یک الگوی منظم، به مفهوم <strong>گام</strong> می‌رسیم — ستون فقرات هر قطعه موسیقی.</p>
 </header>
 
@@ -45,9 +332,9 @@
 <p data-edit="">گام به مجموعه‌ای از نت‌ها گفته می‌شود که <strong>به ترتیب ارتفاع (از پایین به بالا یا بالعکس)</strong> مرتب شده‌اند و بر اساس یک <strong>الگوی فاصله‌ای مشخص</strong> از یک نت پایه (Tonic یا Root) ساخته می‌شوند.</p>
 </div>
 <div class="note">
-<span class="tag">نکته بنیادین — </span>
-گام یک <strong>قالب ذهنی</strong> است که آهنگساز انتخاب می‌کند. یک قطعه معمولا در <strong>یک گام خاص</strong> نوشته می‌شود و نت‌های آن، نت‌های «مجاز» یا «در منزل» (In-key) نامیده می‌شوند. نت‌های خارج از گام، «نامجاز» یا «خارج از منزل» (Out-of-key) هستند و تنها با هدف‌های خاص هارمونیک (نت‌های گذر، کروماتیک یا مدولاسیون) استفاده می‌شوند.
-</div>
+<span class="tag" data-edit="">نکته بنیادین — </span><span data-edit="">
+گام یک </span><strong>قالب ذهنی</strong><span data-edit=""> است که آهنگساز انتخاب می‌کند. یک قطعه معمولا در </span><strong>یک گام خاص</strong><span data-edit="" class=""> نوشته می‌شود و نت‌های آن، نت‌های «مجاز» (In-key) نامیده می‌شوند. نت‌های خارج از گام، «نامجاز» (Out-of-key) هستند و تنها با هدف‌های خاص هارمونیک (نت‌های گذر، کروماتیک یا مدولاسیون) استفاده می‌شوند.
+</span></div>
 </section>
 
 <section class="sec" id="s2">
@@ -85,9 +372,9 @@
 </div>
 <div class="seq" data-edit="">H · H · H · H · H · H · H · H · H · H · H · H</div>
 <div class="note">
-<span class="tag">کاربرد در DAW — </span>
+<span class="tag" data-edit="">کاربرد در DAW — </span><span data-edit="">
 گام کروماتیک بیشتر برای پاساژهای سریع (Runs)، افکت‌های صوتی، یا ایجاد تنش کروماتیک استفاده می‌شود. قطعاتی که کاملا کروماتیک باشند، بسیار نادر هستند.
-</div>
+</span></div>
 </section>
 
 <section class="sec" id="s4">
@@ -112,14 +399,14 @@
 <tr><th data-edit="">درجه</th><th data-edit="">نت</th><th data-edit="">فاصله از نت قبل</th></tr>
 </thead>
 <tbody>
-<tr><td class="num" data-edit="">1 (Tonic)</td><td class="sym" data-edit="">C</td><td data-edit="">—</td></tr>
+<tr><td class="num" data-edit="" style="font-size: 16px;">1</td><td class="sym" data-edit="">C</td><td data-edit="">—</td></tr>
 <tr><td class="num" data-edit="">2</td><td class="sym" data-edit="">D</td><td data-edit="">W (تمام)</td></tr>
 <tr><td class="num" data-edit="">3</td><td class="sym" data-edit="">E</td><td data-edit="">W (تمام)</td></tr>
 <tr><td class="num" data-edit="">4</td><td class="sym" data-edit="">F</td><td data-edit="">H (نیم)</td></tr>
 <tr><td class="num" data-edit="">5</td><td class="sym" data-edit="">G</td><td data-edit="">W (تمام)</td></tr>
 <tr><td class="num" data-edit="">6</td><td class="sym" data-edit="">A</td><td data-edit="">W (تمام)</td></tr>
 <tr><td class="num" data-edit="">7</td><td class="sym" data-edit="">B</td><td data-edit="">W (تمام)</td></tr>
-<tr><td class="num" data-edit="">8 (اکتاو)</td><td class="sym" data-edit="">C</td><td data-edit="">H (نیم)</td></tr>
+<tr><td class="num" data-edit="">8</td><td class="sym" data-edit="">C</td><td data-edit="">H (نیم)</td></tr>
 </tbody>
 </table>
 <div class="seq" data-edit="">C - D - E - F - G - A - B - C</div>
@@ -131,7 +418,7 @@
 <p data-edit="">با همان فرمول (W-W-H-W-W-W-H) از نت G — این گام دارای <strong>یک Sharp</strong> است.</p>
 <div class="example" data-edit="">
 G - A - B - C - D - E - <strong>F♯</strong> - G<br>
-توجه: F خالی با E یک نیم‌پرده فاصله دارد، پس درجه ۷ باید <strong>F♯</strong> باشد.
+توجه: F خالی با E یک نیم‌پرده فاصله دارد، پس درجه ۷ باید ♯<strong>F</strong> باشد.
 </div>
 </div>
 <div class="feature">
@@ -139,7 +426,7 @@ G - A - B - C - D - E - <strong>F♯</strong> - G<br>
 <p data-edit="">از نت F — این گام دارای <strong>یک Flat</strong> است.</p>
 <div class="example" data-edit="">
 F - G - A - <strong>B♭</strong> - C - D - E - F<br>
-توجه: B خالی با A یک تمام‌پرده فاصله دارد، پس درجه ۴ باید <strong>B♭</strong> باشد.
+توجه: B خالی با A یک تمام‌پرده فاصله دارد، پس درجه ۴ باید ♭<strong>B</strong> باشد.
 </div>
 </div>
 </div>
@@ -208,9 +495,9 @@ A - B - C - D - E - F - <strong>G♯</strong> - A<br>
 </div>
 <figure class="lesson-figure"><img src="images/lesson-03-minor-forms.svg" alt="مقایسهٔ نت‌های گام لا مینور طبیعی، هارمونیک، و ملودیک در صعود و نزول"><figcaption>در مینور هارمونیک درجهٔ هفتم بالا می‌رود؛ در مینور ملودیک کلاسیک هنگام صعود درجه‌های ششم و هفتم بالا می‌روند و هنگام نزول به شکل طبیعی برمی‌گردند.</figcaption></figure>
 <div class="note">
-<span class="tag">نکته کاربردی — </span>
-در موسیقی جَز، مینور ملودیک هم در صعود و هم در نزول یکسان است (F♯ و G♯ در هر دو جهت). این نوع را <strong>Jazz Melodic Minor</strong> می‌نامند.
-</div>
+<span class="tag" data-edit="">نکته کاربردی — </span><span data-edit="" class="">
+در موسیقی جَز، مینور ملودیک هم در صعود و هم در نزول یکسان است (♯F و ♯G در هر دو جهت). این نوع را </span><strong>Jazz Melodic Minor</strong><span data-edit=""> می‌نامند.
+</span></div>
 </section>
 
 <section class="sec" id="s7">
@@ -224,7 +511,7 @@ A - B - C - D - E - F - <strong>G♯</strong> - A<br>
 </thead>
 <tbody>
 <tr><td data-edit=""><strong>ماژور</strong></td><td data-edit="">در برخی بافت‌ها روشن یا پرانرژی برداشت می‌شود</td><td data-edit="">پاپ، راک کلاسیک، موسیقی حماسی روشن</td></tr>
-<tr><td data-edit=""><strong>مینور طبیعی</strong></td><td data-edit="">در برخی بافت‌ها جدی یا تأمل‌برانگیز برداشت می‌شود</td><td data-edit="">بالادها، موسیقی غمگین سینمایی، فولک</td></tr>
+<tr><td data-edit=""><strong>مینور طبیعی</strong></td><td data-edit="" class="">در برخی بافت‌ها جدی یا تأمل‌برانگیز برداشت می‌شود</td><td data-edit="">بالادها، موسیقی غمگین سینمایی، فولک</td></tr>
 <tr><td data-edit=""><strong>مینور هارمونیک</strong></td><td data-edit="">دراماتیک، شرقی، پرتنش</td><td data-edit="">متال نئوکلاسیک، گوتیک، موسیقی عربی/فلامنکو</td></tr>
 <tr><td data-edit=""><strong>مینور ملودیک</strong></td><td data-edit="">پیچیده، جَز-محور، خاص</td><td data-edit="">جَز، پراگرسیو متال، موسیقی مدرن</td></tr>
 </tbody>
@@ -245,8 +532,8 @@ A - B - C - D - E - F - <strong>G♯</strong> - A<br>
 </div>
 <ul class="ex-list">
 <li data-edit=""><strong>C ماژور</strong> → مینور نسبی: <strong>A مینور</strong> (نت‌ها: C D E F G A B = A B C D E F G)</li>
-<li data-edit=""><strong>G ماژور</strong> (یک شارپ: F♯) → مینور نسبی: <strong>E مینور</strong></li>
-<li data-edit=""><strong>F ماژور</strong> (یک فلت: B♭) → مینور نسبی: <strong>D مینور</strong></li>
+<li data-edit="" class=""><strong>G ماژور</strong> (یک شارپ: ♯F) → مینور نسبی: <strong>E مینور</strong></li>
+<li data-edit="" class=""><strong>F ماژور</strong> (یک فلت: ♭B) → مینور نسبی: <strong>D مینور</strong></li>
 </ul>
 <div class="key-point">
 <h3 data-edit="">قانون یافتن ماژور نسبی</h3>
@@ -270,13 +557,13 @@ A - B - C - D - E - F - <strong>G♯</strong> - A<br>
 </div>
 <div class="feature">
 <h3 data-edit="">C مینور</h3>
-<div class="example" data-edit="">C - D - E♭ - F - G - A♭ - B♭</div>
+<div class="example" data-edit="">♭C - D - E♭ - F - G - A♭ - B</div>
 </div>
 </div>
 <div class="note">
-<span class="tag">کاربرد — </span>
+<span class="tag" data-edit="">کاربرد — </span><span data-edit="">
 تغییر بین گام‌های موازی، یعنی حفظ تونیک و تغییر نوع گام، رنگ هارمونیک قطعه را عوض می‌کند؛ برداشت شنیداری به بافت وابسته است.
-</div>
+</span></div>
 </section>
 
 <section class="sec" id="s10">
@@ -287,27 +574,27 @@ A - B - C - D - E - F - <strong>G♯</strong> - A<br>
 
 <article class="piece">
 <h3 data-edit="">مثال ۱: گام ماژور — <span class="en-name">Let It Be</span> <span class="int-tag fanum">C ماژور</span><br><span class="artist">از <span class="ltr">The Beatles</span></span></h3>
-<p class="an" data-edit=""><span class="an-label">تحلیل: </span>نت‌های اصلی: <span class="tk">C D E F G A B</span> · آکوردهای اصلی: <span class="tk">C, G, Am, F</span> — که همگی دیاتونیکِ گام C ماژور هستند.</p>
+<p class="an" data-edit=""><span class="an-label" data-edit="">تحلیل: </span>نت‌های اصلی: <span class="tk">C D E F G A B</span> · آکوردهای اصلی: <span class="tk">C, G, Am, F</span> — که همگی دیاتونیکِ گام C ماژور هستند.</p>
 </article>
 
 <article class="piece">
 <h3 data-edit="">مثال ۲: گام مینور طبیعی — <span class="en-name">Losing My Religion</span> <span class="int-tag fanum">A مینور طبیعی</span><br><span class="artist">از <span class="ltr">R.E.M.</span></span></h3>
-<p class="an" data-edit=""><span class="an-label">تحلیل: </span>نت‌های اصلی: <span class="tk">A B C D E F G</span> · ریف ماندولین اصلی تماما بر اساس نت‌های گام A مینور است.</p>
+<p class="an" data-edit=""><span class="an-label" data-edit="">تحلیل: </span>نت‌های اصلی: <span class="tk">A B C D E F G</span> · ریف ماندولین اصلی تماما بر اساس نت‌های گام A مینور است.</p>
 </article>
 
 <article class="piece">
 <h3 data-edit="">مثال ۳: ساختار مینور هارمونیک — نمونهٔ آموزشی در D مینور<br><span class="artist">مثال ساخته‌شده برای آموزش</span></h3>
-<p class="an" data-edit=""><span class="an-label">تحلیل: </span>فرمول D مینور طبیعی: <span class="tk">D E F G A B♭ C</span>. با بالا بردن درجهٔ هفتم، C به C♯ تبدیل می‌شود و فرمول D مینور هارمونیک به دست می‌آید: <span class="tk">D E F G A B♭ C♯</span>.</p>
+<p class="an" data-edit=""><span class="an-label" data-edit="">تحلیل: </span>فرمول D مینور طبیعی: <span class="tk">D E F G A B♭ C</span>. با بالا بردن درجهٔ هفتم، C به ♯C تبدیل می‌شود و فرمول D مینور هارمونیک به دست می‌آید: <span class="tk">D E F G A B♭ C♯</span>.</p>
 </article>
 
 <article class="piece">
-<h3 data-edit="">مثال ۴: نمونهٔ مینور هارمونیک در موسیقی نئوکلاسیک — <span class="en-name">Black Star</span> <span class="int-tag fanum">F♯ مینور هارمونیک</span><br><span class="artist">از <span class="ltr">Yngwie Malmsteen</span></span></h3>
-<p class="an" data-edit=""><span class="an-label">تحلیل: </span>استفاده گسترده از فاصله <strong>دوم افزوده (Augmented Second)</strong> بین درجه ۶ و ۷، حس کلاسیک/باروک را به متال می‌آورد.</p>
+<h3 data-edit="" class="">مثال ۴: نمونه مینور هارمونیک در موسیقی نئوکلاسیک — <span class="en-name">Black Star</span> | ♯<span class="int-tag fanum">F مینور هارمونیک</span><br><span class="artist">از <span class="ltr">Yngwie Malmsteen</span></span></h3>
+<p class="an" data-edit=""><span class="an-label" data-edit="">تحلیل: </span>استفاده گسترده از فاصله <strong>دوم افزوده (Augmented Second)</strong> بین درجه ۶ و ۷، حس کلاسیک/باروک را به متال می‌آورد.</p>
 </article>
 
 <article class="piece">
-<h3 data-edit="">مثال ۵: ساختار مینور ملودیک — نمونهٔ آموزشی در F مینور<br><span class="artist">مثال ساخته‌شده برای آموزش</span></h3>
-<p class="an" data-edit=""><span class="an-label">تحلیل: </span>در مینور ملودیک کلاسیک، درجه‌های ششم و هفتم هنگام صعود بالا می‌روند: <span class="tk">F G A♭ B♭ C D E F</span>. در نزول معمولا شکل مینور طبیعی به کار می‌رود: <span class="tk">F E♭ D♭ C B♭ A♭ G F</span>. در جَز، شکل صعودی در هر دو جهت حفظ می‌شود.</p>
+<h3 data-edit="" class="">مثال ۵: ساختار مینور ملودیک — نمونه آموزشی در F مینور<br><span class="artist">مثال ساخته‌شده برای آموزش</span></h3>
+<p class="an" data-edit=""><span class="an-label" data-edit="">تحلیل: </span>در مینور ملودیک کلاسیک، درجه‌های ششم و هفتم هنگام صعود بالا می‌روند: <span class="tk">F G A♭ B♭ C D E F</span>. در نزول معمولا شکل مینور طبیعی به کار می‌رود: <span class="tk">F E♭ D♭ C B♭ A♭ G F</span>. در جَز، شکل صعودی در هر دو جهت حفظ می‌شود.</p>
 </article>
 </section>
 
@@ -346,27 +633,27 @@ A - B - C - D - E - F - <strong>G♯</strong> - A<br>
 </div>
 
 <div class="qa">
-<p class="q" data-edit=""><span class="qa-mark">پرسش</span> چرا سه نوع مینور داریم؟ آیا نمی‌توان فقط از مینور طبیعی استفاده کرد؟</p>
-<p class="a" data-edit=""><span class="qa-mark">پاسخ</span> هر سه شکل کاربردهای رایجی دارند. در مینور هارمونیک، درجهٔ هفتم بالا می‌رود تا کشش دومینانت به تونیک در هارمونی مینور تقویت شود. مینور ملودیک کلاسیک درجات ششم و هفتم را هنگام صعود بالا می‌برد؛ در سنت جَز، شکل صعودی در هر دو جهت به کار می‌رود. این الگوها امکان‌های آهنگسازی‌اند و به‌تنهایی احساس مشخصی را تضمین نمی‌کنند.</p>
+<p class="q" data-edit=""><span class="qa-mark" data-edit="">پرسش</span> چرا سه نوع مینور داریم؟ آیا نمی‌توان فقط از مینور طبیعی استفاده کرد؟</p>
+<p class="a" data-edit=""><span class="qa-mark" data-edit="">پاسخ</span> هر سه شکل کاربردهای رایجی دارند. در مینور هارمونیک، درجهٔ هفتم بالا می‌رود تا کشش دومینانت به تونیک در هارمونی مینور تقویت شود. مینور ملودیک کلاسیک درجات ششم و هفتم را هنگام صعود بالا می‌برد؛ در سنت جَز، شکل صعودی در هر دو جهت به کار می‌رود. این الگوها امکان‌های آهنگسازی‌اند و به‌تنهایی احساس مشخصی را تضمین نمی‌کنند.</p>
 </div>
 <div class="qa">
-<p class="q" data-edit=""><span class="qa-mark">پرسش</span> آیا باید تمام ۱۲ گام ماژور و ۱۲ گام مینور را حفظ کنم؟</p>
-<p class="a" data-edit=""><span class="qa-mark">پاسخ</span> نیازی به حفظ کردن طوطی‌وار نیست. با یادگیری <strong>دایره پنجم‌ها (Circle of Fifths)</strong> که در درس بعدی پوشش داده می‌شود، منطق پشت تمام گام‌ها را درک خواهید کرد. اما برای شروع، تسلط بر گام‌های C ماژور، G ماژور، F ماژور و مینورهای نسبی آن‌ها کافی است.</p>
+<p class="q" data-edit=""><span class="qa-mark" data-edit="">پرسش</span> آیا باید تمام ۱۲ گام ماژور و ۱۲ گام مینور را حفظ کنم؟</p>
+<p class="a" data-edit=""><span class="qa-mark" data-edit="">پاسخ</span> نیازی به حفظ کردن طوطی‌وار نیست. با یادگیری <strong>دایره پنجم‌ها (Circle of Fifths)</strong> که در درس بعدی پوشش داده می‌شود، منطق پشت تمام گام‌ها را درک خواهید کرد. اما برای شروع، تسلط بر گام‌های C ماژور، G ماژور، F ماژور و مینورهای نسبی آن‌ها کافی است.</p>
 </div>
 <div class="qa">
-<p class="q" data-edit=""><span class="qa-mark">پرسش</span> چرا در مینور ملودیک جَز، گام در نزول تغییر نمی‌کند؟</p>
-<p class="a" data-edit=""><span class="qa-mark">پاسخ</span> در سنت جَز، شکل صعودی مینور ملودیک در هر دو جهت به کار می‌رود. این کاربرد با شکل رایج در آموزش کلاسیک فرق دارد؛ انتخاب شکل گام به زبان موسیقایی و کاربرد هارمونیک بستگی دارد.</p>
+<p class="q" data-edit=""><span class="qa-mark" data-edit="">پرسش</span> چرا در مینور ملودیک جَز، گام در نزول تغییر نمی‌کند؟</p>
+<p class="a" data-edit=""><span class="qa-mark" data-edit="">پاسخ</span> در سنت جَز، شکل صعودی مینور ملودیک در هر دو جهت به کار می‌رود. این کاربرد با شکل رایج در آموزش کلاسیک فرق دارد؛ انتخاب شکل گام به زبان موسیقایی و کاربرد هارمونیک بستگی دارد.</p>
 </div>
 <div class="qa">
-<p class="q" data-edit=""><span class="qa-mark">پرسش</span> آیا یک قطعه می‌تواند در دو گام همزمان باشد؟</p>
-<p class="a" data-edit=""><span class="qa-mark">پاسخ</span> بله. این پدیده <strong>Bitonality</strong> یا <strong>Polytonality</strong> نامیده می‌شود و در موسیقی مدرن، پراگرسیو و تجربی رایج است. اما در موسیقی پاپ، راک و سینمایی استاندارد، معمولا یک گام غالب است.</p>
+<p class="q" data-edit=""><span class="qa-mark" data-edit="">پرسش</span> آیا یک قطعه می‌تواند در دو گام همزمان باشد؟</p>
+<p class="a" data-edit=""><span class="qa-mark" data-edit="">پاسخ</span> بله. این پدیده <strong>Bitonality</strong> یا <strong>Polytonality</strong> نامیده می‌شود و در موسیقی مدرن، پراگرسیو و تجربی رایج است. اما در موسیقی پاپ، راک و سینمایی استاندارد، معمولا یک گام غالب است.</p>
 </div>
 </section>
 
 <section class="sec" id="s13">
 <div class="sec-head">
 <p class="sec-label" data-edit="" style="text-align: center;">بخش سیزدهم</p>
-<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;">تمرینات عملی برای هنرجو</h2>
+<h2 data-edit="" style="font-size: 20px; font-weight: 500; text-align: center;" class="">تمرینات عملی</h2>
 </div>
 
 <div class="ex-item">
@@ -444,7 +731,7 @@ A - B - C - D - E - F - <strong>G♯</strong> - A<br>
 
 
 
-<script src="editor.js"></script></body></html>
+<script src="editor.js"></script><div id="ctx" class="ctx" style="left: 955px; top: 127px;"><div class="ctitle">المان زیر نشانگر</div><button><span class="ci">🎨</span><span>استایل این المان <article></article></span></button><button><span class="ci">🗑</span><span>حذف این المان <article></article></span></button><div class="csep"></div><button><span class="ci">✅</span><span>خروج از حالت ویرایش</span></button><button><span class="ci">➕</span><span>درج بلوک جدید…</span></button><button><span class="ci">📄</span><span>افزودن بخش جدید</span></button><div class="csep"></div><button><span class="ci">🖼</span><span>خروجی PNG</span><span class="ck">×3</span></button><button><span class="ci">📄</span><span>خروجی PDF</span><span class="ck">×3</span></button><button><span class="ci">⚙️</span><span>کیفیت خروجی (PPI)</span><span class="ck">×3</span></button><div class="csep"></div><button><span class="ci">💾</span><span>ذخیره تغییرات در سورس</span></button><button><span class="ci">⬇</span><span>دانلود کپی سورس</span></button><button><span class="ci">↺</span><span>بازنشانی به نسخه اولیه</span></button><button><span class="ci">⌨</span><span>فهرست شرتکات‌ها</span></button><div class="csep"></div><div class="cstatus">v9 · JS فعال ✓ · lesson-03</div></div><div class="insp" id="insp" hidden=""><div class="insp-card"><div class="insp-head"><b>استایل المان</b><span id="inspTag">&lt;h2&gt;</span><span class="sp"></span><button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button><button type="button" class="ib" id="inspClose" title="بستن">×</button></div><div class="insp-grid"><label>سایز قلم <span class="ltr" id="vSize">20px</span><input type="range" id="inSize" min="10" max="56" step="1"></label><label>فاصله خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label><label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label><label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label><label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label><label>رنگ<div class="swatches"><button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button><button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button><button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button><button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button><input type="color" id="inColor" value="#221d17"></div></label></div></div></div><div class="toast"><span id="toastMsg"></span></div>
 
 
 
@@ -460,3 +747,4 @@ A - B - C - D - E - F - <strong>G♯</strong> - A<br>
 
 
 
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true" style="visibility: visible !important;"></grammarly-desktop-integration></html>
