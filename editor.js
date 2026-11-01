@@ -250,6 +250,7 @@ body{background-color:var(--canvas);background-image:radial-gradient(rgba(116,91
 #addPhase{margin-top:24px}
 .lesson-figure{margin:22px 0 28px;padding:12px 14px 9px;border:1px solid var(--rule);border-radius:14px;background:rgba(255,253,248,.78);break-inside:avoid}
 .lesson-figure img{display:block;width:100%;height:auto}
+.lesson-figure svg{display:block;width:100%;height:auto}
 .lesson-figure figcaption{margin-top:8px;color:var(--ink-3);font-size:.78rem;line-height:1.9;text-align:center}
 @media(max-width:560px){.lesson-figure{margin:18px 0;padding:8px 6px 7px}.lesson-figure figcaption{font-size:.72rem}}
 @media print{.lesson-figure{background:#fff;padding:7px;border-color:#ddd}}
@@ -395,7 +396,7 @@ function setPaperScale(value){
   var down=document.getElementById('paperFontDown'),up=document.getElementById('paperFontUp');
   function currentScale(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--reader-scale'))||1;}
   if(down)down.addEventListener('click',function(){setPaperScale(currentScale()-.05);});if(up)up.addEventListener('click',function(){setPaperScale(currentScale()+.05);});
-  var lessonGroups=[{files:['lesson-01.html','lesson-02.html','lesson-03.html','lesson-04.html','lesson-05.html'],unit:'درس'},{files:['lesson-gp-01.html','lesson-gp-02.html','lesson-gp-03.html','lesson-gp-04.html','lesson-gp-05.html','lesson-gp-06.html'],unit:'جلسه'}],files=null,idx=-1,unit='درس',nav=document.getElementById('paperLessonNav');
+  var lessonGroups=[{files:['lesson-01.html','lesson-02.html','lesson-03.html','lesson-04.html','lesson-05.html','lesson-06.html','lesson-07.html','lesson-08.html','lesson-09.html','lesson-10.html','lesson-11.html','lesson-12.html','lesson-13.html','lesson-14.html','lesson-15.html','lesson-16.html','lesson-17.html'],unit:'درس'},{files:['lesson-gp-01.html','lesson-gp-02.html','lesson-gp-03.html','lesson-gp-04.html','lesson-gp-05.html','lesson-gp-06.html'],unit:'جلسه'},{files:['lesson-h7s-01.html','lesson-h7s-02.html','lesson-h7s-03.html','lesson-h7s-04.html','lesson-h7s-05.html','lesson-h7s-06.html','lesson-h7s-07.html','lesson-h7s-08.html','lesson-h7s-09.html','lesson-h7s-10.html'],unit:'جلسه'}],files=null,idx=-1,unit='درس',nav=document.getElementById('paperLessonNav');
   for(var gi=0;gi<lessonGroups.length;gi++){var found=lessonGroups[gi].files.indexOf(BASE+'.html');if(found>=0){files=lessonGroups[gi].files;idx=found;unit=lessonGroups[gi].unit;break;}}
   if(idx>=0&&nav){nav.hidden=false;var prev=document.getElementById('paperPrev'),next=document.getElementById('paperNext');prev.href=idx===0?'index.html':files[idx-1];next.href=idx===files.length-1?'index.html':files[idx+1];prev.setAttribute('aria-label',idx===0?'نقشهٔ راه':(unit+' '+idx+'؛ قبلی'));next.setAttribute('aria-label',idx===files.length-1?'نقشهٔ راه':(unit+' '+(idx+2)+'؛ بعدی'));}
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&outline){outline.hidden=true;if(contents)contents.setAttribute('aria-expanded','false');}});
@@ -761,3 +762,4 @@ function dlCopy(){
 STATUS='JS فعال ✓';
 }catch(err){showErr('بارگذاری: '+(err.message||err));}
 })();
+
