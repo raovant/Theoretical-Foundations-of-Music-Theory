@@ -1,0 +1,12 @@
+Tempo: 110 BPM; 4/4; 480 ticks per beat.
+Note octave convention: Scientific Pitch Notation (MIDI 60 = C4).
+
+Bar 1 | G major | G major one sharp ascending | G4(MIDI 67) A4(MIDI 69) B4(MIDI 71) C5(MIDI 72) D5(MIDI 74) E5(MIDI 76) F#5(MIDI 78) G5(MIDI 79)
+Bar 2 | G major | G major one sharp descending | G5(MIDI 79) F#5(MIDI 78) E5(MIDI 76) D5(MIDI 74) C5(MIDI 72) B4(MIDI 71) A4(MIDI 69) G4(MIDI 67)
+Bar 3 | E minor | E minor one sharp ascending | E4(MIDI 64) F#4(MIDI 66) G4(MIDI 67) A4(MIDI 69) B4(MIDI 71) C5(MIDI 72) D5(MIDI 74) E5(MIDI 76)
+Bar 4 | E minor | E minor one sharp descending | E5(MIDI 76) D5(MIDI 74) C5(MIDI 72) B4(MIDI 71) A4(MIDI 69) G4(MIDI 67) F#4(MIDI 66) E4(MIDI 64)
+Bar 5 | E minor | REST | silence
+Bar 6 | D major | D major two sharps ascending | D4(MIDI 62) E4(MIDI 64) F#4(MIDI 66) G4(MIDI 67) A4(MIDI 69) B4(MIDI 71) C#5(MIDI 73) D5(MIDI 74)
+Bar 7 | D major | D major two sharps descending | D5(MIDI 74) C#5(MIDI 73) B4(MIDI 71) A4(MIDI 69) G4(MIDI 67) F#4(MIDI 66) E4(MIDI 64) D4(MIDI 62)
+Bar 8 | B minor | B minor two sharps ascending | B3(MIDI 59) C#4(MIDI 61) D4(MIDI 62) E4(MIDI 64) F#4(MIDI 66) G4(MIDI 67) A4(MIDI 69) B4(MIDI 71)
+Bar 9 | B minor | B minor two sharps descending | B4(MIDI 71) A4(MIDI 69) G4(MIDI 67) F#4(MIDI 66) E4(MIDI 64) D4(MIDI 62) C#4(MIDI 61) B3(MIDI 59)
