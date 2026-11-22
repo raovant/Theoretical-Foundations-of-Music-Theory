@@ -1,0 +1,9 @@
+Tempo: 110 BPM; 4/4; 480 ticks per beat.
+Note octave convention: Scientific Pitch Notation (MIDI 60 = C4).
+
+Bar 1 | Compound intervals | M2 C4 D4 | C4(MIDI 60) D4(MIDI 62)
+Bar 2 | Compound intervals | M9 C4 D5 | C4(MIDI 60) D5(MIDI 74)
+Bar 3 | Compound intervals | m3 C4 Eb4 | C4(MIDI 60) Eb4(MIDI 63)
+Bar 4 | Compound intervals | m10 C4 Eb5 | C4(MIDI 60) Eb5(MIDI 75)
+Bar 5 | Compound intervals | P5 C4 G4 | C4(MIDI 60) G4(MIDI 67)
+Bar 6 | Compound intervals | P12 C4 G5 | C4(MIDI 60) G5(MIDI 79)
