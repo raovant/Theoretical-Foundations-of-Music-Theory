@@ -41,7 +41,7 @@ a{color:var(--accent)}
 .doc-kicker::after{content:'';flex:1;border-top:1px solid var(--rule)}
 h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(1.8rem,5vw,2.2rem);line-height:1.55;margin-bottom:16px}
 h1 .h1-dot{color:var(--accent)}
-.doc-lead{font-weight:300;font-size:1.06rem;line-height:2.15;color:var(--ink-2);max-width:36rem;margin-bottom:22px}
+.doc-lead{font-weight:300;font-size:.94rem;line-height:2.15;color:var(--ink-2);max-width:36rem;margin-bottom:22px}
 .doc-meta{display:flex;flex-wrap:wrap;gap:6px 0;font-size:.8rem;color:var(--ink-3)}
 .doc-meta span:not(:last-child)::after{content:'·';margin:0 10px;color:var(--rule-2)}
 .doc-meta b{font-family:var(--f-fa);font-weight:700;color:var(--ink-2)}
@@ -79,6 +79,7 @@ u{text-underline-offset:3px}
 .int-type p{font-size:.88rem;color:var(--ink-2);line-height:2}
 .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
 .feature{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:20px}
+.midi-card{display:block;color:inherit;text-decoration:none;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background-color .18s ease}.midi-card:hover,.midi-card:focus-visible{transform:translateY(-4px);border-color:var(--accent);background:var(--accent-bg);box-shadow:0 8px 22px rgba(34,29,23,.12);outline:none}.midi-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}@media (prefers-reduced-motion:reduce){.midi-card{transition:none}}
 .feature h3{font-family:var(--f-disp);font-weight:700;font-size:1rem;margin-bottom:8px;color:var(--accent)}
 .feature p{font-size:.88rem;color:var(--ink-2);line-height:2;margin-bottom:8px}
 .feature .example{background:var(--well);border-radius:8px;padding:10px 14px;font-size:.85rem;line-height:1.9;margin-top:10px}
@@ -300,6 +301,9 @@ body{background-color:var(--canvas);background-image:radial-gradient(rgba(116,91
 function injectStyle(id,css){var el=document.getElementById(id);if(!el){el=document.createElement('style');el.id=id;document.head.appendChild(el);}el.textContent=css;}
 injectStyle('inj-fonts',FONT_CSS);
 injectStyle('inj-css',COMP_CSS);
+document.addEventListener('click',function(event){if(document.body.classList.contains('editing') && event.target.closest('.midi-card'))event.preventDefault();},true);
+/* Fit the document title after fonts and whenever the page or reader size changes. */
+(function(){var title=document.querySelector('.page header h1');if(!title)return; function fit(){title.style.fontSize='';title.style.whiteSpace='nowrap'; var size=parseFloat(getComputedStyle(title).fontSize), width=title.clientWidth; if(title.scrollWidth>width)title.style.fontSize=Math.max(8,Math.floor(size*width/title.scrollWidth*0.98))+'px';} fit();window.addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);})();
 
 /* ══════════ ۲) ساخت اجزای رابط اگر وجود نداشتن ══════════ */
 var INSP_HTML='<div class="insp" id="insp" hidden><div class="insp-card"><div class="insp-head"><b>استایل المان</b><span id="inspTag"></span><span class="sp"></span><button type="button" class="ib" id="inspReset" title="بازنشانی استایل">↺</button><button type="button" class="ib" id="inspClose" title="بستن">×</button></div><div class="insp-grid"><label>سایز قلم <span class="ltr" id="vSize"></span><input type="range" id="inSize" min="10" max="56" step="1"></label><label>فاصله خطوط <input type="range" id="inLh" min="1.4" max="2.8" step="0.05"></label><label>وزن<select id="inWeight"><option value="300">300 Light</option><option value="400">400 Regular</option><option value="500">500 Medium</option><option value="600">600 SemiBold</option><option value="700">700 Bold</option></select></label><label>خانواده<select id="inFamily"><option value="body">IRANSans</option><option value="disp">Kalameh</option><option value="fa">IRANSans FaNum</option></select></label><label>چینش<select id="inAlign"><option value="right">راست</option><option value="center">وسط</option><option value="left">چپ</option></select></label><label>رنگ<div class="swatches"><button type="button" class="sw" data-c="#221d17" style="background:#221d17"></button><button type="button" class="sw" data-c="#544c40" style="background:#544c40"></button><button type="button" class="sw" data-c="#8b8272" style="background:#8b8272"></button><button type="button" class="sw" data-c="#b23a26" style="background:#b23a26"></button><input type="color" id="inColor" value="#221d17"></div></label></div></div></div>';
@@ -381,7 +385,7 @@ function updatePaperProgress(){
   fill.style.width=p+'%';track.setAttribute('aria-valuenow',String(p));
 }
 function setPaperScale(value){
-  var scale=Math.max(.88,Math.min(1.22,Math.round(value*100)/100));document.documentElement.style.setProperty('--reader-scale',String(scale));
+  var scale=Math.max(.88,Math.min(1.22,Math.round(value*100)/100));document.documentElement.style.setProperty('--reader-scale',String(scale));window.dispatchEvent(new Event('resize'));
   try{localStorage.setItem('paper-reader-scale',String(scale));}catch(e){}
 }
 (function initPaperChrome(){
