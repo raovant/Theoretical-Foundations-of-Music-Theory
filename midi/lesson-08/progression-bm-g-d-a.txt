@@ -1,0 +1,6 @@
+MIDI markers / chord guide
+Tempo: 120 BPM | 4/4 | PPQ 480
+Bar 1 beat 1 | D major | Bm | vi | notes: B2 D3 F#3
+Bar 2 beat 1 | D major | G | IV | notes: G2 B2 D3
+Bar 3 beat 1 | D major | D | I | notes: D3 F#3 A3
+Bar 4 beat 1 | D major | A | V | notes: A2 C#3 E3

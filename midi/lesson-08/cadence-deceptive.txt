@@ -1,0 +1,17 @@
+MIDI markers / chord guide
+Tempo: 120 BPM | 4/4 | PPQ 480
+Bar 1 beat 1 | C major | C | I | notes: C3 E3 G3
+Bar 2 beat 1 | C major | F | IV | notes: F3 A3 C4
+Bar 3 beat 1 | C major | G | V | notes: G3 B3 D4
+Bar 4 beat 1 | C major | Am | vi | notes: A3 C4 E4
+Bar 5 beat 1 | C major | REST
+Bar 6 beat 1 | A minor | Am | i | notes: A2 C3 E3
+Bar 7 beat 1 | A minor | Dm | iv | notes: D3 F3 A3
+Bar 8 beat 1 | A minor | E | V | notes: E3 G#3 B3
+Bar 9 beat 1 | A minor | F | VI | notes: F3 A3 C4
+Bar 10 beat 1 | A minor | REST
+Bar 11 beat 1 | F# minor | F#m | i | notes: F#2 A2 C#3
+Bar 12 beat 1 | F# minor | Bm | iv | notes: B2 D3 F#3
+Bar 13 beat 1 | F# minor | C# | V | notes: C#3 E#3 G#3
+Bar 14 beat 1 | F# minor | D | VI | notes: D3 F#3 A3
+Bar 15 beat 1 | F# minor | REST
