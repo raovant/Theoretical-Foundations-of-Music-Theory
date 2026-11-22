@@ -1,0 +1,15 @@
+Tempo: 110 BPM; 4/4; 480 ticks per beat.
+Note octave convention: Scientific Pitch Notation (MIDI 60 = C4).
+
+Bar 1 | Intervals from C | m2 from C4; melodic then harmonic | C4(MIDI 60) Db4(MIDI 61)
+Bar 2 | Intervals from C | M2 from C4; melodic then harmonic | C4(MIDI 60) D4(MIDI 62)
+Bar 3 | Intervals from C | m3 from C4; melodic then harmonic | C4(MIDI 60) Eb4(MIDI 63)
+Bar 4 | Intervals from C | M3 from C4; melodic then harmonic | C4(MIDI 60) E4(MIDI 64)
+Bar 5 | Intervals from C | P4 from C4; melodic then harmonic | C4(MIDI 60) F4(MIDI 65)
+Bar 6 | Intervals from C | A4 from C4; melodic then harmonic | C4(MIDI 60) Gb4(MIDI 66)
+Bar 7 | Intervals from C | P5 from C4; melodic then harmonic | C4(MIDI 60) G4(MIDI 67)
+Bar 8 | Intervals from C | m6 from C4; melodic then harmonic | C4(MIDI 60) Ab4(MIDI 68)
+Bar 9 | Intervals from C | M6 from C4; melodic then harmonic | C4(MIDI 60) A4(MIDI 69)
+Bar 10 | Intervals from C | m7 from C4; melodic then harmonic | C4(MIDI 60) Bb4(MIDI 70)
+Bar 11 | Intervals from C | M7 from C4; melodic then harmonic | C4(MIDI 60) B4(MIDI 71)
+Bar 12 | Intervals from C | P8 from C4; melodic then harmonic | C4(MIDI 60) C5(MIDI 72)
