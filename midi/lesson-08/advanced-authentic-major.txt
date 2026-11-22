@@ -1,0 +1,7 @@
+MIDI markers / chord guide
+Tempo: 120 BPM | 4/4 | PPQ 480
+Bar 1 beat 1 | C major | Cmaj7 | Imaj7 | notes: C3 E3 G3 B3
+Bar 2 beat 1 | C major | Dm7/F | ii7 first inversion | notes: F3 A3 C4 D4
+Bar 3 beat 1 | C major | G9 | V9 | notes: G2 B2 D3 F3 A3
+Bar 4 beat 1 | C major | Cmaj9 | Imaj9 | notes: C3 E3 G3 B3 D4
+Bar 5 beat 1 | C major | REST
