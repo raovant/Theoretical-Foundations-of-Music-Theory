@@ -1,0 +1,6 @@
+Tempo: 110 BPM; 4/4; 480 ticks per beat.
+Note octave convention: Scientific Pitch Notation (MIDI 60 = C4).
+
+Bar 1 | Enharmonic | C#4 then Db4 (same MIDI 61) | C#4(MIDI 61) C#4(MIDI 61)
+Bar 2 | Enharmonic | REST | silence
+Bar 3 | Enharmonic | F#4 then Gb4 (same MIDI 66) | F#4(MIDI 66) F#4(MIDI 66)
