@@ -1,0 +1,7 @@
+Tempo: 110 BPM; 4/4; 480 ticks per beat.
+Note octave convention: Scientific Pitch Notation (MIDI 60 = C4).
+
+Bar 1 | Chromatic | C chromatic ascending | C4(MIDI 60) C#4(MIDI 61) D4(MIDI 62) D#4(MIDI 63) E4(MIDI 64) F4(MIDI 65) F#4(MIDI 66) G4(MIDI 67)
+Bar 2 | Chromatic | C chromatic ascending continued | G#4(MIDI 68) A4(MIDI 69) A#4(MIDI 70) B4(MIDI 71) C5(MIDI 72)
+Bar 3 | Chromatic | C chromatic descending | C5(MIDI 72) B4(MIDI 71) A#4(MIDI 70) A4(MIDI 69) G#4(MIDI 68) G4(MIDI 67) F#4(MIDI 66) F4(MIDI 65)
+Bar 4 | Chromatic | C chromatic descending continued | E4(MIDI 64) D#4(MIDI 63) D4(MIDI 62) C#4(MIDI 61) C4(MIDI 60)
