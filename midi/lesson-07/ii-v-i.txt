@@ -1,0 +1,10 @@
+Tempo: 110 BPM; 4/4; 480 ticks per beat.
+Note octave convention: Scientific Pitch Notation (MIDI 60 = C4).
+
+Bar 1 | C major | Dm | ii | D3(MIDI 50) F3(MIDI 53) A3(MIDI 57)
+Bar 2 | C major | G | V | G3(MIDI 55) B3(MIDI 59) D4(MIDI 62)
+Bar 3 | C major | C | I | C3(MIDI 48) E3(MIDI 52) G3(MIDI 55)
+Bar 4 | C major | REST | silence
+Bar 5 | D major | Em | ii | E3(MIDI 52) G3(MIDI 55) B3(MIDI 59)
+Bar 6 | D major | A | V | A3(MIDI 57) C#4(MIDI 61) E4(MIDI 64)
+Bar 7 | D major | D | I | D3(MIDI 50) F#3(MIDI 54) A3(MIDI 57)
